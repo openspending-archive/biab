@@ -41,4 +41,8 @@ class BDP(object):
 
         for resource in self.metadata["resources"]:
             resource_url = urljoin(self.metadata_url, resource["path"])
-            self.resources.append(DatasetCSV(resource_url))
+            combined = {
+                "data": DatasetCSV(resource_url),
+                "metadata": resource
+            }
+            self.resources.append(combined)

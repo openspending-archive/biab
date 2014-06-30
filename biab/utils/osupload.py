@@ -57,9 +57,10 @@ def os_load(csv_url,metadata_url):
 #    response = urlopen(request)
 #    return response
 
-def process_resource(resource, metadata):
+def process_resource(resource_object):
     """
-    Takes a DatasetCSV object and a (resource) metadata object.
+    Takes a resource object containing a DatasetCSV object
+    and a (resource) metadata object.
 
     Updates the object by calling preprocessing methods on it.
 
@@ -68,6 +69,8 @@ def process_resource(resource, metadata):
     a valid BDP dataset, or at least it will no longer match its
     metadata!)
     """
+    resource = resource_object["data"]
+    metadata = resource_object["metadata"]
     headers = resource.headers
 
     # split out COFOG column
@@ -102,11 +105,13 @@ def process_resource(resource, metadata):
 
     return True
 
-def model(resource, metadata):
+def model(resource_object):
     """
     Returns (in string form) the JSON model object that can be
     used to update the resource to OpenSpending.
     """
+    resource = resource_object["data"]
+    metadata = resource_object["metadata"]
     mapping_fields = model_fields(resource)
     mapping = {}
     for field in mapping_fields:
