@@ -12,7 +12,9 @@ from bdpsite.models import *
 # Create your views here.
 
 def welcome(request):
-    return render_to_response("bdpsite/welcome.html")
+    return render_to_response("bdpsite/welcome.html",
+        {},
+        context_instance=RequestContext(request))
 
 def createuser(request):
     if request.method == 'POST':
