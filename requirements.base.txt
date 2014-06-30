@@ -12,5 +12,7 @@ gunicorn==19.0.0
 honcho==0.5.0
 kombu==3.0.20
 pytz==2014.4
+requests==2.3.0
 six==1.7.2
+unicodecsv==0.9.4
 wsgiref==0.1.2

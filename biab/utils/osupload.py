@@ -4,7 +4,7 @@ from django.conf import settings
 from utils.bdp import BDP
 from functools import reduce
 from copy import copy
-from urllib2 import urlopen, urlencode, Request
+import requests
 import os
 import json
 
@@ -43,17 +43,19 @@ def os_load(csv_url,metadata_url):
     key supplied by the app configuration.
     """
     url = "https://openspending.org/api/2/new"
-    header = {
+    headers = {
         "Authorization": "ApiKey " + settings.OPENSPENDING_API_KEY
     }
     values = {
         "csv_file": csv_url,
         "metadata": metadata_url
     }
-    data = urlencode(values)
-    request = Request(url, data, header)
-    response = urlopen(request)
-    return response
+    r = requests.post(url, data=json.dumps(values), headers=headers)
+    return r
+#    data = urlencode(values)
+#    request = Request(url, data, header)
+#    response = urlopen(request)
+#    return response
 
 def process_resource(resource, metadata):
     """
