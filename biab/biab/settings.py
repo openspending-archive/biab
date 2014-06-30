@@ -49,7 +49,8 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'south',
     'captcha',
-    'bdpsite'
+    'bdpsite',
+    'djcelery'
 )
 
 MIDDLEWARE_CLASSES = (
