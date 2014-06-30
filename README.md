@@ -22,8 +22,8 @@ pip install -r requirements.dev.txt
 
 Initialize the database
 ```
-DATABASE_URL=sqlite:///biab.sqlite python biab/manage.py syncdb
-DATABASE_URL=sqlite:///biab.sqlite python biab/manage.py migrate
+DATABASE_URL=sqlite:///biab/biab.sqlite python biab/manage.py syncdb
+DATABASE_URL=sqlite:///biab/biab.sqlite python biab/manage.py migrate
 ```
 
 now start the instance with
