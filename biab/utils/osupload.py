@@ -37,7 +37,7 @@ bundleable = [
 # - write each generated model to S3
 # - post the processed CSV and metadata to OS with an API call
 
-def os_upload(csv_url,metadata_url):
+def os_load(csv_url,metadata_url):
     """
     Makes a Loading API call using the supplied URLs and the API
     key supplied by the app configuration.
