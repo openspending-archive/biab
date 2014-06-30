@@ -119,3 +119,6 @@ S3_BDP_PREFIX = os.environ.get('BDP_S3_BDP_PREFIX', 'bdp/')
 
 # API key for OpenSpending uploading
 OPENSPENDING_API_KEY = os.environ.get('OPENSPENDING_API_KEY', None)
+
+# helper files for utils
+RESOURCES = os.path.join(BASE_DIR, 'utils', 'resources')
