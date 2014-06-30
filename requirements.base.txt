@@ -10,3 +10,4 @@ wsgiref==0.1.2
 gunicorn
 dj-database-url==0.3.0
 South==0.8.4
+django-recaptcha==1.0
