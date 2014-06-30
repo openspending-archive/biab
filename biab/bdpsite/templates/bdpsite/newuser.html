@@ -1,0 +1,10 @@
+{% extends "biab/base.html"%}
+
+{% block "main" %}
+<h1>Sign up!</h1>
+<form action="" method="POST">
+{% csrf_token %}
+{{form.as_p}}
+<input class="btn btn-primary" type="Submit" name="Submit" value="Submit" />
+</form>
+{% endblock %}
