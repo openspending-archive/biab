@@ -17,6 +17,7 @@ def put_content(key_name, content, content_type=None):
     """
     Put a string onto s3 at the given key name.
     The bucket comes from the app configuration.
+    Returns a public URL for the new file.
     """
 
     bucket = get_bucket()
@@ -25,6 +26,7 @@ def put_content(key_name, content, content_type=None):
         key.set_metadata('Content-Type', content_type)
     key.set_contents_from_string(content)
     key.set_acl('public-read')
+    return key.generate_url(expires_in=0, query_auth=False)
 
 def generate_key(filename, prefix=''):
     """
@@ -36,12 +38,12 @@ def put_dataset(name, content):
     """
     Convenience function to post a CSV dataset.
     """
-    key = generate_key(name, settings.S3_CSV_PREFIX)
+    key = generate_key(name + ".csv", settings.S3_CSV_PREFIX)
     put_content(key, content, content_type="application/json")
 
 def put_model(name, content):
     """
     Convenience function to post an OS model.
     """
-    key = generate_key(name, settings.S3_MODEL_PREFIX)
+    key = generate_key(name + ".json", settings.S3_MODEL_PREFIX)
     put_content(key, content, content_type="application/json")
