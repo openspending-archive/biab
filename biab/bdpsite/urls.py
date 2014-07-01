@@ -25,6 +25,8 @@ urlpatterns = patterns('',
         'bdpsite.views.addviz'),
     url(r'^(?P<project>[-\w]+)/datasets/delete/(?P<id>\d+)/$',
         'bdpsite.views.deletedataset'),
+    url(r'^(?P<project>[-\w]+)/visualize/delete/(?P<id>\d+)/$',
+        'bdpsite.views.deleteviz'),
     url(r'^(?P<project>[-\w]+)/$',
         'bdpsite.views.project'),
 )

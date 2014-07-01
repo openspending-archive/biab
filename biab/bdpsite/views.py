@@ -208,7 +208,8 @@ def addviz(request,project):
     if request.method == 'POST':
         form = VisualizationForm(request.POST)
         if form.is_valid():
-            pass
+            form.save()
+            return HttpResponseRedirect("../")
     else:
         form = VisualizationForm()
     c = { "project": project,
@@ -217,14 +218,20 @@ def addviz(request,project):
     return render_to_response("bdpsite/addviz.html", c,
         context_instance = RequestContext(request))
 
+@login_required
+def deleteviz(request,project,id):
+    viz= get_object_or_404(Visualization,id = id, dataset__project__slug = project)
+    if viz.dataset.project.creator != request.user:
+        return HttpResponseForbidden()
+    viz.delete()    
+    return HttpResponseRedirect("../../")
 
 def project(request,project):
     project = get_object_or_404(Project, slug = project)
     visualizations = Visualization.objects.raw("""
         select id from bdpsite_visualization where dataset_id in
-            (select id from bdpsite_dataset where datapackage_id in 
-                (select id from bdpsite_datapackage where project_id =
-                %s));"""%project.id)
+            (select id from bdpsite_dataset where project_id =
+                %s) ORDER BY 'order';"""%project.id)
     c = {"project": project,
          "visualizations": visualizations}
     return render_to_response("bdpsite/project.html", c,
