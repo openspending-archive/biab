@@ -229,6 +229,7 @@ def addviz(request,project):
             return HttpResponseRedirect("../")
     else:
         form = VisualizationForm()
+    form.fields['dataset'].queryset = Dataset.objects.filter(project = project)
     c = { "project": project,
         "form" : form,
         "page": "viz" }
