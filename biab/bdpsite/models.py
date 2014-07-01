@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 
 class DataPackage(models.Model):
     name = models.CharField(max_length=256)
+    slug = models.SlugField(unique=True)
     user = models.ForeignKey(User)
 
     def __unicode__(self):
