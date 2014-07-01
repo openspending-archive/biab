@@ -1,0 +1,33 @@
+{% extends "biab/base.html" %}
+{% load md %}
+
+{% block "main" %}
+<h1>{{ project.title }}</h1>
+{% if project.creator = user %}
+<ul class="nav nav-tabs">
+    <li class="active">
+        <a href="/{{project.slug}}"><i class="glyphicon
+        glyphicon-home"></i>View</a>
+    </li>
+    <li> 
+        <a href="/{{project.slug}}/edit/">Edit Project</a>
+    </li>
+    <li>
+        <a href="/{{project.slug}}/packages/">Data Packages</a>
+    </li>
+    <li>
+        <a href="/{{project.slug}}/datasets/">Datasets</a>
+    </li>
+    <li>
+        <a href="/{{project.slug}}/visualize/">Visualize</a>
+    </li>
+</ul>
+{% endif %}
+
+{{project.description|markdown}}
+
+{% for viz in visualizations %}
+{{viz.name}}
+{% endfor %}
+
+{% endblock %}

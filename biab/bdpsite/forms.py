@@ -20,3 +20,10 @@ class ProjectForm(ModelForm):
 class CreateForm(forms.Form):
     url = forms.URLField()
 
+class AddDatasetForm(forms.Form):
+    slug = forms.SlugField()
+
+class VisualizationForm(forms.ModelForm):
+    class Meta:
+        model = Visualization
+        fields= ['dataset', 'drilldowns', 'cuts', 'type']

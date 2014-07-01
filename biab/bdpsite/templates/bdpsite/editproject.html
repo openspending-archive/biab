@@ -1,10 +1,10 @@
-{% extends "biab/base.html" %}
+{% extends "bdpsite/projectmanager.html" %}
 
-{% block "main" %}
+{% block "content" %}
 <h1>Edit Project</h1>
 <form method="POST" action="">
 {% csrf_token %}
 {{form.as_p}}
-<input type="Submit" name="Submit" value="Submit" class="btn btn-primary">
+<input type="Submit" name="Submit" value="Save" class="btn btn-primary">
 </form>
 {% endblock %}
