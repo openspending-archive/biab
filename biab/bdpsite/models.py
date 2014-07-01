@@ -57,3 +57,7 @@ class Visualization(models.Model):
             ("linebars" ,"Line Bars"),
             ("stackedbar", "Stacked Bar Charts"),
             ))
+    description = models.TextField(blank=True,null=True)
+
+    def __unicode__(self):
+        return u"%s of %s"%(self.type,self.dataset.name)
