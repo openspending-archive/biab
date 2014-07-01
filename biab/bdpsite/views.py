@@ -1,4 +1,7 @@
 import hashlib
+import urllib2
+import json
+import dateutil.parser
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponseForbidden
 from django.template.context import RequestContext 
@@ -8,8 +11,10 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.utils.text import slugify
 from genname.generate import generate_name
+from django.forms.util import ErrorList
 
-from bdpsite.forms import CaptchaUserCreationForm, CreateForm, ProjectForm
+
+from bdpsite.forms import *
 from bdpsite.models import *
 
 # Create your views here.
@@ -123,6 +128,62 @@ def packages(request,project):
        "page": "packages"}
     return render_to_response("bdpsite/packages.html", c,
         context_instance = RequestContext(request))
+
+@login_required
+def datasets(request,project):
+    project = get_object_or_404(Project, slug = project)
+    if project.creator != request.user:
+        return HttpResponseForbidden()
+    datasets = Dataset.objects.filter(project = project)
+    c={"project": project,
+       "datasets": datasets,
+       "page": "datasets" }
+    return render_to_response("bdpsite/datasets.html", c,
+        context_instance = RequestContext(request))
+
+@login_required
+def adddataset(request,project):
+    project = get_object_or_404(Project, slug = project)
+    if project.creator != request.user:
+        return HttpResponseForbidden()
+    if request.method == 'POST':
+        form = AddDatasetForm(request.POST)
+        if form.is_valid():
+            s = form.cleaned_data['slug']
+            try:
+                u = urllib2.urlopen("https://openspending.org/%s.json"%s)
+                data = json.load(u)
+                d = Dataset()
+                d.name = data['name']
+                d.type = data['category']
+                d.currency = data['currency']
+                d.dateLastUpdated = dateutil.parser.parse(
+                    data['timestamps']['last_modified'])
+                d.datePublished = dateutil.parser.parse(
+                    data['timestamps']['created'])
+                d.description = data['description']
+                d.project = project
+                d.save()
+                return HttpResponseRedirect("../")
+            except urllib2.HTTPError:
+                errors =form._errors.setdefault("slug", ErrorList())
+                errors.append(u"Can not find dataset or openspending unreachable")
+    else:
+        form = AddDatasetForm()
+    c={"project": project,
+        "page":"datasets",
+        "form": form }
+    c.update(csrf(request))    
+    return render_to_response("bdpsite/adddataset.html", c,
+        context_instance = RequestContext(request))
+
+@login_required
+def deletedataset(request,project,id): 
+    dataset = get_object_or_404(Dataset, id=id)
+    if dataset.project.creator != request.user or dataset.project.slug != project:
+        return HttpResponseForbidden()
+    dataset.delete()
+    return HttpResponseRedirect("../../")
 
 def project(request,project):
     project = get_object_or_404(Project, slug = project)
