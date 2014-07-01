@@ -2,20 +2,20 @@
 
 {% block "main" %}
 <div class="row">
-<div class="col-md-2">
+<div class="col-md-1">
 <img class="img-circle" src={{profileuser.gurl}} />
 </div>
-<div class="col-md-10">
+<div class="col-md-11">
 <h2>{{profileuser.first_name}} {{profileuser.last_name}} ({{profileuser.username}})</h2>
 <hr />
-<h3>Data Packages</h3>
+<h3>Projects</h3>
 <ul>
-{% for dp in datapackages %}
-<li><a href="/datapackage/{{dp.slug}}">{{dp.name}}</a></li>
+{% for p in projects %}
+<li><a href="/project/{{p.slug}}">{{p.name}}</a></li>
 {% endfor %}
 </ul>
 {% if profileuser = user %}
-<a href="/datapackage/new" class="btn btn-success">Add DataPackage</a>
+<a href="/create" class="btn btn-success">New Project</a>
 {% endif %}
 <hr />
 </div>
