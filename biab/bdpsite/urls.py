@@ -10,4 +10,7 @@ urlpatterns = patterns('',
     url(r'^user/login/$', 'bdpsite.views.login'),
     url(r'^user/logout/$', 'bdpsite.views.logout'),
     url(r'^user/(?P<user>[-\w]+)/$', 'bdpsite.views.profile'),
+    url(r'^create/$', 'bdpsite.views.create'),
+    url(r'^(?P<project>[-\w]+)/edit/$',
+        'bdpsite.views.editproject'),
 )
