@@ -15,6 +15,12 @@ import json
 # Used to construct the model mapping for OS uploading.
 with open(os.path.join(settings.RESOURCES, "model-map.json")) as mmf:
     model_map = json.loads(mmf.read())
+with open(os.path.join(settings.RESOURCES, "cofog.json")) as cofog_map:
+    cofog = json.loads(cofog_map.read())
+with open(os.path.join(settings.RESOURCES, "gfsm-revenue.json")) as gfsm_map:
+    gfsm_rev = json.loads(gfsm_map.read())
+with open(os.path.join(settings.RESOURCES, "gfsm-expenditure.json")) as gfsme_map:
+    gfsm_exp = json.loads(gfsme_map.read())
 
 # List of lists of field names that can be bundled
 # together as compound dimensions.
@@ -76,7 +82,12 @@ def process_resource(resource_object):
     # split out COFOG column
     if cofog_pred(headers):
         resource.append_columns(
-            ["cofog1","cofog2","cofog3"],
+            ["cofog1code",
+            "cofog2code",
+            "cofog3code",
+            "cofog1label",
+            "cofog2label",
+            "cofog3label"],
             split_cofog)
 
     # split out GFSM exp column
@@ -155,14 +166,31 @@ def model_fields(resource):
     headers = resource.headers
     return bundle_all(headers, bundleable)
 
-def dataset_attribute(metadata):
+def dataset_attribute(metadata, territories=["CH"], languages=["EN"]):
     """
     Returns the `dataset` attribute that can be extracted from a resource's metadata.
     """
     return {
             "name": metadata["name"],
-            "currency": metadata["currency"]
+            "currency": metadata["currency"],
+            "languages": languages,
+            "territories": territories,
+            "category": categorize_dataset(metadata),
+            "label": metadata["name"]
         }
+
+def categorize_dataset(metadata):
+    """
+    Returns the appropriate category for a resource object.
+    """
+    g = metadata["granularity"]
+    t = metadata["type"]
+    if g == "transactional" and t == "expenditure":
+        return "spending"
+    elif g == "aggregated" and t == "expenditure":
+        return "budget"
+    else:
+        return "other"
 
 def bundle(headers, to_bundle):
     """
@@ -198,7 +226,10 @@ def cofog_pred(headers):
     return not ("cofog" not in headers
         or "cofog1" in headers
         or "cofog2" in headers
-        or "cofog3" in headers)
+        or "cofog3" in headers
+        or "cofog1label" in headers
+        or "cofog2label" in headers
+        or "cofog3label" in headers)
 
 def gfsm_expenditure_pred(headers):
     """
@@ -223,12 +254,27 @@ def gfsm_revenue_pred(headers):
         or "gfsmRevenue3" in headers
         or "gfsmRevenue4" in headers)
 
+def floor_cofog(cofog_str):
+    """
+    Fixes the value of COFOG strings that do not have a proper third level.
+    The coding of these is inconsistent.
+    """
+    split = cofog_str.split(".")
+    # pad if necessary
+    if len(split[0]) < 2:
+        split[0] = "0" + split[0]
+    cohead = ".".join(split[:2])
+    if cohead in cofog["floored"]:
+        return cohead + "." + "0"
+    else:
+        return cofog_str
+
 def split_cofog(row):
     """
     Takes a DictReader row dictionary and returns a dictionary
     that splits the row's "cofog" value into three columns.
     """
-    cofog_value = row["cofog"]
+    cofog_value = floor_cofog(row["cofog"])
     cofog_list = cofog_value.split(".")
     length = len(cofog_list)
     # make sure the list isn't too long
@@ -238,10 +284,23 @@ def split_cofog(row):
     if length < 3:
         for _ in range(3 - length):
             cofog_list.append("")
+    # pad the initial value, if necessary
+    if len(cofog_list[0]) < 2:
+        cofog_list[0] = "0" + cofog_list[0]
     # create the result dictionary
-    result = {}
-    for i in range(3):
-        result["cofog" + str(i+1)] = cofog_list[i]
+    cofog1 = cofog_list[0]
+    cofog2 = cofog1 + "." + cofog_list[1]
+    cofog3 = cofog2 + "." + cofog_list[2]
+    result = {
+        "cofog1code": cofog1,
+        "cofog2code": cofog2,
+        "cofog3code": cofog3,
+        "cofog1label": cofog["cofog1"].get(cofog1,""),
+        "cofog2label": cofog["cofog2"].get(cofog2,""),
+        "cofog3label": cofog["cofog3"].get(cofog3,""),
+    }
+#    for i in range(3):
+#        result["cofog" + str(i+1)] = cofog_list[i]
     return result
 
 def split_gfsm(row, type):
