@@ -7,7 +7,17 @@
 </div>
 <div class="col-md-10">
 <h2>{{profileuser.first_name}} {{profileuser.last_name}} ({{profileuser.username}})</h2>
-<p>Some stuff here...</p>
+<hr />
+<h3>Data Packages</h3>
+<ul>
+{% for dp in datapackages %}
+<li><a href="/datapackage/{{dp.slug}}">{{dp.name}}</a></li>
+{% endfor %}
+</ul>
+{% if profileuser = user %}
+<a href="/datapackage/new" class="btn btn-success">Add DataPackage</a>
+{% endif %}
+<hr />
 </div>
 </div>
 {% endblock %}
