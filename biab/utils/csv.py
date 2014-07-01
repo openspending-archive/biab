@@ -83,6 +83,23 @@ class DatasetCSV(object):
         for row in self.rows:
             row.update(row_function(row))
 
+    def rename_column(self, column_name, new_name):
+        """
+        Renames a column.
+
+        This has to update the internal list of headers as well
+        as changing the content of every row.
+        """
+        hs = self.headers
+        if column_name not in hs:
+            return False
+        i = hs.index(column_name)
+        self.headers = hs[:i] + [new_name] + hs[(i+1):]
+        self.headers_dict[new_name] = new_name
+        self.headers_dict.pop(column_name)
+        for row in self.rows:
+            row[new_name] = row.pop(column_name)
+
     def serialize(self):
         """
         Returns the data in a string, suitable for writing to S3.
