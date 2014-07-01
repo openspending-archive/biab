@@ -2,12 +2,22 @@
 
 {% block "main" %}
 <div class="row">
-<div class="col-md-2">
+<div class="col-md-1">
 <img class="img-circle" src={{profileuser.gurl}} />
 </div>
-<div class="col-md-10">
+<div class="col-md-11">
 <h2>{{profileuser.first_name}} {{profileuser.last_name}} ({{profileuser.username}})</h2>
-<p>Some stuff here...</p>
+<hr />
+<h3>Projects</h3>
+<ul>
+{% for p in projects %}
+<li><a href="/{{p.slug}}">{{p.title}}</a></li>
+{% endfor %}
+</ul>
+{% if profileuser = user %}
+<a href="/create" class="btn btn-success">New Project</a>
+{% endif %}
+<hr />
 </div>
 </div>
 {% endblock %}

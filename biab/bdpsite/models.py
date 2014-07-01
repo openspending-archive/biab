@@ -3,9 +3,19 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 
+class Project(models.Model):
+    title = models.CharField(max_length=256)
+    slug = models.SlugField(unique=True)
+    description = models.TextField(null=True,blank=True)
+    creator = models.ForeignKey(User)
+    
+    def __unicode__(self):
+        return self.title
+
 class DataPackage(models.Model):
     name = models.CharField(max_length=256)
-    user = models.ForeignKey(User)
+    slug = models.SlugField(unique=True)
+    project = models.ForeignKey(Project)
 
     def __unicode__(self):
         return self.name

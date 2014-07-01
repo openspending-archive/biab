@@ -1,12 +1,15 @@
 import hashlib
 from django.shortcuts import render_to_response, get_object_or_404
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponseForbidden
 from django.template.context import RequestContext 
 from django.core.context_processors import csrf
 from django.contrib import auth
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
+from django.utils.text import slugify
+from genname.generate import generate_name
 
-from bdpsite.forms import CaptchaUserCreationForm
+from bdpsite.forms import CaptchaUserCreationForm, CreateForm, ProjectForm
 from bdpsite.models import *
 
 # Create your views here.
@@ -63,8 +66,47 @@ def profile(request,user):
         user.gurl = "https://www.gravatar.com/avatar/%s"%hashlib.md5(user.email).hexdigest()
     else:
         user.gurl = "https://www.gravatar.com/avatar/goo"
-     
-    c={"profileuser":user}
+    projects = Project.objects.filter(creator = user)     
+    c={"profileuser":user,
+        "projects": projects}
     return render_to_response("bdpsite/profile.html", c,
         context_instance=RequestContext(request))
+
+@login_required
+def create(request):
+    if request.method == 'POST':
+        form = CreateForm(request.POST)
+        if form.is_valid():
+            # Kick off loading process
+            # create empty project
+            p = Project()
+            # fill project with random name and slug
+            p.title = generate_name()
+            p.slug = slugify(unicode(p.title))
+            p.creator = request.user
+            p.save()
+            return HttpResponseRedirect("/%s/edit/"%p.slug)
+    else:
+        form = CreateForm()
+    c={"form": form}
+    c.update(csrf(request))
+    return render_to_response("bdpsite/create.html", c,
+        context_instance = RequestContext(request))
+
+@login_required
+def editproject(request,project):
+    project = get_object_or_404(Project, slug = project)
+    if project.creator != request.user:
+        return HttpResponseForbidden()
+    if request.method == 'POST':
+        form = ProjectForm(request.POST, instance = project)
+        if form.is_valid():
+            form.save()
+    else:
+        form = ProjectForm(instance = project)
+
+    c={"form":form}
+    c.update(csrf(request))
+    return render_to_response("bdpsite/editproject.html", c,
+        context_instance = RequestContext(request))
 
