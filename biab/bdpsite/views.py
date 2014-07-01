@@ -63,8 +63,9 @@ def profile(request,user):
         user.gurl = "https://www.gravatar.com/avatar/%s"%hashlib.md5(user.email).hexdigest()
     else:
         user.gurl = "https://www.gravatar.com/avatar/goo"
-     
-    c={"profileuser":user}
+    datapackages = DataPackage.objects.filter(user = user)     
+    c={"profileuser":user,
+        "datapackages":datapackages}
     return render_to_response("bdpsite/profile.html", c,
         context_instance=RequestContext(request))
 
