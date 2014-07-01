@@ -105,7 +105,9 @@ def editproject(request,project):
     else:
         form = ProjectForm(instance = project)
 
-    c={"form":form}
+    c={"form":form,
+       "project": project,
+       "page": "edit"}
     c.update(csrf(request))
     return render_to_response("bdpsite/editproject.html", c,
         context_instance = RequestContext(request))
