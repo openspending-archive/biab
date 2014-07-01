@@ -2,9 +2,37 @@
 
 {% block "content" %}
 <h2>Add A Visualization to {{project.title}}</h2>
+<div class="row">
+<div class="col-md-6">
 <form method="POST" action="">
 {% csrf_token %}
 {{form.as_p}}
 <input type="Submit" name="Submit" value="Add" class="btn btn-primary" />
 </form>
+</div>
+<div class="col-md-6">
+<div id="preview">
+</div>
+</div>
+
+{% endblock %}
+{% block "js" %}
+<script>
+$(document).ready(function() {
+    $("form").on("change", function() {
+        $("#preview");
+        var dataset=this.dataset.options[this.dataset.value].text
+        var drilldowns=this.drilldowns.value;
+        var cuts=this.cuts.value;
+        var cuts={}
+        var type=this.type.value
+        var options = { "data" : {
+                "dataset" : dataset,
+                "drilldowns": drilldowns,
+                "cuts": cuts,
+                "measure": "amount" }};
+        $("#preview")[type](options);        
+        });
+    })
+</script>
 {% endblock %}

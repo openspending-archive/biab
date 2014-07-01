@@ -26,4 +26,5 @@ class AddDatasetForm(forms.Form):
 class VisualizationForm(forms.ModelForm):
     class Meta:
         model = Visualization
-        fields= ['dataset', 'drilldowns', 'cuts', 'type']
+        fields= ['dataset', 'drilldowns', 'cuts', 'type',
+            'description']

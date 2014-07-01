@@ -29,6 +29,7 @@
 {% for viz in visualizations %}
 <div class="{{viz.type}}" data-dataset="{{viz.dataset}}"
     data-drilldowns="{{viz.drilldowns}}" data-cuts="{{viz.cuts}}" ></div>
+{{viz.description|markdown}}
 {% endfor %}
 
 {% endblock %}

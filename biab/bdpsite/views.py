@@ -99,6 +99,23 @@ def create(request):
         context_instance = RequestContext(request))
 
 @login_required
+def createbare(request):
+    if request.method == 'POST':
+        form = ProjectForm(request.POST)
+        if form.is_valid():
+            project = form.save(commit=False)
+            project.creator = request.user
+            project.save()
+            return HttpResponseRedirect("/%s/datasets/"%project.slug);
+    else:
+        form = ProjectForm()
+
+    c = {"form": form}
+    c.update(csrf(request))
+    return render_to_response("bdpsite/createbare.html", c,
+        context_instance = RequestContext(request))
+
+@login_required
 def editproject(request,project):
     project = get_object_or_404(Project, slug = project)
     if project.creator != request.user:
