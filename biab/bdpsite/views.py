@@ -185,6 +185,39 @@ def deletedataset(request,project,id):
     dataset.delete()
     return HttpResponseRedirect("../../")
 
+@login_required
+def visualizations(request,project):    
+    project = get_object_or_404(Project, slug = project)
+    if project.creator != request.user:
+        return HttpResponseForbidden()
+    visualizations = Visualization.objects.raw("""
+        select id from bdpsite_visualization where dataset_id in (
+            select id from bdpsite_dataset where project_id=
+            %s) order by 'order'"""%project.id)
+    c={"project":project,
+        "visualizations": visualizations,
+        "page":"viz"}
+    return render_to_response("bdpsite/visualizations.html", c,
+        context_instance = RequestContext(request))
+
+@login_required
+def addviz(request,project):    
+    project = get_object_or_404(Project, slug = project)
+    if project.creator != request.user:
+        return HttpResponseForbidden()
+    if request.method == 'POST':
+        form = VisualizationForm(request.POST)
+        if form.is_valid():
+            pass
+    else:
+        form = VisualizationForm()
+    c = { "project": project,
+        "form" : form,
+        "page": "viz" }
+    return render_to_response("bdpsite/addviz.html", c,
+        context_instance = RequestContext(request))
+
+
 def project(request,project):
     project = get_object_or_404(Project, slug = project)
     visualizations = Visualization.objects.raw("""

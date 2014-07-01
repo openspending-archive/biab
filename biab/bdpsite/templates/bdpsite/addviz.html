@@ -1,0 +1,10 @@
+{% extends "bdpsite/projectmanager.html" %}
+
+{% block "content" %}
+<h2>Add A Visualization to {{project.title}}</h2>
+<form>
+{% csrf_token %}
+{{form.as_p}}
+<input type="Submit" name="Submit" value="Add" class="btn btn-primary" />
+</form>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends "bdpsite/projectmanager.html" %}
+
+{% block "content" %}
+<h2>Visualizations of {{project.title}}</h2>
+<ul>
+{% for v in visualizations %}
+    <li><h3>{{v.type}} of {{v.dataset.name}}
+        <a href="delete/{{v.id}}/" class="btn btn-danger btn-xs"><i class="glyphicon
+        glyphicon-minus-sign"></i></a></h3>
+        </li>
+{% endfor %}
+</ul>
+<p><a href="add/" class="btn btn-success">Add a Visualization</a>
+{% endblock %}

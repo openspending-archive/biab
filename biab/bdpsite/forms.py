@@ -22,3 +22,8 @@ class CreateForm(forms.Form):
 
 class AddDatasetForm(forms.Form):
     slug = forms.SlugField()
+
+class VisualizationForm(forms.ModelForm):
+    class Meta:
+        model = Visualization
+        fields= ['dataset', 'drilldowns', 'cuts', 'type']
