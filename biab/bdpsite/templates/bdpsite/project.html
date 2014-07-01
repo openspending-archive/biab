@@ -1,4 +1,5 @@
 {% extends "biab/base.html" %}
+{% load md %}
 
 {% block "main" %}
 <h1>{{ project.title }}</h1>
@@ -20,7 +21,7 @@
 </ul>
 {% endif %}
 
-<p>{{project.description}}</p>
+{{project.description|markdown}}
 
 {% for viz in visualizations %}
 {{viz.name}}
