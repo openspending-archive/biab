@@ -1,23 +1,29 @@
 {% extends "biab/base.html" %}
 
 {% block "main" %}
-
 <h1>{{ project.title }}</h1>
+{% if project.creator = user %}
 <ul class="nav nav-tabs">
-    <li>
+    <li class="active">
         <a href="/{{project.slug}}"><i class="glyphicon
         glyphicon-home"></i>View</a>
     </li>
-    <li {% if page = "edit" %}class="active"{% endif %}>
+    <li> 
         <a href="/{{project.slug}}/edit">Edit Project</a>
     </li>
-    <li {% if page = "packages" %}class="active"{% endif %}>
+    <li>
         <a href="/{{project.slug}}/packages">Data Packages</a>
     </li>
-    <li {% if page = "viz" %}class="active"{% endif %}>
+    <li>
         <a href="/{{project.slug}}/visualize">Visualize</a>
     </li>
 </ul>
-{% block "content" %}
-{% endblock %}
+{% endif %}
+
+<p>{{project.description}}</p>
+
+{% for viz in visualizations %}
+{{viz.name}}
+{% endfor %}
+
 {% endblock %}

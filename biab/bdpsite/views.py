@@ -112,3 +112,26 @@ def editproject(request,project):
     return render_to_response("bdpsite/editproject.html", c,
         context_instance = RequestContext(request))
 
+@login_required
+def packages(request,project):
+    project = get_object_or_404(Project, slug = project)
+    if project.creator != request.user:
+        return HttpResponseForbidden()
+    datapackages = DataPackage.objects.filter(project = project)
+    c={"project": project,
+       "datapackages": datapackages,
+       "page": "packages"}
+    return render_to_response("bdpsite/packages.html", c,
+        context_instance = RequestContext(request))
+
+def project(request,project):
+    project = get_object_or_404(Project, slug = project)
+    visualizations = Visualization.objects.raw("""
+        select id from bdpsite_visualization where dataset_id in
+            (select id from bdpsite_dataset where datapackage_id in 
+                (select id from bdpsite_datapackage where project_id =
+                %s));"""%project.id)
+    c = {"project": project,
+         "visualizations": visualizations}
+    return render_to_response("bdpsite/project.html", c,
+        context_instance = RequestContext(request))

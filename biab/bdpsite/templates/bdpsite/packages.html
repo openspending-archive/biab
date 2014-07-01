@@ -1,0 +1,19 @@
+{% extends "bdpsite/projectmanager.html" %}
+
+{% block "content" %}
+<h2>Datapackages for {{project.title}}</h2>
+{% if datapackages %}
+<ul>
+{% for dp in datapackages %}
+<li><a href="package/{{dp.name}}">{{dp.name}}</a></li>
+{% endfor %}
+</ul>
+{% else %}
+<p>
+No datapackages found they might still be importing. Check back in a couple
+of minutes...</p>
+{% endif %}
+<p>
+<a href="../add/" class="btn btn-success">Add a new Package</a>
+</p>
+{% endblock %}

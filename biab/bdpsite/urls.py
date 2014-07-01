@@ -13,4 +13,8 @@ urlpatterns = patterns('',
     url(r'^create/$', 'bdpsite.views.create'),
     url(r'^(?P<project>[-\w]+)/edit/$',
         'bdpsite.views.editproject'),
+    url(r'^(?P<project>[-\w]+)/packages/$',
+        'bdpsite.views.packages'),
+    url(r'^(?P<project>[-\w]+)/$',
+        'bdpsite.views.project'),
 )
