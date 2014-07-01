@@ -7,11 +7,11 @@
     "datatype": "float",
     "type": "measure"
   },
-  "id": {
+  "datasetId": {
     "default_value": "",
     "description": "Unique row ID",
-    "column": "id",
-    "label": "RowID",
+    "column": "datasetId",
+    "label": "DatasetID",
     "datatype": "string",
     "key": true,
     "type": "attribute"
@@ -97,6 +97,63 @@
     "label": "COFOG",
     "datatype": "string",
     "type": "attribute"
+  },
+  "cofog1code + cofog1label": {
+      "description": null, 
+      "label": "Cofog1", 
+      "facet": true, 
+      "attributes": {
+        "name": {
+          "column": "cofog1code", 
+          "datatype": "id", 
+          "default_value": ""
+        }, 
+        "label": {
+          "column": "cofog1label", 
+          "datatype": "string", 
+          "default_value": ""
+        }
+      }, 
+      "type": "compound", 
+      "dimension": "Cofog1"
+  },
+  "cofog2code + cofog2label": {
+      "description": null, 
+      "label": "Cofog2", 
+      "facet": true, 
+      "attributes": {
+        "name": {
+          "column": "cofog2code", 
+          "datatype": "id", 
+          "default_value": ""
+        }, 
+        "label": {
+          "column": "cofog2label", 
+          "datatype": "string", 
+          "default_value": ""
+        }
+      }, 
+      "type": "compound", 
+      "dimension": "Cofog2"
+  },
+  "cofog3code + cofog3label": {
+      "description": null, 
+      "label": "Cofog3", 
+      "facet": true, 
+      "attributes": {
+        "name": {
+          "column": "cofog3code", 
+          "datatype": "id", 
+          "default_value": ""
+        }, 
+        "label": {
+          "column": "cofog3label", 
+          "datatype": "string", 
+          "default_value": ""
+        }
+      }, 
+      "type": "compound", 
+      "dimension": "Cofog3"
   },
   "cofog1": {
     "default_value": "",

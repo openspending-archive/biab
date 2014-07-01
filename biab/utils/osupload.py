@@ -31,7 +31,10 @@ bundleable = [
     ["fund","fundID"],
     ["program","programID"],
     ["project","projectID"],
-    ["purchaserID","purchaserOrgID"]
+    ["purchaserID","purchaserOrgID"],
+    ["cofog1code","cofog1label"],
+    ["cofog2code","cofog2label"],
+    ["cofog3code","cofog3label"]
 ]
 
 
@@ -78,6 +81,14 @@ def process_resource(resource_object):
     resource = resource_object["data"]
     metadata = resource_object["metadata"]
     headers = resource.headers
+
+    # get rid of that damn ID column!
+    if "id" in headers:
+        resource.rename_column("id","datasetId")
+
+    # set everything to lowercase, as OS evidently requires
+    for header in headers:
+        resource.rename_colum(header, header.lower())
 
     # split out COFOG column
     if cofog_pred(headers):
@@ -289,8 +300,8 @@ def split_cofog(row):
         cofog_list[0] = "0" + cofog_list[0]
     # create the result dictionary
     cofog1 = cofog_list[0]
-    cofog2 = cofog1 + "." + cofog_list[1]
-    cofog3 = cofog2 + "." + cofog_list[2]
+    cofog2 = ".".join([cofog1,cofog_list[1]])
+    cofog3 = ".".join([cofog2,cofog_list[2]])
     result = {
         "cofog1code": cofog1,
         "cofog2code": cofog2,
