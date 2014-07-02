@@ -2,9 +2,76 @@
 
 {% block "content" %}
 <h2>Add A Visualization to {{project.title}}</h2>
-<form>
+<div class="row">
+<div class="col-md-6">
+<form method="POST" action="">
 {% csrf_token %}
-{{form.as_p}}
+<div><label for="id_dataset">Dataset:</label>
+{{form.dataset}}</div>
+<div>
+<label for="id_type">Visualization</label>
+{{form.type}}</div>
+<div>
+<label for="id_drilldowns">Drilldowns</label>
+<input type="hidden" id="id_drilldowns" name="drilldowns" />
+<ul class="drilldownlist">
+</ul>
+<select name="drilldown">
+</select><a href="#" id="add-drilldown" class="btn btn-default btn-xs">
+    <i class="glyphicon glyphicon-plus-sign"></i></a>
+</div>
+<input type="hidden" id="id_cuts" name="cuts" />
+<div>
+<label for="id_description">Description</label>
+{{form.description}}
+</div>
 <input type="Submit" name="Submit" value="Add" class="btn btn-primary" />
 </form>
+</div>
+<div class="col-md-6">
+<div id="preview">
+</div>
+</div>
+
+{% endblock %}
+{% block "js" %}
+<script>
+$(document).ready(function() {
+    var drilldowns = [];
+    $("form").on("change", function() {
+        $("#preview");
+        var dataset=this.dataset.options[this.dataset.value].text
+        var drilldowns=this.drilldowns.value;
+        var cuts=this.cuts.value;
+        var cuts={}
+        var type=this.type.value
+        var options = { "data" : {
+                "dataset" : dataset,
+                "drilldowns": drilldowns,
+                "cuts": cuts,
+                "measure": "amount" }};
+        $("#preview")[type](options);        
+        });
+    $("#id_dataset").on("change",function() {
+        dataset =$("#id_dataset option[value='"+this.value+"']").text()
+        $.getJSON('https://openspending.org/'+dataset+'/dimensions.json?callback=?',
+            function(d) {
+                console.log(d);
+                var el=$("select[name='drilldown']")
+                el.html();
+                for (i in d) {
+                    console.log(d[i]);
+                    el.append("<option value='"+d[i].name+
+                        "'>"+d[i].label+"</option>")
+                    }
+                });
+        });
+    $("#add-drilldown").on("click",function() {
+        dimension = $("select[name='drilldown']").val();
+        drilldowns.push(dimension);
+        $("ul.drilldownlist").append("<li>"+dimension+"</li>");
+        $("input[name='drilldowns']").val(drilldowns.join(","));
+        })
+    })
+</script>
 {% endblock %}

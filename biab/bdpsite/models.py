@@ -48,7 +48,7 @@ class Visualization(models.Model):
     dataset = models.ForeignKey(Dataset)
     order = models.IntegerField(default=0)
     drilldowns = models.CharField(max_length=512)
-    cuts = models.CharField(max_length=512)
+    cuts = models.CharField(max_length=512,null=True,blank=True)
     type = models.CharField(max_length=20,
         choices = (
             ("bubbletree","Bubble Tree"),
@@ -57,3 +57,7 @@ class Visualization(models.Model):
             ("linebars" ,"Line Bars"),
             ("stackedbar", "Stacked Bar Charts"),
             ))
+    description = models.TextField(blank=True,null=True)
+
+    def __unicode__(self):
+        return u"%s of %s"%(self.type,self.dataset.name)

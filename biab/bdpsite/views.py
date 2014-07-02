@@ -99,6 +99,23 @@ def create(request):
         context_instance = RequestContext(request))
 
 @login_required
+def createbare(request):
+    if request.method == 'POST':
+        form = ProjectForm(request.POST)
+        if form.is_valid():
+            project = form.save(commit=False)
+            project.creator = request.user
+            project.save()
+            return HttpResponseRedirect("/%s/datasets/"%project.slug);
+    else:
+        form = ProjectForm()
+
+    c = {"form": form}
+    c.update(csrf(request))
+    return render_to_response("bdpsite/createbare.html", c,
+        context_instance = RequestContext(request))
+
+@login_required
 def editproject(request,project):
     project = get_object_or_404(Project, slug = project)
     if project.creator != request.user:
@@ -208,23 +225,31 @@ def addviz(request,project):
     if request.method == 'POST':
         form = VisualizationForm(request.POST)
         if form.is_valid():
-            pass
+            form.save()
+            return HttpResponseRedirect("../")
     else:
         form = VisualizationForm()
+    form.fields['dataset'].queryset = Dataset.objects.filter(project = project)
     c = { "project": project,
         "form" : form,
         "page": "viz" }
     return render_to_response("bdpsite/addviz.html", c,
         context_instance = RequestContext(request))
 
+@login_required
+def deleteviz(request,project,id):
+    viz= get_object_or_404(Visualization,id = id, dataset__project__slug = project)
+    if viz.dataset.project.creator != request.user:
+        return HttpResponseForbidden()
+    viz.delete()    
+    return HttpResponseRedirect("../../")
 
 def project(request,project):
     project = get_object_or_404(Project, slug = project)
     visualizations = Visualization.objects.raw("""
         select id from bdpsite_visualization where dataset_id in
-            (select id from bdpsite_dataset where datapackage_id in 
-                (select id from bdpsite_datapackage where project_id =
-                %s));"""%project.id)
+            (select id from bdpsite_dataset where project_id =
+                %s) ORDER BY 'order';"""%project.id)
     c = {"project": project,
          "visualizations": visualizations}
     return render_to_response("bdpsite/project.html", c,
