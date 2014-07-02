@@ -1,0 +1,15 @@
+{% extends "bdpsite/projectmanager.html" %}
+
+{% block "content" %}
+<h2>Datasets from package "{{package.name}}"</h2>
+<ul>
+{% for d in datasets %}
+    <li><h3>{{d.name}} 
+        <a href="delete/{{d.id}}/" class="btn btn-danger btn-xs"><i class="glyphicon
+        glyphicon-minus-sign"></i></a></h3>
+        <p>{{d.description}}</p>
+        </li>
+{% endfor %}
+</ul>
+<p><a href="add/" class="btn btn-success">Add a Dataset</a>
+{% endblock %}

@@ -150,6 +150,22 @@ def packages(request,project):
         context_instance = RequestContext(request))
 
 @login_required
+def package(request,project,package):
+    project = get_object_or_404(Project, slug = project)
+    package = get_object_or_404(DataPackage, slug = package)
+    if project.creator != request.user:
+        return HttpResponseForbidden()
+    datasets = Dataset.objects.filter(datapackage = package)
+    c = {
+        "project": project,
+        "package": package,
+        "datasets": datasets,
+        "page": "package"
+    }
+    return render_to_response("bdpsite/package.html", c,
+        context_instance = RequestContext(request))
+
+@login_required
 def datasets(request,project):
     project = get_object_or_404(Project, slug = project)
     if project.creator != request.user:
