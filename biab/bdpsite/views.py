@@ -168,6 +168,25 @@ def package(request,project,package):
         context_instance = RequestContext(request))
 
 @login_required
+def addpackage(request,project):
+    project = get_object_or_404(Project, slug = project)
+    if project.creator != request.user:
+        return HttpResponseForbidden()
+    if request.method == 'POST':
+        form = CreateForm(request.POST)
+        if form.is_valid():
+            # create new data package;
+            # use Celery to do this asynchronously...
+            create_bdp.delay(project, form.cleaned_data["url"])
+            return HttpResponseRedirect("../")
+    else:
+        form = CreateForm()
+    c={"form": form}
+    c.update(csrf(request))
+    return render_to_response("bdpsite/addpackage.html", c,
+        context_instance = RequestContext(request))
+
+@login_required
 def datasets(request,project):
     project = get_object_or_404(Project, slug = project)
     if project.creator != request.user:
