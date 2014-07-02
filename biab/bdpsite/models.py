@@ -26,6 +26,11 @@ class Dataset(models.Model):
     datapackage = models.ForeignKey(DataPackage,null=True,blank=True)
     project = models.ForeignKey(Project)
 
+    # URLs linking to OS stuff
+    preprocessed = models.URLField(null=True)
+    datamodel = models.URLField(null=True)
+    openspending = models.URLField(null=True)
+
     # stuff from BDP resource metadata
     path = models.CharField(max_length=256,null=True,blank=True)
     name = models.CharField(max_length=256)
