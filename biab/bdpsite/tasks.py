@@ -5,8 +5,12 @@ import utils.osupload as osu
 import utils.s3 as s3
 from django.utils.text import slugify
 import dateutil.parser
+from urlparse import urljoin
 
 from bdpsite.models import *
+
+from utils.osupload import process_resource, model
+from utils.csv import DatasetCSV
 
 @shared_task
 def add(x, y):
@@ -44,7 +48,7 @@ def create_bdp(project, metadata_url):
     # Create model instances for the bdp's resources.
     for resource in d_obj.metadata["resources"]:
         create_dataset.delay(project, d, resource)
-    return None
+    return True
 
 @shared_task
 def create_dataset(project, bdp, resource):
@@ -65,4 +69,71 @@ def create_dataset(project, bdp, resource):
     d.description = resource.get("description", "")
 
     d.save()
-    return None
+    return True
+
+def reconstruct_resource(dataset, preprocessed=False):
+    my_url = dataset.path
+    if preprocessed:
+        my_url = dataset.preprocessed
+    url = urljoin(dataset.datapackage.path, my_url)
+    return {
+        "data": Dataset(url),
+        "metadata": {
+            "path": dataset.path,
+            "name": dataset.name,
+
+            "currency": dataset.currency,
+            "dateLastUpdated": dataset.dateLastUpdated,
+            "datePublished": dataset.datePublished,
+            "fiscalYear": dataset.fiscalYear,
+            "granularity": dataset.granularity,
+            "status": dataset.status,
+            "type": dataset.type
+        }
+    }
+
+@shared_task
+def preprocess_dataset(dataset):
+    if dataset.preprocessed is not None:
+        return False
+    resource = reconstruct_resource(dataset)
+    process_resource(resource)
+    # now do something with resource["data"].serialize()
+    # ... like post it on S3
+    # ... and store the result
+    # dataset.preprocessed = s3_url
+    return True
+
+@shared_task
+def generate_model(dataset):
+    if dataset.preprocessed is None:
+        return False
+    resource = reconstruct_resource(dataset, preprocessed=True)
+    dataset_model = model(resource)
+    # now do something with dataset_model
+    # ... like post it on S3
+    # ... and store the result
+    # dataset.datamodel = s3_url
+    return True
+
+@shared_task
+def osload(dataset):
+    if dataset.preprocessed is None or dataset.datamodel is None:
+        return False
+    # response = os_load(dataset.preprocessed, dataset.datamodel)
+    return True
+
+@shared_task
+def process_and_load(dataset):
+    """
+    Checks to make sure the dataset has associated `preprocessed`
+    and `datamodel` attributes. If not, creates them
+    (synchronously, because they depend on one another).
+
+    Once everything is in the clear, posts the result on OpenSpending.
+    """
+    if dataset.preprocessed is None:
+        preprocess_dataset.delay(dataset).get()
+    if dataset.datasetmodel is None:
+        generate_model.delay(dataset).get()
+    return osload.delay(dataset)
