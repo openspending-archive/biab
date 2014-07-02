@@ -109,7 +109,7 @@ def createbare(request):
             project = form.save(commit=False)
             project.creator = request.user
             project.save()
-            return HttpResponseRedirect("/%s/datasets/"%project.slug);
+            return HttpResponseRedirect("/%s/datasets/"%project.slug)
     else:
         form = ProjectForm()
 
@@ -127,6 +127,8 @@ def editproject(request,project):
         form = ProjectForm(request.POST, instance = project)
         if form.is_valid():
             form.save()
+            if form.cleaned_data['slug'] != project:
+                return HttpResponseRedirect("/%s/edit/"%form.cleaned_data['slug'])
     else:
         form = ProjectForm(instance = project)
 
