@@ -1,9 +1,16 @@
 from django.conf.urls import patterns, include, url
 
+# Uncomment the next two lines to enable the admin:
+from django.contrib import admin
+admin.autodiscover()
+
 urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'biab.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
+
+    # for development
+    url(r'^admin/', include(admin.site.urls)),
 
     url(r'^$', 'bdpsite.views.welcome'),
     url(r'^user/new/$', 'bdpsite.views.createuser'),
@@ -16,6 +23,8 @@ urlpatterns = patterns('',
         'bdpsite.views.editproject'),
     url(r'^(?P<project>[-\w]+)/packages/$',
         'bdpsite.views.packages'),
+#    url(r'^(?P<project>[-\w]+)/packages/add/$',
+#        'bdpsite.views.addpackage'),
     url(r'^(?P<project>[-\w]+)/datasets/$',
         'bdpsite.views.datasets'),
     url(r'^(?P<project>[-\w]+)/visualize/$',

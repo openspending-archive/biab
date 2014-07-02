@@ -16,6 +16,7 @@ class DataPackage(models.Model):
     name = models.CharField(max_length=256)
     slug = models.SlugField(unique=True)
     project = models.ForeignKey(Project)
+    path = models.URLField(null=True)
 
     def __unicode__(self):
         return self.name
@@ -29,8 +30,8 @@ class Dataset(models.Model):
     path = models.CharField(max_length=256,null=True,blank=True)
     name = models.CharField(max_length=256)
     currency = models.CharField(max_length=256)
-    dateLastUpdated = models.DateTimeField()
-    datePublished = models.DateTimeField()
+    dateLastUpdated = models.DateTimeField(blank=True)
+    datePublished = models.DateTimeField(blank=True)
     fiscalYear = models.DateTimeField(null=True,blank=True)
     granularity = models.CharField(max_length=256,null=True, blank=True)
     status = models.CharField(max_length=256,null=True, blank=True)

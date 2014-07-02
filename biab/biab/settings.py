@@ -50,7 +50,8 @@ INSTALLED_APPS = (
     'south',
     'captcha',
     'bdpsite',
-    'djcelery'
+    'djcelery',
+    'kombu.transport.django'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -122,3 +123,7 @@ OPENSPENDING_API_KEY = os.environ.get('OPENSPENDING_API_KEY', None)
 
 # helper files for utils
 RESOURCES = os.path.join(BASE_DIR, 'utils', 'resources')
+
+# Celery setup
+CELERY_RESULT_BACKEND = 'djcelery.backends.database:DatabaseBackend'
+BROKER_URL = 'django://'

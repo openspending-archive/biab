@@ -13,9 +13,9 @@ from django.utils.text import slugify
 from genname.generate import generate_name
 from django.forms.util import ErrorList
 
-
 from bdpsite.forms import *
 from bdpsite.models import *
+from bdpsite.tasks import *
 
 # Create your views here.
 
@@ -90,6 +90,9 @@ def create(request):
             p.slug = slugify(unicode(p.title))
             p.creator = request.user
             p.save()
+            # create new data package;
+            # use Celery to do this asynchronously...
+            create_bdp.delay(p, form.cleaned_data["url"])
             return HttpResponseRedirect("/%s/edit/"%p.slug)
     else:
         form = CreateForm()
