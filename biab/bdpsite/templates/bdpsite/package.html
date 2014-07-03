@@ -1,6 +1,14 @@
 {% extends "bdpsite/projectmanager.html" %}
 
 {% block "content" %}
+<h1>{{package.name}}</h1>
+
+<form method="POST" action="">
+{% csrf_token %}
+{{form.as_p}}
+<input type="Submit" name="Submit" value="Save" class="btn btn-primary">
+</form>
+
 <h2>Datasets from package "{{package.name}}"</h2>
 <ul>
 {% for d in datasets %}

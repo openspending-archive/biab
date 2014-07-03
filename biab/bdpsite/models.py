@@ -1,12 +1,15 @@
 from django.db import models
 from django.contrib.auth.models import User
+from autoslug import AutoSlugField
 
 # Create your models here.
 
 class Project(models.Model):
     title = models.CharField(max_length=256)
-    slug = models.SlugField(unique=True)
-    description = models.TextField(null=True,blank=True)
+    slug = AutoSlugField(populate_from="title", 
+        unique=True, 
+        editable=True)
+    description = models.TextField(default="")
     creator = models.ForeignKey(User)
     
     def __unicode__(self):
@@ -14,8 +17,10 @@ class Project(models.Model):
 
 class DataPackage(models.Model):
     name = models.CharField(max_length=256)
-    slug = models.SlugField(unique=True)
     project = models.ForeignKey(Project)
+    slug = AutoSlugField(populate_from="name", 
+        unique_with="project__slug", 
+        editable=True)
     path = models.URLField(null=True)
 
     def __unicode__(self):

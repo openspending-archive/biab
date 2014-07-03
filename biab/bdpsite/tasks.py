@@ -41,7 +41,7 @@ def create_bdp(project, metadata_url):
     d = DataPackage()
     d.project = project
     d.name = d_obj.metadata["name"]
-    d.slug = slugify(d.name)
+#    d.slug = slugify(d.name)
     d.path = metadata_url
     d.save()
 

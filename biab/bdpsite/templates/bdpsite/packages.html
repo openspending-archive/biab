@@ -5,7 +5,7 @@
 {% if datapackages %}
 <ul>
 {% for dp in datapackages %}
-<li><a href="package/{{dp.name}}">{{dp.name}}</a></li>
+<li><a href="package/{{dp.slug}}">{{dp.slug}}</a></li>
 {% endfor %}
 </ul>
 {% else %}
