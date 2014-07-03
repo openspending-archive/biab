@@ -22,7 +22,9 @@ class BDP(object):
         # Download all resources and initialize:
         #   self.resources
         self.resources = []
-        self._download_resources()
+##        self._download_resources()
+## This should be done as a separate step, since it's
+## resource-intensive...
 
     def _download_metadata(self):
         """
@@ -32,6 +34,17 @@ class BDP(object):
         self.metadata = json.loads(metadata_file.read())
         metadata_file.close()
 
+    def _download_resource(self,resource):
+        """
+        Downloads a single resource.
+        """
+        resource_url = urljoin(self.metadata_url, resource["path"])
+        combined = {
+            "data": DatasetCSV(resource_url),
+            "metadata": resource
+        }
+        self.resources.append(combined)
+
     def _download_resources(self):
         """
         Gets all the resources linked from the metadata.
@@ -40,9 +53,4 @@ class BDP(object):
         """
 
         for resource in self.metadata["resources"]:
-            resource_url = urljoin(self.metadata_url, resource["path"])
-            combined = {
-                "data": DatasetCSV(resource_url),
-                "metadata": resource
-            }
-            self.resources.append(combined)
+            self._download_resource(resource)

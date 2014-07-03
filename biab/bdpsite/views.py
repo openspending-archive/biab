@@ -13,9 +13,9 @@ from django.utils.text import slugify
 from genname.generate import generate_name
 from django.forms.util import ErrorList
 
-
 from bdpsite.forms import *
 from bdpsite.models import *
+from bdpsite.tasks import *
 
 # Create your views here.
 
@@ -90,6 +90,9 @@ def create(request):
             p.slug = slugify(unicode(p.title))
             p.creator = request.user
             p.save()
+            # create new data package;
+            # use Celery to do this asynchronously...
+            create_bdp.delay(p, form.cleaned_data["url"])
             return HttpResponseRedirect("/%s/edit/"%p.slug)
     else:
         form = CreateForm()
@@ -106,7 +109,7 @@ def createbare(request):
             project = form.save(commit=False)
             project.creator = request.user
             project.save()
-            return HttpResponseRedirect("/%s/datasets/"%project.slug);
+            return HttpResponseRedirect("/%s/datasets/"%project.slug)
     else:
         form = ProjectForm()
 
@@ -124,6 +127,8 @@ def editproject(request,project):
         form = ProjectForm(request.POST, instance = project)
         if form.is_valid():
             form.save()
+            if form.cleaned_data['slug'] != project:
+                return HttpResponseRedirect("/%s/edit/"%form.cleaned_data['slug'])
     else:
         form = ProjectForm(instance = project)
 
@@ -144,6 +149,41 @@ def packages(request,project):
        "datapackages": datapackages,
        "page": "packages"}
     return render_to_response("bdpsite/packages.html", c,
+        context_instance = RequestContext(request))
+
+@login_required
+def package(request,project,package):
+    project = get_object_or_404(Project, slug = project)
+    package = get_object_or_404(DataPackage, slug = package)
+    if project.creator != request.user:
+        return HttpResponseForbidden()
+    datasets = Dataset.objects.filter(datapackage = package)
+    c = {
+        "project": project,
+        "package": package,
+        "datasets": datasets,
+        "page": "package"
+    }
+    return render_to_response("bdpsite/package.html", c,
+        context_instance = RequestContext(request))
+
+@login_required
+def addpackage(request,project):
+    project = get_object_or_404(Project, slug = project)
+    if project.creator != request.user:
+        return HttpResponseForbidden()
+    if request.method == 'POST':
+        form = CreateForm(request.POST)
+        if form.is_valid():
+            # create new data package;
+            # use Celery to do this asynchronously...
+            create_bdp.delay(project, form.cleaned_data["url"])
+            return HttpResponseRedirect("../")
+    else:
+        form = CreateForm()
+    c={"form": form}
+    c.update(csrf(request))
+    return render_to_response("bdpsite/addpackage.html", c,
         context_instance = RequestContext(request))
 
 @login_required
