@@ -4,14 +4,14 @@
 <h2>Datasets of {{project.title}}</h2>
 <ul>
 {% for d in datasets %}
-    <li><h3>{{d.name}} 
+    <li><h3>{{d.name}}
+        {% if d.datapackage %}<span class="badge">{{d.datapackage}}</span>{% endif %}
         <a href="delete/{{d.id}}/" class="btn btn-danger btn-xs{% if d.datapackage %} disabled{% endif %}"><i class="glyphicon
         glyphicon-minus-sign"></i></a>
         <a href="preprocess/{{d.id}}/" class="btn btn-xs {% if not d.path %} disabled {% endif %}"><i class="glyphicon glyphicon-sort-by-attributes"></i></a>
         <a href="model/{{d.id}}/" class="btn btn-xs{% if not d.preprocessed %} disabled {% endif %}"><i class="glyphicon glyphicon-list-alt"></i></a>
         <a href="os-upload/{{d.id}}/" class="btn btn-xs{% if not d.preprocessed or not d.datamodel or d.openspending %} disabled {% endif %}"><i class="glyphicon glyphicon-upload"></i></a>
         </h3>
-        <p>{% if d.datapackage %} Data Package: {{d.datapackage.slug}} {% endif %}</p>
         <p>{{d.description}}</p>
         {% if d.preprocessed %}
         <span class="label label-success">CSV preprocessed for upload</span>
