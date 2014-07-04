@@ -8,28 +8,83 @@
         {% if d.datapackage %}<span class="badge">{{d.datapackage}}</span>{% endif %}
         <a href="delete/{{d.id}}/" class="btn btn-danger btn-xs{% if d.datapackage %} disabled{% endif %}"><i class="glyphicon
         glyphicon-minus-sign"></i></a>
-        <a href="preprocess/{{d.id}}/" class="btn btn-xs {% if not d.path %} disabled {% endif %}"><i class="glyphicon glyphicon-sort-by-attributes"></i></a>
-        <a href="model/{{d.id}}/" class="btn btn-xs{% if not d.preprocessed %} disabled {% endif %}"><i class="glyphicon glyphicon-list-alt"></i></a>
-        <a href="os-upload/{{d.id}}/" class="btn btn-xs{% if not d.preprocessed or not d.datamodel or d.openspending %} disabled {% endif %}"><i class="glyphicon glyphicon-upload"></i></a>
+        <a data-id="{{d.id}}" data-action="preprocess" href="#" class="btn btn-xs {% if not d.path %} disabled {% endif %}"><i class="glyphicon glyphicon-sort-by-attributes"></i></a>
+        <a data-id="{{d.id}}" data-action="model" href="#" class="btn btn-xs{% if not d.preprocessed %} disabled {% endif %}"><i class="glyphicon glyphicon-list-alt"></i></a>
+        <a data-id="{{d.id}}" data-action="osload" href="#" class="btn btn-xs{% if not d.preprocessed or not d.datamodel or d.openspending %} disabled {% endif %}"><i class="glyphicon glyphicon-upload"></i></a>
         </h3>
         <p>{{d.description}}</p>
         {% if d.preprocessed %}
-        <span class="label label-success">CSV preprocessed for upload</span>
+        <span data-id="{{d.id}}" data-status="csv" class="label label-success">CSV preprocessed for upload</span>
         {% else %}
-        <span class="label label-warning">CSV not preprocessed</span>
+        <span data-id="{{d.id}}" data-status="csv" class="label label-warning">CSV not preprocessed</span>
         {% endif %}
         {% if d.datamodel %}
-        <span class="label label-success">OS upload model ready</span>
+        <span data-id="{{d.id}}" data-status="model" class="label label-success">OS upload model ready</span>
         {% else %}
-        <span class="label label-warning">OS uploade model not ready</span>
+        <span data-id="{{d.id}}" data-status="model" class="label label-warning">OS uploade model not ready</span>
         {% endif %}
         {% if d.openspending %}
-        <span class="label label-success">Hosted on OS</span>
+        <span data-id="{{d.id}}" data-status="os" class="label label-success">Hosted on OS</span>
         {% else %}
-        <span class="label label-warning">Not hosted on OS</span>
+        <span data-id="{{d.id}}" data-status="os" class="label label-warning">Not hosted on OS</span>
         {% endif %}
         </li>
 {% endfor %}
+{% endblock %}
+{% block "js" %}
 </ul>
 <p><a href="add/" class="btn btn-success">Add a Dataset</a>
+<script>
+$(document).ready(function () {
+    $("a[data-action='preprocess']").click(function (e) {
+        e.preventDefault();
+        var id = $(this).attr("data-id");
+        var $status = $("span[data-id='" + id + "'][data-status='csv']");
+        $status.attr("class", "label label-info").html("CSV processing...");
+        var result = $.get("preprocess/" + id + "/", function (data) {
+            if (data) {
+                $status.attr("class", "label label-success")
+                .html("CSV preprocessed for upload");
+                $("a[data-id='" + id + "'][data-action='model']")
+                .removeClass("disabled");
+            } else {
+                $status.attr("class", "label label-danger")
+                .html("CSV preprocessing failed");
+            };
+        });
+    });
+    $("a[data-action='model']").click(function (e) {
+        e.preventDefault();
+        var id = $(this).attr("data-id");
+        var $status = $("span[data-id='" + id + "'][data-status='model']");
+        $status.attr("class", "label label-info").html("OS upload model processing...");
+        var result = $.get("model/" + id + "/", function (data) {
+            if (data) {
+                $status.attr("class", "label label-success")
+                .html("OS upload model ready");
+                $("a[data-id='" + id + "'][data-action='osload']")
+                .removeClass("disabled");
+            } else {
+                $status.attr("class", "label label-danger")
+                .html("OS upload model creation failed");
+            };
+        });
+    });
+    $("a[data-action='osload']").click(function (e) {
+        e.preventDefault();
+        var id = $(this).attr("data-id");
+        var $status = $("span[data-id='" + id + "'][data-status='os']");
+        $status.attr("class", "label label-info").html("Uploading to OpenSpending...");
+        var result = $.get("os-upload/" + id + "/", function (data) {
+            if (data) {
+                $status.attr("class", "label label-success")
+                .html("Hosted on OpenSpending");
+            } else {
+                $status.attr("class", "label label-danger")
+                .html("OpenSpending upload failed");
+            };
+        });
+    });
+})
+</script>
 {% endblock %}

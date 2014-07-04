@@ -3,7 +3,7 @@ import urllib2
 import json
 import dateutil.parser
 from django.shortcuts import render_to_response, get_object_or_404
-from django.http import HttpResponseRedirect, HttpResponseForbidden, HttpResponseNotFound
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidden, HttpResponseNotFound
 from django.template.context import RequestContext 
 from django.core.context_processors import csrf
 from django.contrib import auth
@@ -260,24 +260,24 @@ def preprocessdataset(request,project,id):
     dataset = get_object_or_404(Dataset, id=id)
     if dataset.project.creator != request.user or dataset.project.slug != project:
         return HttpResponseForbidden()
-    preprocess_dataset.delay(id)
-    return HttpResponseRedirect("../../")
+    result = preprocess_dataset.delay(id).get(propagate=False)
+    return HttpResponse(json.dumps(result), mimetype="application/json")
 
 @login_required
 def generatemodel(request,project,id):
     dataset = get_object_or_404(Dataset, id=id)
     if dataset.project.creator != request.user or dataset.project.slug != project:
         return HttpResponseForbidden()
-    generate_model.delay(id)
-    return HttpResponseRedirect("../../")
+    result = generate_model.delay(id).get(propagate=False)
+    return HttpResponse(json.dumps(result), mimetype="application/json")
 
 @login_required
 def osuploaddataset(request,project,id):
     dataset = get_object_or_404(Dataset, id=id)
     if dataset.project.creator != request.user or dataset.project.slug != project:
         return HttpResponseForbidden()
-    osload.delay(id)
-    return HttpResponseRedirect("../../")
+    result = osload.delay(id).get(propagate=False)
+    return HttpResponse(json.dumps(result), mimetype="application/json")
 
 @login_required
 def visualizations(request,project):    
