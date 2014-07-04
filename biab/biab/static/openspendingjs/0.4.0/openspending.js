@@ -22552,7 +22552,7 @@ OpenSpending.Taxman.defaults = {
             colors: OpenSpending.Colors.Cofog,
             icons: {
 		svg: OpenSpending.Icons.Cofog,
-		path: '/icons/'
+		path: '/static/openspendingjs/0.4.0/icons/svg/'
 	    },
         },
         currency: undefined
@@ -22768,7 +22768,7 @@ OpenSpending.Taxman.defaults = {
 	    },
 	    icons: {
 		svg: OpenSpending.Icons.Cofog,
-		path: '/icons/'
+		path: '/static/openspendingjs/0.4.0/icons/svg/'
 	    },
 	    colors: OpenSpending.Colors.Cofog
 	},
@@ -23584,7 +23584,7 @@ OpenSpending.Taxman.defaults = {
 	    },
 	    icons: {
 		svg: OpenSpending.Icons.Cofog,
-		path: '/icons/'
+		path: '/static/openspendingjs/0.4.0/icons/svg/'
 	    },
 	    colors: OpenSpending.Colors.Cofog
 	},
