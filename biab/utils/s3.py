@@ -39,11 +39,11 @@ def put_dataset(name, content):
     Convenience function to post a CSV dataset.
     """
     key = generate_key(name + ".csv", settings.S3_CSV_PREFIX)
-    put_content(key, content, content_type="application/json")
+    return put_content(key, content, content_type="application/json")
 
 def put_model(name, content):
     """
     Convenience function to post an OS model.
     """
     key = generate_key(name + ".json", settings.S3_MODEL_PREFIX)
-    put_content(key, content, content_type="application/json")
+    return put_content(key, content, content_type="application/json")

@@ -5,9 +5,27 @@
 <ul>
 {% for d in datasets %}
     <li><h3>{{d.name}} 
-        <a href="delete/{{d.id}}/" class="btn btn-danger btn-xs"><i class="glyphicon
-        glyphicon-minus-sign"></i></a></h3>
+        <a href="delete/{{d.id}}/" class="btn btn-danger btn-xs{% if d.datapackage %} disabled{% endif %}"><i class="glyphicon
+        glyphicon-minus-sign"></i></a>
+        <a href="preprocess/{{d.id}}/" class="btn btn-danger btn-xs {% if d.path %}{% else %} disabled {% endif %}"><i class="glyphicon glyphicon-sort-by-attributes"></i></a>
+        </h3>
+        <p>{% if d.datapackage %} Data Package: {{d.datapackage.slug}} {% endif %}</p>
         <p>{{d.description}}</p>
+        {% if d.preprocessed %}
+        <span class="label label-success">CSV preprocessed for upload</span>
+        {% else %}
+        <span class="label label-warning">CSV not preprocessed</span>
+        {% endif %}
+        {% if d.datamodel %}
+        <span class="label label-success">OS upload model ready</span>
+        {% else %}
+        <span class="label label-warning">OS uploade model not ready</span>
+        {% endif %}
+        {% if d.openspending %}
+        <span class="label label-success">Hosted on OS</span>
+        {% else %}
+        <span class="label label-warning">Not hosted on OS</span>
+        {% endif %}
         </li>
 {% endfor %}
 </ul>

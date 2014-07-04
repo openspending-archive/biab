@@ -32,9 +32,9 @@ class Dataset(models.Model):
     project = models.ForeignKey(Project)
 
     # URLs linking to OS stuff
-    preprocessed = models.URLField(null=True)
-    datamodel = models.URLField(null=True)
-    openspending = models.URLField(null=True)
+    preprocessed = models.URLField(null=True,blank=True)
+    datamodel = models.URLField(null=True,blank=True)
+    openspending = models.URLField(null=True,blank=True)
 
     # stuff from BDP resource metadata
     path = models.CharField(max_length=256,null=True,blank=True)

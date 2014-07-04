@@ -11,6 +11,7 @@ from bdpsite.models import *
 
 from utils.osupload import process_resource, model
 from utils.csv import DatasetCSV
+from utils.s3 import put_dataset, put_model
 
 @shared_task
 def add(x, y):
@@ -77,7 +78,7 @@ def reconstruct_resource(dataset, preprocessed=False):
         my_url = dataset.preprocessed
     url = urljoin(dataset.datapackage.path, my_url)
     return {
-        "data": Dataset(url),
+        "data": DatasetCSV(url),
         "metadata": {
             "path": dataset.path,
             "name": dataset.name,
@@ -93,26 +94,24 @@ def reconstruct_resource(dataset, preprocessed=False):
     }
 
 @shared_task
-def preprocess_dataset(dataset):
-    if dataset.preprocessed is not None:
-        return False
+def preprocess_dataset(id):
+    dataset = Dataset.objects.get(id=id)
     resource = reconstruct_resource(dataset)
     process_resource(resource)
-    # now do something with resource["data"].serialize()
-    # ... like post it on S3
-    # ... and store the result
-    # dataset.preprocessed = s3_url
+    dataset.preprocessed = put_dataset(dataset.name, resource["data"].serialize())
+    dataset.save()
     return True
 
 @shared_task
-def generate_model(dataset):
-    if dataset.preprocessed is None:
-        return False
+def generate_model(id):
+    dataset = Dataset.objects.get(id=id)
     resource = reconstruct_resource(dataset, preprocessed=True)
     dataset_model = model(resource)
     # now do something with dataset_model
     # ... like post it on S3
     # ... and store the result
+    dataset.datamodel = put_model(dataset.name, dataset_model)
+    dataset.save()
     # dataset.datamodel = s3_url
     return True
 

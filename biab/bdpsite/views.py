@@ -151,7 +151,7 @@ def package(request,project,package):
         if form.is_valid():
             form.save()
             if form.cleaned_data['slug'] != package:
-                return HttpResponseRedirect("/%s/packages/package/%s"%(project.slug, form.cleaned_data['slug']))
+                return HttpResponseRedirect("/%s/packages/package/%s"%(project.slug, package.slug))
     else:
         form = DataPackageForm(instance = package)
     c = {
@@ -222,6 +222,9 @@ def adddataset(request,project):
                 data = json.load(u)
                 d = Dataset()
                 d.name = data['name']
+#                d.path = u
+# The path needs to be the raw CSV...
+                d.openspending = u
                 d.type = data['category']
                 d.currency = data['currency']
                 d.dateLastUpdated = dateutil.parser.parse(
@@ -250,6 +253,22 @@ def deletedataset(request,project,id):
     if dataset.project.creator != request.user or dataset.project.slug != project:
         return HttpResponseForbidden()
     dataset.delete()
+    return HttpResponseRedirect("../../")
+
+@login_required
+def preprocessdataset(request,project,id):
+    dataset = get_object_or_404(Dataset, id=id)
+    if dataset.project.creator != request.user or dataset.project.slug != project:
+        return HttpResponseForbidden()
+    preprocess_dataset.delay(id)
+    return HttpResponseRedirect("../../")
+
+@login_required
+def generatemodel(request,project,id):
+    dataset = get_object_or_404(Dataset, id=id)
+    if dataset.project.creator != request.user or dataset.project.slug != project:
+        return HttpResponseForbidden()
+    generate_model.delay(id)
     return HttpResponseRedirect("../../")
 
 @login_required

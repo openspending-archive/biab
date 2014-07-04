@@ -126,4 +126,5 @@ RESOURCES = os.path.join(BASE_DIR, 'utils', 'resources')
 
 # Celery setup
 CELERY_RESULT_BACKEND = 'djcelery.backends.database:DatabaseBackend'
+CELERY_EAGER_PROPAGATES_EXCEPTIONS = True
 BROKER_URL = 'django://'

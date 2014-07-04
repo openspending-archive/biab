@@ -80,18 +80,13 @@ def process_resource(resource_object):
     """
     resource = resource_object["data"]
     metadata = resource_object["metadata"]
-    headers = resource.headers
 
     # get rid of that damn ID column!
-    if "id" in headers:
-        resource.rename_column("id","datasetId")
-
-    # set everything to lowercase, as OS evidently requires
-    for header in headers:
-        resource.rename_colum(header, header.lower())
+    if "id" in resource.headers:
+        resource.rename_column("id","datasetid")
 
     # split out COFOG column
-    if cofog_pred(headers):
+    if cofog_pred(resource.headers):
         resource.append_columns(
             ["cofog1code",
             "cofog2code",
@@ -102,7 +97,7 @@ def process_resource(resource_object):
             split_cofog)
 
     # split out GFSM exp column
-    if gfsm_expenditure_pred(headers):
+    if gfsm_expenditure_pred(resource.headers):
         resource.append_columns(
             ["gfsmExpenditure1",
              "gfsmExpenditure2",
@@ -112,7 +107,7 @@ def process_resource(resource_object):
              split_gfsm_expenditure)
 
     # split out GFSM rev column
-    if gfsm_revenue_pred(headers):
+    if gfsm_revenue_pred(resource.headers):
         resource.append_columns(
             ["gfsmRevenue1",
              "gfsmRevenue2",
@@ -122,8 +117,12 @@ def process_resource(resource_object):
 
     # does the dataset have a date column? no?
     # no problem! just use its fiscal year...
-    if "date" not in headers:
+    if "date" not in resource.headers:
         resource.append_columns(["date"],append_date(metadata["fiscalYear"]))
+
+    # set everything to lowercase, as OS evidently requires
+    for header in resource.headers:
+        resource.rename_column(header, header.lower())
 
     return True
 
