@@ -272,6 +272,14 @@ def generatemodel(request,project,id):
     return HttpResponseRedirect("../../")
 
 @login_required
+def osuploaddataset(request,project,id):
+    dataset = get_object_or_404(Dataset, id=id)
+    if dataset.project.creator != request.user or dataset.project.slug != project:
+        return HttpResponseForbidden()
+    osload.delay(id)
+    return HttpResponseRedirect("../../")
+
+@login_required
 def visualizations(request,project):    
     project = get_object_or_404(Project, slug = project)
     if project.creator != request.user:

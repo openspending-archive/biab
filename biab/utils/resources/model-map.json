@@ -1,540 +1,642 @@
 {
-  "amount": {
-    "default_value": "",
-    "description": "Amount",
-    "column": "amount",
-    "label": "Amount",
-    "datatype": "float",
-    "type": "measure"
-  },
-  "datasetId": {
-    "default_value": "",
-    "description": "Unique row ID",
-    "column": "datasetId",
-    "label": "DatasetID",
-    "datatype": "string",
-    "key": true,
-    "type": "attribute"
-  },
-  "code": {
-    "default_value": "",
-    "description": "Internal code",
-    "column": "code",
-    "label": "Code",
-    "datatype": "string",
-    "type": "attribute"
-  },
-  "description": {
-    "default_value": "",
-    "description": "Description",
-    "column": "description",
-    "label": "Description",
-    "datatype": "string",
-    "type": "attribute"
-  },
-
-  "admin + adminID + adminOrgID": {
-    "attributes": {
-      "admin": {
-        "datatype": "string",
-        "column": "admin"
-      },
-      "adminID": {
-        "datatype": "string",
-        "column": "adminID"
-      },
-      "adminOrgID": {
-        "datatype": "string",
-        "column": "adminOrgID"
+   "amount":{
+      "amount":{
+         "default_value":"",
+         "description":"Amount",
+         "column":"amount",
+         "label":"Amount",
+         "datatype":"float",
+         "type":"measure"
       }
-    },
-    "type": "compound",
-    "description": "Administrative entity responsible",
-    "label": "Admin"
-  },
-  "admin + adminID": {
-    "attributes": {
-      "admin": {
-        "datatype": "string",
-        "column": "admin"
-      },
-      "adminID": {
-        "datatype": "string",
-        "column": "adminID"
+   },
+   "datasetid":{
+      "datasetid":{
+         "default_value":"",
+         "description":"Unique row id",
+         "column":"datasetid",
+         "label":"Datasetid",
+         "datatype":"string",
+         "key":true,
+         "type":"attribute"
       }
-    },
-    "type": "compound",
-    "description": "Administrative entity responsible",
-    "label": "Admin"
-  },
-  "admin + adminOrgID": {
-    "attributes": {
-      "admin": {
-        "datatype": "string",
-        "column": "admin"
-      },
-      "adminOrgID": {
-        "datatype": "string",
-        "column": "adminOrgID"
+   },
+   "code":{
+      "code":{
+         "default_value":"",
+         "description":"Internal code",
+         "column":"code",
+         "label":"Code",
+         "datatype":"string",
+         "type":"attribute"
       }
-    },
-    "type": "compound",
-    "description": "Administrative entity responsible",
-    "label": "Admin"
-  },
-  "admin": {
-    "default_value": "",
-    "description": "Administrative entity responsible",
-    "column": "admin",
-    "label": "Admin",
-    "datatype": "string",
-    "type": "attribute"
-  },
-  "cofog": {
-    "default_value": "",
-    "description": "COFOG functional classification",
-    "column": "cofog",
-    "label": "COFOG",
-    "datatype": "string",
-    "type": "attribute"
-  },
-  "cofog1code + cofog1label": {
-      "description": null, 
-      "label": "Cofog1", 
-      "facet": true, 
-      "attributes": {
-        "name": {
-          "column": "cofog1code", 
-          "datatype": "id", 
-          "default_value": ""
-        }, 
-        "label": {
-          "column": "cofog1label", 
-          "datatype": "string", 
-          "default_value": ""
-        }
-      }, 
-      "type": "compound", 
-      "dimension": "Cofog1"
-  },
-  "cofog2code + cofog2label": {
-      "description": null, 
-      "label": "Cofog2", 
-      "facet": true, 
-      "attributes": {
-        "name": {
-          "column": "cofog2code", 
-          "datatype": "id", 
-          "default_value": ""
-        }, 
-        "label": {
-          "column": "cofog2label", 
-          "datatype": "string", 
-          "default_value": ""
-        }
-      }, 
-      "type": "compound", 
-      "dimension": "Cofog2"
-  },
-  "cofog3code + cofog3label": {
-      "description": null, 
-      "label": "Cofog3", 
-      "facet": true, 
-      "attributes": {
-        "name": {
-          "column": "cofog3code", 
-          "datatype": "id", 
-          "default_value": ""
-        }, 
-        "label": {
-          "column": "cofog3label", 
-          "datatype": "string", 
-          "default_value": ""
-        }
-      }, 
-      "type": "compound", 
-      "dimension": "Cofog3"
-  },
-  "cofog1": {
-    "default_value": "",
-    "description": "COFOG functional classification, level 1",
-    "column": "cofog1",
-    "label": "COFOG1",
-    "datatype": "string",
-    "type": "attribute"
-  },
-  "cofog2": {
-    "default_value": "",
-    "description": "COFOG functional classification, level 2",
-    "column": "cofog2",
-    "label": "COFOG2",
-    "datatype": "string",
-    "type": "attribute"
-  },
-  "cofog3": {
-    "default_value": "",
-    "description": "COFOG functional classification, level 3",
-    "column": "cofog3",
-    "label": "COFOG3",
-    "datatype": "string",
-    "type": "attribute"
-  },
-
-  "economic + economicID": {
-    "attributes": {
-      "economic": {
-        "datatype": "string",
-        "column": "economic"
-      },
-      "economicID": {
-        "datatype": "string",
-        "column": "economicID"
+   },
+   "description":{
+      "description":{
+         "default_value":"",
+         "description":"Description",
+         "column":"description",
+         "label":"Description",
+         "datatype":"string",
+         "type":"attribute"
       }
-    },
-    "type": "compound",
-    "description": "Economic classification",
-    "label": "Economic"
-  },
-  "economic": {
-    "default_value": "",
-    "description": "Economic classification",
-    "column": "economic",
-    "label": "Economic",
-    "datatype": "string",
-    "type": "attribute"
-  },
-  "economicID": {
-    "default_value": "",
-    "description": "Economic classification ID",
-    "column": "economicID",
-    "label": "EconomicID",
-    "datatype": "string",
-    "type": "attribute"
-  },
-  "financialSource": {
-    "default_value": "",
-    "description": "Financial source",
-    "column": "financialSource",
-    "label": "FinancialSource",
-    "datatype": "string",
-    "type": "attribute"
-  },
-
-  "functional + functionalID": {
-    "attributes": {
-      "functional": {
-        "datatype": "string",
-        "column": "functional"
-      },
-      "functionalID": {
-        "datatype": "string",
-        "column": "functionalID"
+   },
+   "admin-adminid-adminorgid":{
+      "from":{
+         "attributes":{
+            "label":{
+               "datatype":"string",
+               "column":"admin",
+               "default_value":""
+            },
+            "name":{
+               "datatype":"id",
+               "column":"adminid",
+               "default_value":""
+            },
+            "adminorgid":{
+               "datatype":"string",
+               "column":"adminorgid",
+               "default_value":""
+            }
+         },
+         "type":"compound",
+         "description":"Administrative entity responsible",
+         "label":"Admin"
       }
-    },
-    "type": "compound",
-    "description": "Functional classification",
-    "label": "Functional"
-  },
-  "functional": {
-    "default_value": "",
-    "description": "Functional classification",
-    "column": "functional",
-    "label": "Functional",
-    "datatype": "string",
-    "type": "attribute"
-  },
-  "functionalID": {
-    "default_value": "",
-    "description": "Functional classification ID",
-    "column": "functionalID",
-    "label": "FunctionalID",
-    "datatype": "string",
-    "type": "attribute"
-  },
-  "fund + fundID": {
-    "attributes": {
-      "fund": {
-        "datatype": "string",
-        "column": "fund"
-      },
-      "fundID": {
-        "datatype": "string",
-        "column": "fundID"
+   },
+   "admin-adminid":{
+      "from":{
+         "attributes":{
+            "label":{
+               "datatype":"string",
+               "column":"admin",
+               "default_value":""
+            },
+            "name":{
+               "datatype":"id",
+               "column":"adminid",
+               "default_value":""
+            }
+         },
+         "type":"compound",
+         "description":"Administrative entity responsible",
+         "label":"Admin"
       }
-    },
-    "type": "compound",
-    "description": "Source fund",
-    "label": "Fund"
-  },
-  "fund": {
-    "default_value": "",
-    "description": "Source fund",
-    "column": "fund",
-    "label": "Fund",
-    "datatype": "string",
-    "type": "attribute"
-  },
-  "fundID": {
-    "default_value": "",
-    "description": "Source fund ID",
-    "column": "fundID",
-    "label": "FundID",
-    "datatype": "string",
-    "type": "attribute"
-  },
-  "geocode": {
-    "default_value": "",
-    "description": "Geographical area",
-    "column": "geocode",
-    "label": "Geocode",
-    "datatype": "string",
-    "type": "attribute"
-  },
-  "gfsmExpense": {
-    "default_value": "",
-    "description": "GFSM 2001 economic classification of expense",
-    "column": "gfsmExpense",
-    "label": "GFSMExpense",
-    "datatype": "string",
-    "type": "attribute"
-  },
-  "gfsmExpense1": {
-    "default_value": "",
-    "description": "GFSM 2001 economic classification of expense, level 1",
-    "column": "gfsmExpense1",
-    "label": "GFSMExpense1",
-    "datatype": "string",
-    "type": "attribute"
-  },
-  "gfsmExpense2": {
-    "default_value": "",
-    "description": "GFSM 2001 economic classification of expense, level 2",
-    "column": "gfsmExpense2",
-    "label": "GFSMExpense2",
-    "datatype": "string",
-    "type": "attribute"
-  },
-  "gfsmExpense3": {
-    "default_value": "",
-    "description": "GFSM 2001 economic classification of expense, level 3",
-    "column": "gfsmExpense3",
-    "label": "GFSMExpense3",
-    "datatype": "string",
-    "type": "attribute"
-  },
-  "program + programID": {
-    "attributes": {
-      "program": {
-        "datatype": "string",
-        "column": "program"
-      },
-      "programID": {
-        "datatype": "string",
-        "column": "programID"
+   },
+   "admin-adminorgid":{
+      "from":{
+         "attributes":{
+            "label":{
+               "datatype":"string",
+               "column":"admin",
+               "default_value":""
+            },
+            "name":{
+               "datatype":"id",
+               "column":"adminorgid",
+               "default_value":""
+            }
+         },
+         "type":"compound",
+         "description":"Administrative entity responsible",
+         "label":"Admin"
       }
-    },
-    "type": "compound",
-    "description": "Program",
-    "label": "Program"
-  },
-  "program": {
-    "default_value": "",
-    "description": "Program",
-    "column": "program",
-    "label": "program",
-    "datatype": "string",
-    "type": "attribute"
-  },
-  "programID": {
-    "default_value": "",
-    "description": "Program ID",
-    "column": "programID",
-    "label": "ProgramID",
-    "datatype": "string",
-    "type": "attribute"
-  },
-  "project + projectID": {
-    "attributes": {
-      "project": {
-        "datatype": "string",
-        "column": "project"
-      },
-      "projectID": {
-        "datatype": "string",
-        "column": "projectID"
+   },
+   "admin":{
+    "from": {
+         "attributes":{
+            "label":{
+               "datatype":"string",
+               "column":"admin",
+               "default_value":""
+            },
+            "name":{
+               "datatype":"id",
+               "column":"admin",
+               "default_value":""
+            }
+         },
+         "type":"compound",
+         "description":"Administrative entity responsible",
+         "label":"Admin"
+      }},
+   "cofog":{
+    "cofog": {
+         "default_value":"",
+         "description":"COFOG functional classification",
+         "column":"cofog",
+         "label":"COFOG",
+         "datatype":"string",
+         "type":"attribute"
+      }},
+   "cofog1code-cofog1label":{
+      "cofog1":{
+         "description":null,
+         "label":"Cofog1",
+         "facet":true,
+         "attributes":{
+            "name":{
+               "column":"cofog1code",
+               "datatype":"id",
+               "default_value":""
+            },
+            "label":{
+               "column":"cofog1label",
+               "datatype":"string",
+               "default_value":""
+            }
+         },
+         "type":"compound",
+         "label":"Cofog1",
+         "description":"Cofog exp code level 1"
       }
-    },
-    "type": "compound",
-    "description": "Project",
-    "label": "Project"
-  },
-  "project": {
-    "default_value": "",
-    "description": "Project",
-    "column": "project",
-    "label": "project",
-    "datatype": "string",
-    "type": "attribute"
-  },
-  "programID": {
-    "default_value": "",
-    "description": "Project ID",
-    "column": "projectID",
-    "label": "ProjectID",
-    "datatype": "string",
-    "type": "attribute"
-  },
-  "purchaserID + purchaserOrgID": {
-    "attributes": {
-      "purchaserID": {
-        "datatype": "string",
-        "column": "purchaserID"
-      },
-      "purchaserOrgID": {
-        "datatype": "string",
-        "column": "purchaserOrgID"
+   },
+   "cofog2code-cofog2label":{
+      "cofog2":{
+         "description":null,
+         "label":"Cofog2",
+         "facet":true,
+         "attributes":{
+            "name":{
+               "column":"cofog2code",
+               "datatype":"id",
+               "default_value":""
+            },
+            "label":{
+               "column":"cofog2label",
+               "datatype":"string",
+               "default_value":""
+            }
+         },
+         "type":"compound",
+         "label":"Cofog2",
+         "description":"Cofog exp code level 2"
       }
-    },
-    "type": "compound",
-    "description": "Purchaser ID",
-    "label": "PurchaserID"
-  },
-  "purchaserID": {
-    "default_value": "",
-    "description": "Purchaser ID",
-    "column": "purchaserID",
-    "label": "PurchaserID",
-    "datatype": "string",
-    "type": "attribute"
-  },
-  "purchaserOrgID": {
-    "default_value": "",
-    "description": "Purchaser IATI Org ID",
-    "column": "purchaserOrgID",
-    "label": "PurchaserOrgID",
-    "datatype": "string",
-    "type": "attribute"
-  },
-  "type": {
-    "default_value": "",
-    "description": "Budgetary classification",
-    "column": "type",
-    "label": "BudgetaryClassification",
-    "datatype": "string",
-    "type": "attribute"
-  },
-
-  "gfsmRevenue": {
-    "default_value": "",
-    "description": "GFSM 2001 economic classification of revenue",
-    "column": "gfsmRevenue",
-    "label": "GFSMRevenue",
-    "datatype": "string",
-    "type": "attribute"
-  },
-  "gfsmRevenue1": {
-    "default_value": "",
-    "description": "GFSM 2001 economic classification of revenue, level 1",
-    "column": "gfsmRevenue1",
-    "label": "GFSMRevenue1",
-    "datatype": "string",
-    "type": "attribute"
-  },
-  "gfsmRevenue2": {
-    "default_value": "",
-    "description": "GFSM 2001 economic classification of revenue, level 2",
-    "column": "gfsmRevenue2",
-    "label": "GFSMRevenue2",
-    "datatype": "string",
-    "type": "attribute"
-  },
-  "gfsmRevenue3": {
-    "default_value": "",
-    "description": "GFSM 2001 economic classification of revenue, level 3",
-    "column": "gfsmRevenue3",
-    "label": "GFSMRevenue3",
-    "datatype": "string",
-    "type": "attribute"
-  },
-
-  "supplier": {
-    "default_value": "",
-    "description": "Supplier",
-    "column": "supplier",
-    "label": "Supplier",
-    "datatype": "string",
-    "type": "attribute"
-  },
-  "date": {
-    "default_value": "",
-    "description": "Date",
-    "column": "date",
-    "label": "Date",
-    "datatype": "date",
-    "type": "date"
-  },
-  "amountAdjusted": {
-    "default_value": "",
-    "description": "Amount (Adjusted)",
-    "column": "amountAdjusted",
-    "label": "AmountAdjusted",
-    "datatype": "float",
-    "type": "measure"
-  },
-  "amountBudgeted": {
-    "default_value": "",
-    "description": "Amount (Budgeted)",
-    "column": "amountBudgeted",
-    "label": "AmountBudgeted",
-    "datatype": "float",
-    "type": "measure"
-  },
-  "budgetLineItem": {
-    "default_value": "",
-    "description": "Budget line item",
-    "column": "budgetLineItem",
-    "label": "BudgetLineItem",
-    "datatype": "string",
-    "type": "attribute"
-  },
-  "contractID": {
-    "default_value": "",
-    "description": "Contract ID",
-    "column": "contractID",
-    "label": "ContractID",
-    "datatype": "string",
-    "type": "attribute"
-  },
-  "dateAdjusted": {
-    "default_value": "",
-    "description": "Date (Adjusted)",
-    "column": "dateAdjusted",
-    "label": "DateAdjusted",
-    "datatype": "date",
-    "type": "date"
-  },
-  "dateBudgeted": {
-    "default_value": "",
-    "description": "Date (Budgeted)",
-    "column": "dateBudgeted",
-    "label": "DateBudgeted",
-    "datatype": "date",
-    "type": "date"
-  },
-  "dateReported": {
-    "default_value": "",
-    "description": "Date (Reported)",
-    "column": "dateReported",
-    "label": "DateReported",
-    "datatype": "date",
-    "type": "date"
-  },
-  "invoiceID": {
-    "default_value": "",
-    "description": "Invoice ID",
-    "column": "invoiceID",
-    "label": "InvoiceID",
-    "datatype": "string",
-    "type": "attribute"
-  }
+   },
+   "cofog3code-cofog3label":{
+      "cofog3":{
+         "description":null,
+         "label":"Cofog3",
+         "facet":true,
+         "attributes":{
+            "name":{
+               "column":"cofog3code",
+               "datatype":"id",
+               "default_value":""
+            },
+            "label":{
+               "column":"cofog3label",
+               "datatype":"string",
+               "default_value":""
+            }
+         },
+         "type":"compound",
+         "label":"Cofog3",
+         "description":"Cofog exp code level 3"
+      }
+   },
+   "economic-economicid":{
+      "economic":{
+         "attributes":{
+            "label":{
+               "datatype":"string",
+               "column":"economic",
+               "default_value":""
+            },
+            "name":{
+               "datatype":"string",
+               "column":"economicid",
+               "default_value":""
+            }
+         },
+         "type":"compound",
+         "description":"Economic classification",
+         "label":"Economic"
+      }
+   },
+   "economic":{
+      "economic":{
+         "default_value":"",
+         "description":"Economic classification",
+         "column":"economic",
+         "label":"Economic",
+         "datatype":"string",
+         "type":"attribute"
+      }
+   },
+   "economicid":{
+      "economicid":{
+         "default_value":"",
+         "description":"Economic classification id",
+         "column":"economicid",
+         "label":"Economicid",
+         "datatype":"string",
+         "type":"attribute"
+      }
+   },
+   "financialsource":{
+      "financialsource":{
+         "default_value":"",
+         "description":"Financial source",
+         "column":"financialSource",
+         "label":"FinancialSource",
+         "datatype":"string",
+         "type":"attribute"
+      }
+   },
+   "functional-functionalid":{
+      "functional":{
+         "attributes":{
+            "label":{
+               "datatype":"string",
+               "column":"functional",
+               "default_value":""
+            },
+            "name":{
+               "datatype":"string",
+               "column":"functionalid",
+               "default_value":""
+            }
+         },
+         "type":"compound",
+         "description":"Functional classification",
+         "label":"Functional"
+      }
+   },
+   "functional":{
+      "functional":{
+         "default_value":"",
+         "description":"Functional classification",
+         "column":"functional",
+         "label":"Functional",
+         "datatype":"string",
+         "type":"attribute"
+      }
+   },
+   "functionalid":{
+      "functionalid":{
+         "default_value":"",
+         "description":"Functional classification id",
+         "column":"functionalid",
+         "label":"Functionalid",
+         "datatype":"string",
+         "type":"attribute"
+      }
+   },
+   "fund-fundid":{
+      "fund":{
+         "attributes":{
+            "label":{
+               "datatype":"string",
+               "column":"fund",
+               "default_value":""
+            },
+            "name":{
+               "datatype":"string",
+               "column":"fundid",
+               "default_value":""
+            }
+         },
+         "type":"compound",
+         "description":"Source fund",
+         "label":"Fund"
+      }
+   },
+   "fund":{
+      "fund":{
+         "default_value":"",
+         "description":"Source fund",
+         "column":"fund",
+         "label":"Fund",
+         "datatype":"string",
+         "type":"attribute"
+      }
+   },
+   "fundid":{
+      "fundid":{
+         "default_value":"",
+         "description":"Source fund id",
+         "column":"fundid",
+         "label":"Fundid",
+         "datatype":"string",
+         "type":"attribute"
+      }
+   },
+   "geocode":{
+      "geocode":{
+         "default_value":"",
+         "description":"Geographical area",
+         "column":"geocode",
+         "label":"Geocode",
+         "datatype":"string",
+         "type":"attribute"
+      }
+   },
+   "gfsmexpense":{
+      "gfsmexpense":{
+         "default_value":"",
+         "description":"GFSM 2001 economic classification of expense",
+         "column":"gfsmexpense",
+         "label":"GFSMexpense",
+         "datatype":"string",
+         "type":"attribute"
+      }
+   },
+   "gfsmexpense1":{
+      "gfsmexpense1":{
+         "default_value":"",
+         "description":"GFSM 2001 economic classification of expense, level 1",
+         "column":"gfsmexpense1",
+         "label":"GFSMexpense1",
+         "datatype":"string",
+         "type":"attribute"
+      }
+   },
+   "gfsmexpense2":{
+      "gfsmexpense2":{
+         "default_value":"",
+         "description":"GFSM 2001 economic classification of expense, level 2",
+         "column":"gfsmexpense2",
+         "label":"GFSMexpense2",
+         "datatype":"string",
+         "type":"attribute"
+      }
+   },
+   "gfsmexpense3":{
+      "gfsmexpense3":{
+         "default_value":"",
+         "description":"GFSM 2001 economic classification of expense, level 3",
+         "column":"gfsmexpense3",
+         "label":"GFSMexpense3",
+         "datatype":"string",
+         "type":"attribute"
+      }
+   },
+   "program-programid":{
+      "program":{
+         "attributes":{
+            "label":{
+               "datatype":"string",
+               "column":"program",
+               "default_value":""
+            },
+            "name":{
+               "datatype":"string",
+               "column":"programid",
+               "default_value":""
+            }
+         },
+         "type":"compound",
+         "description":"Program",
+         "label":"Program"
+      }
+   },
+   "program":{
+      "program":{
+         "default_value":"",
+         "description":"Program",
+         "column":"program",
+         "label":"program",
+         "datatype":"string",
+         "type":"attribute"
+      }
+   },
+   "programid":{
+      "programid":{
+         "default_value":"",
+         "description":"Program id",
+         "column":"programid",
+         "label":"Programid",
+         "datatype":"string",
+         "type":"attribute"
+      }
+   },
+   "project-projectid":{
+      "project":{
+         "attributes":{
+            "label":{
+               "datatype":"string",
+               "column":"project",
+               "default_value":""
+            },
+            "name":{
+               "datatype":"string",
+               "column":"projectid",
+               "default_value":""
+            }
+         },
+         "type":"compound",
+         "description":"Project",
+         "label":"Project"
+      }
+   },
+   "project":{
+      "project":{
+         "default_value":"",
+         "description":"Project",
+         "column":"project",
+         "label":"project",
+         "datatype":"string",
+         "type":"attribute"
+      }
+   },
+   "programid":{
+      "program":{
+         "default_value":"",
+         "description":"Project id",
+         "column":"programid",
+         "label":"Projectid",
+         "datatype":"string",
+         "type":"attribute"
+      }
+   },
+   "purchaserid-purchaserorgid":{
+      "purchaserid":{
+         "attributes":{
+            "name":{
+               "datatype":"id",
+               "column":"purchaserid",
+               "default_value":""
+            },
+            "label":{
+               "datatype":"string",
+               "column":"purchaserorgid",
+               "default_value":""
+            }
+         },
+         "type":"compound",
+         "description":"Purchaser id",
+         "label":"Purchaserid"
+      }
+   },
+   "purchaserid":{
+      "purchaserid":{
+         "default_value":"",
+         "description":"Purchaser id",
+         "column":"purchaserid",
+         "label":"Purchaserid",
+         "datatype":"string",
+         "type":"attribute"
+      }
+   },
+   "purchaserorgid":{
+      "purchaserorgid":{
+         "default_value":"",
+         "description":"Purchaser IATI org id",
+         "column":"purchaserorgid",
+         "label":"Purchaserorgid",
+         "datatype":"string",
+         "type":"attribute"
+      }
+   },
+   "type":{
+      "type":{
+         "default_value":"",
+         "description":"Budgetary classification",
+         "column":"type",
+         "label":"BudgetaryClassification",
+         "datatype":"string",
+         "type":"attribute"
+      }
+   },
+   "gfsmrevenue":{
+      "gfsmrevenue":{
+         "default_value":"",
+         "description":"GFSM 2001 economic classification of revenue",
+         "column":"gfsmrevenue",
+         "label":"GFSMrevenue",
+         "datatype":"string",
+         "type":"attribute"
+      }
+   },
+   "gfsmrevenue1":{
+      "gfsmrevenue1":{
+         "default_value":"",
+         "description":"GFSM 2001 economic classification of revenue, level 1",
+         "column":"gfsmrevenue1",
+         "label":"GFSMrevenue1",
+         "datatype":"string",
+         "type":"attribute"
+      }
+   },
+   "gfsmrevenue2":{
+      "gfsmrevenue2":{
+         "default_value":"",
+         "description":"GFSM 2001 economic classification of revenue, level 2",
+         "column":"gfsmrevenue2",
+         "label":"GFSMrevenue2",
+         "datatype":"string",
+         "type":"attribute"
+      }
+   },
+   "gfsmrevenue3":{
+      "gfsmrevenue3":{
+         "default_value":"",
+         "description":"GFSM 2001 economic classification of revenue, level 3",
+         "column":"gfsmrevenue3",
+         "label":"GFSMrevenue3",
+         "datatype":"string",
+         "type":"attribute"
+      }
+   },
+   "supplier":{
+      "supplier":{
+         "default_value":"",
+         "description":"Supplier",
+         "column":"supplier",
+         "label":"Supplier",
+         "datatype":"string",
+         "type":"attribute"
+      }
+   },
+   "time":{
+      "time":{
+         "default_value":"",
+         "description":"Date",
+         "column":"time",
+         "label":"Date",
+         "datatype":"date",
+         "type":"date"
+      }
+   },
+   "amountadjusted":{
+      "amountadjusted":{
+         "default_value":"",
+         "description":"Amount (Adjusted)",
+         "column":"amountadjusted",
+         "label":"AmountAdjusted",
+         "datatype":"float",
+         "type":"measure"
+      }
+   },
+   "amountbudgeted":{
+      "amountbudgeted":{
+         "default_value":"",
+         "description":"Amount (Budgeted)",
+         "column":"amountbudgeted",
+         "label":"AmountBudgeted",
+         "datatype":"float",
+         "type":"measure"
+      }
+   },
+   "budgetlineitem":{
+      "budgetlineitem":{
+         "default_value":"",
+         "description":"Budget line item",
+         "column":"budgetlineitem",
+         "label":"BudgetLineItem",
+         "datatype":"string",
+         "type":"attribute"
+      }
+   },
+   "contractid":{
+      "contractid":{
+         "default_value":"",
+         "description":"Contract id",
+         "column":"contractid",
+         "label":"Contractid",
+         "datatype":"string",
+         "type":"attribute"
+      }
+   },
+   "dateadjusted":{
+      "dateadjusted":{
+         "default_value":"",
+         "description":"Date (Adjusted)",
+         "column":"dateadjusted",
+         "label":"DateAdjusted",
+         "datatype":"date",
+         "type":"date"
+      }
+   },
+   "datebudgeted":{
+      "datebudgeted":{
+         "default_value":"",
+         "description":"Date (Budgeted)",
+         "column":"datebudgeted",
+         "label":"DateBudgeted",
+         "datatype":"date",
+         "type":"date"
+      }
+   },
+   "datereported":{
+      "datereported":{
+         "default_value":"",
+         "description":"Date (Reported)",
+         "column":"datereported",
+         "label":"DateReported",
+         "datatype":"date",
+         "type":"date"
+      }
+   },
+   "invoiceid":{
+      "invoiceid":{
+         "default_value":"",
+         "description":"Invoice id",
+         "column":"invoiceid",
+         "label":"Invoiceid",
+         "datatype":"string",
+         "type":"attribute"
+      }
+   }
 }

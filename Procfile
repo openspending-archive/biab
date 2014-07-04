@@ -1,2 +1,2 @@
 web: gunicorn --chdir biab biab.wsgi
-worker: celery worker -A biab --workdir biab 
+worker: celery worker -A biab --workdir biab --loglevel=info -l DEBUG

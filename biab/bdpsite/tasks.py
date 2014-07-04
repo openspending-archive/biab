@@ -9,7 +9,7 @@ from urlparse import urljoin
 
 from bdpsite.models import *
 
-from utils.osupload import process_resource, model
+from utils.osupload import process_resource, model, os_load
 from utils.csv import DatasetCSV
 from utils.s3 import put_dataset, put_model
 
@@ -116,10 +116,13 @@ def generate_model(id):
     return True
 
 @shared_task
-def osload(dataset):
+def osload(id):
+    dataset = Dataset.objects.get(id=id)
     if dataset.preprocessed is None or dataset.datamodel is None:
         return False
-    # response = os_load(dataset.preprocessed, dataset.datamodel)
+    response_json = os_load(dataset.preprocessed, dataset.datamodel)
+    dataset.openspending = response_json["html_url"]
+    dataset.save()
     return True
 
 @shared_task
