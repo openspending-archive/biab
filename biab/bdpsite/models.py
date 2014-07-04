@@ -49,11 +49,7 @@ class Dataset(models.Model):
     description = models.TextField(null=True,blank=True)
 
     def __unicode__(self):
-        if self.datapackage:
-            return self.name + " (in " + \
-                self.datapackage.name + ")"
-        else:
-            return self.name
+        return self.name
 
 class Visualization(models.Model):
     dataset = models.ForeignKey(Dataset)

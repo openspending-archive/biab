@@ -7,8 +7,9 @@
     <li><h3>{{d.name}} 
         <a href="delete/{{d.id}}/" class="btn btn-danger btn-xs{% if d.datapackage %} disabled{% endif %}"><i class="glyphicon
         glyphicon-minus-sign"></i></a>
-        <a href="preprocess/{{d.id}}/" class="btn btn-xs {% if d.path %}{% else %} disabled {% endif %}"><i class="glyphicon glyphicon-sort-by-attributes"></i></a>
-        <a href="model/{{d.id}}/" class="btn btn-xs{% if d.preprocessed %}{% else %} disabled {% endif %}"><i class="glyphicon glyphicon-list-alt"></i></a>
+        <a href="preprocess/{{d.id}}/" class="btn btn-xs {% if not d.path %} disabled {% endif %}"><i class="glyphicon glyphicon-sort-by-attributes"></i></a>
+        <a href="model/{{d.id}}/" class="btn btn-xs{% if not d.preprocessed %} disabled {% endif %}"><i class="glyphicon glyphicon-list-alt"></i></a>
+        <a href="os-upload/{{d.id}}/" class="btn btn-xs{% if not d.preprocessed or not d.datamodel or d.openspending %} disabled {% endif %}"><i class="glyphicon glyphicon-upload"></i></a>
         </h3>
         <p>{% if d.datapackage %} Data Package: {{d.datapackage.slug}} {% endif %}</p>
         <p>{{d.description}}</p>

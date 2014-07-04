@@ -3,7 +3,7 @@ import urllib2
 import json
 import dateutil.parser
 from django.shortcuts import render_to_response, get_object_or_404
-from django.http import HttpResponseRedirect, HttpResponseForbidden
+from django.http import HttpResponseRedirect, HttpResponseForbidden, HttpResponseNotFound
 from django.template.context import RequestContext 
 from django.core.context_processors import csrf
 from django.contrib import auth
@@ -306,7 +306,7 @@ def addviz(request,project):
             return HttpResponseRedirect("../")
     else:
         form = VisualizationForm()
-    form.fields['dataset'].queryset = Dataset.objects.filter(project = project)
+    form.fields['dataset'].queryset = Dataset.objects.filter(project = project).exclude(openspending__isnull=True).exclude(openspending__exact='')
     c = { "project": project,
         "form" : form,
         "page": "viz" }
