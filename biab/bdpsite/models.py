@@ -51,7 +51,7 @@ class Dataset(models.Model):
     
     @property
     def openspendingSlug(self):
-        return re.match("http[s]*://[a-zA-Z0-9-.]+/([a-z0-9-]+)/",
+        return re.match("http[s]*://[a-zA-Z0-9-.]+/([a-z0-9-]+)/?",
                         self.openspending).group(1)
 
     def __unicode__(self):

@@ -127,7 +127,7 @@ def generate_model(status, id, *args, **kwargs):
         status.update({"model": "Successfully generated model for dataset " + dataset.name})
         return status
     except:
-        status.update({"preprocess": "Failed to preprocess dataset: " + str(sys.exc_info()[0])})
+        status.update({"model": "Failed to preprocess dataset: " + str(sys.exc_info()[0])})
         return status
 
 @shared_task
@@ -139,10 +139,10 @@ def osload(status, id, *args, **kwargs):
         response_json = os_load(dataset.preprocessed, dataset.datamodel)
         dataset.openspending = response_json["html_url"]
         dataset.save()
-        status.update({"model": "Successfully uploaded dataset " + dataset.name})
+        status.update({"openspending": "Successfully uploaded dataset " + dataset.name})
         return status
     except:
-        status.update({"preprocess": "Failed to send dataset to Openspending: " + str(sys.exc_info()[0])})
+        status.update({"openspending": "Failed to send dataset to Openspending: " + str(sys.exc_info()[0])})
         return status
 
 @shared_task

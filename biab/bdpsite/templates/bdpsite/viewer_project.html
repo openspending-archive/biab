@@ -1,0 +1,68 @@
+{% extends "biab/viewerbase.html" %}
+{% load md %}
+
+{% block "css" %}
+<style type="text/css">
+    body {
+      padding-top: 50px;
+      padding-bottom: 20px;
+    }
+</style>
+{% endblock %}
+
+{% block "title" %}
+{{ project.title }}
+{% endblock %}
+
+{% block "main" %}
+
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">{{ project.title }}</a>
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="./">Home</a></li>
+            <li><a href="./datasets/">Datasets</a></li>
+            </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main jumbotron for a primary marketing message or call to action -->
+    <div class="jumbotron">
+      <div class="container">
+        <h1>{{ project.title }} </h1>
+        <p>{{ project.description }} </p>
+        <p><i>This is where the featured visualization should go. The button below links to the dataset page for the visualization's dataset.</i></p>
+        <p><a class="btn btn-primary btn-lg" role="button">Learn more &raquo;</a></p>
+      </div>
+    </div>
+
+    <div class="container">
+      <!-- Example row of columns -->
+      <div class="row">
+        <div class="col-md-8">
+            <h2>Recent updates</h2>
+            <p>
+                Here is a list of recently added things (packages, datasets, visualizations, whatever).
+            </p>
+        </div>
+        <div class="col-md-4">
+            <h2>Site information</h2>
+            <p>
+                Here is some basic info about the site.
+            </p>
+        </div>
+
+      </div>
+
+{% endblock %}

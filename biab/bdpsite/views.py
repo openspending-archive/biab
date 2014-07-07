@@ -340,3 +340,34 @@ def project(request,project):
          "visualizations": visualizations}
     return render_to_response("bdpsite/project.html", c,
         context_instance = RequestContext(request))
+
+def userview_project(request,project):
+    project = get_object_or_404(Project, slug = project)
+    visualizations = Visualization.objects.raw("""
+        select id from bdpsite_visualization where dataset_id in
+            (select id from bdpsite_dataset where project_id =
+                %s) ORDER BY 'order';"""%project.id)
+    c = {"project": project,
+         "visualizations": visualizations}
+    return render_to_response("bdpsite/viewer_project.html", c,
+        context_instance = RequestContext(request))
+
+def userview_dataset_index(request,project):
+    project = get_object_or_404(Project, slug = project)
+    datasets = Dataset.objects.filter(project = project)
+    c={"project": project,
+       "datasets": datasets,
+       "page": "datasets" }
+    return render_to_response("bdpsite/viewer_dataset_index.html", c,
+        context_instance = RequestContext(request))
+
+def userview_dataset(request,project,dataset):
+    project = get_object_or_404(Project, slug = project)
+    dataset = get_object_or_404(Dataset, name = dataset)
+    visualizations = Visualization.objects.filter(dataset__id = dataset.id)
+    c={"project": project,
+        "dataset": dataset,
+        "visualizations": visualizations,
+        "page": "dataset"}
+    return render_to_response("bdpsite/viewer_dataset.html", c,
+        context_instance = RequestContext(request))
