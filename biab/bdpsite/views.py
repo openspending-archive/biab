@@ -223,8 +223,8 @@ def adddataset(request,project):
                 d = Dataset()
                 d.name = data['name']
 #                d.path = u
-# The path needs to be the raw CSV...
-                d.openspending = u
+# The path needs to be the raw CSV... Which we don't get from OS
+                d.openspending = "https://openspending.org/%s/"%s
                 d.type = data['category']
                 d.currency = data['currency']
                 d.dateLastUpdated = dateutil.parser.parse(

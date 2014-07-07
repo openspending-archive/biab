@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from autoslug import AutoSlugField
+import re
 
 # Create your models here.
 
@@ -47,6 +48,11 @@ class Dataset(models.Model):
     status = models.CharField(max_length=256,null=True, blank=True)
     type = models.CharField(max_length=256)
     description = models.TextField(null=True,blank=True)
+    
+    @property
+    def openspendingSlug(self):
+        return re.match("http[s]*://[a-zA-Z0-9-.]+/([a-z0-9-]+)/",
+                        self.openspending).group(1)
 
     def __unicode__(self):
         return self.name
