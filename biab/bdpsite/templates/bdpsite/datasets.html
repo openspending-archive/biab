@@ -13,6 +13,7 @@
         <a data-id="{{d.id}}" data-action="osload" href="#" class="btn btn-xs{% if not d.preprocessed or not d.datamodel or d.openspending %} disabled {% endif %}"><i class="glyphicon glyphicon-upload"></i></a>
         </h3>
         <p>{{d.description}}</p>
+        {% if d.datapackage %}
         {% if d.preprocessed %}
         <span data-id="{{d.id}}" data-status="csv" class="label label-success">CSV preprocessed for upload</span>
         {% else %}
@@ -22,6 +23,7 @@
         <span data-id="{{d.id}}" data-status="model" class="label label-success">OS upload model ready</span>
         {% else %}
         <span data-id="{{d.id}}" data-status="model" class="label label-warning">OS uploade model not ready</span>
+        {% endif %}
         {% endif %}
         {% if d.openspending %}
         <span data-id="{{d.id}}" data-status="os" class="label label-success">Hosted on OS</span>
