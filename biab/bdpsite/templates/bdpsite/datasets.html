@@ -44,7 +44,7 @@ $(document).ready(function () {
         var $status = $("span[data-id='" + id + "'][data-status='csv']");
         $status.attr("class", "label label-info").html("CSV processing...");
         var result = $.get("preprocess/" + id + "/", function (data) {
-            if (data) {
+            if (data["preprocess"].match(/^Success/)) {
                 $status.attr("class", "label label-success")
                 .html("CSV preprocessed for upload");
                 $("a[data-id='" + id + "'][data-action='model']")
@@ -61,7 +61,8 @@ $(document).ready(function () {
         var $status = $("span[data-id='" + id + "'][data-status='model']");
         $status.attr("class", "label label-info").html("OS upload model processing...");
         var result = $.get("model/" + id + "/", function (data) {
-            if (data) {
+            console.log(data);
+            if (data["model"].match(/^Success/)) {
                 $status.attr("class", "label label-success")
                 .html("OS upload model ready");
                 $("a[data-id='" + id + "'][data-action='osload']")
@@ -78,7 +79,7 @@ $(document).ready(function () {
         var $status = $("span[data-id='" + id + "'][data-status='os']");
         $status.attr("class", "label label-info").html("Uploading to OpenSpending...");
         var result = $.get("os-upload/" + id + "/", function (data) {
-            if (data) {
+            if (data["openspending"].match(/^Success/)) {
                 $status.attr("class", "label label-success")
                 .html("Hosted on OpenSpending");
             } else {

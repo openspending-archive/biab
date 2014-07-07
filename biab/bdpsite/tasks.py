@@ -1,5 +1,5 @@
 from __future__ import absolute_import
-from celery import shared_task
+from celery import shared_task, chain
 from utils.bdp import BDP
 import utils.osupload as osu
 import utils.s3 as s3
@@ -70,6 +70,10 @@ def create_dataset(project, bdp, resource):
     d.description = resource.get("description", "")
 
     d.save()
+
+    # automatically initiate the process of uploading it to OS
+    chain(preprocess_dataset.s({}, d.id) | generate_model.s(d.id) | osload.s(d.id))()
+
     return True
 
 def reconstruct_resource(dataset, preprocessed=False):
@@ -94,36 +98,51 @@ def reconstruct_resource(dataset, preprocessed=False):
     }
 
 @shared_task
-def preprocess_dataset(id):
-    dataset = Dataset.objects.get(id=id)
-    resource = reconstruct_resource(dataset)
-    process_resource(resource)
-    dataset.preprocessed = put_dataset(dataset.name, resource["data"].serialize())
-    dataset.save()
-    return True
+def preprocess_dataset(status, id, *args, **kwargs):
+    try:
+        dataset = Dataset.objects.get(id=id)
+        resource = reconstruct_resource(dataset)
+        process_resource(resource)
+        dataset.preprocessed = put_dataset(dataset.name, resource["data"].serialize())
+        dataset.save()
+        status.update({"preprocess": "Successfully preprocessed dataset " + dataset.name})
+        return status
+    except:
+        status.update({"preprocess": "Failed to preprocess dataset: " + str(sys.exc_info()[0])})
+        return status
 
 @shared_task
-def generate_model(id):
-    dataset = Dataset.objects.get(id=id)
-    resource = reconstruct_resource(dataset, preprocessed=True)
-    dataset_model = model(resource)
-    # now do something with dataset_model
-    # ... like post it on S3
-    # ... and store the result
-    dataset.datamodel = put_model(dataset.name, dataset_model)
-    dataset.save()
-    # dataset.datamodel = s3_url
-    return True
+def generate_model(status, id, *args, **kwargs):
+    try:
+        dataset = Dataset.objects.get(id=id)
+        resource = reconstruct_resource(dataset, preprocessed=True)
+        dataset_model = model(resource)
+        # now do something with dataset_model
+        # ... like post it on S3
+        # ... and store the result
+        dataset.datamodel = put_model(dataset.name, dataset_model)
+        dataset.save()
+        # dataset.datamodel = s3_url
+        status.update({"model": "Successfully generated model for dataset " + dataset.name})
+        return status
+    except:
+        status.update({"preprocess": "Failed to preprocess dataset: " + str(sys.exc_info()[0])})
+        return status
 
 @shared_task
-def osload(id):
-    dataset = Dataset.objects.get(id=id)
-    if dataset.preprocessed is None or dataset.datamodel is None:
-        return False
-    response_json = os_load(dataset.preprocessed, dataset.datamodel)
-    dataset.openspending = response_json["html_url"]
-    dataset.save()
-    return True
+def osload(status, id, *args, **kwargs):
+    try:
+        dataset = Dataset.objects.get(id=id)
+        if dataset.preprocessed is None or dataset.datamodel is None:
+            return False
+        response_json = os_load(dataset.preprocessed, dataset.datamodel)
+        dataset.openspending = response_json["html_url"]
+        dataset.save()
+        status.update({"model": "Successfully uploaded dataset " + dataset.name})
+        return status
+    except:
+        status.update({"preprocess": "Failed to send dataset to Openspending: " + str(sys.exc_info()[0])})
+        return status
 
 @shared_task
 def process_and_load(dataset):
@@ -135,7 +154,7 @@ def process_and_load(dataset):
     Once everything is in the clear, posts the result on OpenSpending.
     """
     if dataset.preprocessed is None:
-        preprocess_dataset.delay(dataset).get()
+        preprocess_dataset.delay(dataset.id).get()
     if dataset.datasetmodel is None:
-        generate_model.delay(dataset).get()
-    return osload.delay(dataset)
+        generate_model.delay(dataset.id).get()
+    return osload.delay(dataset.id)

@@ -260,7 +260,7 @@ def preprocessdataset(request,project,id):
     dataset = get_object_or_404(Dataset, id=id)
     if dataset.project.creator != request.user or dataset.project.slug != project:
         return HttpResponseForbidden()
-    result = preprocess_dataset.delay(id).get(propagate=False)
+    result = preprocess_dataset.delay({}, id).get(propagate=False)
     return HttpResponse(json.dumps(result), mimetype="application/json")
 
 @login_required
@@ -268,7 +268,7 @@ def generatemodel(request,project,id):
     dataset = get_object_or_404(Dataset, id=id)
     if dataset.project.creator != request.user or dataset.project.slug != project:
         return HttpResponseForbidden()
-    result = generate_model.delay(id).get(propagate=False)
+    result = generate_model.delay({}, id).get(propagate=False)
     return HttpResponse(json.dumps(result), mimetype="application/json")
 
 @login_required
@@ -276,7 +276,7 @@ def osuploaddataset(request,project,id):
     dataset = get_object_or_404(Dataset, id=id)
     if dataset.project.creator != request.user or dataset.project.slug != project:
         return HttpResponseForbidden()
-    result = osload.delay(id).get(propagate=False)
+    result = osload.delay({}, id).get(propagate=False)
     return HttpResponse(json.dumps(result), mimetype="application/json")
 
 @login_required
