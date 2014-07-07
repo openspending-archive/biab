@@ -15,6 +15,9 @@
     .enclosure.for-bubbletree {
       margin-top: -25px;
       width: 400px;
+      position: absolute;
+      right: 0;
+      top: 50px;
     }
     .enclosure.for-barchart {
       width: 600px;
@@ -53,7 +56,11 @@
     </div>
 
     <!-- Main jumbotron for a primary marketing message or call to action -->
-    <div class="jumbotron">
+    <div class="jumbotron"
+    {% if project.featured_viz.type = "bubbletree" %}
+    style="height: 400px"
+    {% endif %}
+    >
       <div class="container">
         <h1>{{ project.title }} </h1>
         {% if project.featured_viz %}
@@ -65,6 +72,7 @@
             data-cuts="{{project.featured_viz.cuts}}">
           </div>
         </div>
+        <p>{{ project.description }}</p>
         <p><a class="btn btn-primary btn-lg" role="button" href="{{featured_dataset}}/">Learn more &raquo;</a></p>
         {% else %}
         <p>{{ project.description }} </p>
