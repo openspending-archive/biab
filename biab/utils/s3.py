@@ -1,5 +1,6 @@
 from django.conf import settings
 from boto import connect_s3
+import uuid
 
 def get_bucket():    
     """
@@ -34,16 +35,19 @@ def generate_key(filename, prefix=''):
     """
     return '{prefix}{filename}'.format(prefix=prefix, filename=filename)
 
+def uuidize(name):
+    return name + "-" + str(uuid.uuid4());
+
 def put_dataset(name, content):
     """
     Convenience function to post a CSV dataset.
     """
-    key = generate_key(name + ".csv", settings.S3_CSV_PREFIX)
+    key = generate_key(uuidize(name) + ".csv", settings.S3_CSV_PREFIX)
     return put_content(key, content, content_type="application/json")
 
 def put_model(name, content):
     """
     Convenience function to post an OS model.
     """
-    key = generate_key(name + ".json", settings.S3_MODEL_PREFIX)
+    key = generate_key(uuidize(name) + ".json", settings.S3_MODEL_PREFIX)
     return put_content(key, content, content_type="application/json")

@@ -7,6 +7,7 @@ from copy import copy
 import requests
 import os
 import json
+import uuid
 
 # Helper dictionaries for looking up values needed to construct OS
 # models.
@@ -192,7 +193,7 @@ def dataset_attribute(metadata, territories=["CH"], languages=["EN"]):
     else:
         category = "other"
     return {
-            "name": metadata["name"],
+            "name": metadata["name"] + "-" + str(uuid.uuid4()),
             "currency": metadata["currency"],
             "languages": languages,
             "territories": territories,
