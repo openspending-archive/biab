@@ -7,6 +7,9 @@
       padding-top: 50px;
       padding-bottom: 20px;
     }
+    .tab-content {
+      padding-top: 1em;
+    }
 </style>
 {% endblock %}
 
@@ -42,15 +45,26 @@
       <div class="row">
         <div class="col-md-8">
             <h2>Visualizations</h2>
-            <p>
-                A nice view of all the visualizations configured for the dataset.
-            </p>
-            {% for viz in visualizations %}
-            <div class="{{viz.type}}" data-dataset="{{viz.dataset.openspendingSlug}}"
-                data-drilldowns="{{viz.drilldowns}}" data-cuts="{{viz.cuts}}" ></div>
-            {{viz.description|markdown}}
-            {% endfor %}
+            <ul class="nav nav-tabs" role="tablist">
+              {% for viz in visualizations %}
+              <li {% if forloop.first %} class="active" {% endif %}>
+                <a href="#{{viz.id}}" role="tab" data-toggle="tab">
+                  {{viz.type}}
+                </a>
+              </li>
+              {% endfor %}
+            </ul>
+            <div class="tab-content">
+              {% for viz in visualizations %}
+              <div class="tab-pane {% if forloop.first %} active {% endif %}" id="{{viz.id}}">
+                <div class="{{viz.type}}" data-dataset="{{viz.dataset.openspendingSlug}}"
+                    data-drilldowns="{{viz.drilldowns}}" data-cuts="{{viz.cuts}}" ></div>
+                {{viz.description|markdown}}
+              </div>
+              {% endfor %}
+            </div>
         </div>
+
         <div class="col-md-4">
             <h2>Dataset information</h2>
             <p>

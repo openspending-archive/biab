@@ -20,7 +20,7 @@
       width: 600px;
     }
     .openspending-bt .label2 span {
-      background: none;
+      background: #eee;
     }
 </style>
 {% endblock %}
@@ -65,6 +65,7 @@
             data-cuts="{{project.featured_viz.cuts}}">
           </div>
         </div>
+        <p><a class="btn btn-primary btn-lg" role="button" href="{{featured_dataset}}/">Learn more &raquo;</a></p>
         {% else %}
         <p>{{ project.description }} </p>
         <p><i>This is where the featured visualization should go. The button below links to the dataset page for the visualization's dataset.</i></p>

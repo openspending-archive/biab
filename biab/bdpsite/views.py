@@ -343,12 +343,9 @@ def project(request,project):
 
 def userview_project(request,project):
     project = get_object_or_404(Project, slug = project)
-    visualizations = Visualization.objects.raw("""
-        select id from bdpsite_visualization where dataset_id in
-            (select id from bdpsite_dataset where project_id =
-                %s) ORDER BY 'order';"""%project.id)
-    c = {"project": project,
-         "visualizations": visualizations}
+    c = {"project": project}
+    if project.featured_viz:
+        c.update({"featured_dataset": project.featured_viz.dataset.name})
     return render_to_response("bdpsite/viewer_project.html", c,
         context_instance = RequestContext(request))
 
