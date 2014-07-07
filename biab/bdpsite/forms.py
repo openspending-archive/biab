@@ -19,6 +19,7 @@ class ProjectForm(ModelForm):
 
 class CreateForm(forms.Form):
     url = forms.URLField()
+    auto_upload = forms.BooleanField(label="Automatically upload datasets?",required=False,initial=True)
 
 class AddDatasetForm(forms.Form):
     slug = forms.SlugField()

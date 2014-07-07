@@ -33,7 +33,7 @@ def upload_bdp(metadata_url):
         osu.os_load(data_url, model_url)
 
 @shared_task
-def create_bdp(project, metadata_url):
+def create_bdp(project, metadata_url, auto_upload=True):
     # Create an internal representation.
     # This loads the metadata.
     d_obj = BDP(metadata_url)
@@ -48,11 +48,11 @@ def create_bdp(project, metadata_url):
 
     # Create model instances for the bdp's resources.
     for resource in d_obj.metadata["resources"]:
-        create_dataset.delay(project, d, resource)
+        create_dataset.delay(project, d, resource, auto_upload)
     return True
 
 @shared_task
-def create_dataset(project, bdp, resource):
+def create_dataset(project, bdp, resource, auto_upload=True):
     d = Dataset()
     d.datapackage = bdp
     d.project = project
@@ -72,7 +72,8 @@ def create_dataset(project, bdp, resource):
     d.save()
 
     # automatically initiate the process of uploading it to OS
-    chain(preprocess_dataset.s({}, d.id) | generate_model.s(d.id) | osload.s(d.id))()
+    if auto_upload:
+        chain(preprocess_dataset.s({}, d.id) | generate_model.s(d.id) | osload.s(d.id))()
 
     return True
 

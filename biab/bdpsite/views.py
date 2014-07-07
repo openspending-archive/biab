@@ -187,7 +187,7 @@ def addpackage(request,project):
         if form.is_valid():
             # create new data package;
             # use Celery to do this asynchronously...
-            create_bdp.delay(project, form.cleaned_data["url"])
+            create_bdp.delay(project, form.cleaned_data["url"], form.cleaned_data["auto_upload"])
             return HttpResponseRedirect("../")
     else:
         form = CreateForm()
@@ -254,6 +254,15 @@ def deletedataset(request,project,id):
         return HttpResponseForbidden()
     dataset.delete()
     return HttpResponseRedirect("../../")
+
+@login_required
+def deletepackage(request,project,id): 
+    package = get_object_or_404(DataPackage, id=id)
+    if package.project.creator != request.user or package.project.slug != project:
+        return HttpResponseForbidden()
+    package.delete()
+    return HttpResponseRedirect("../../")
+
 
 @login_required
 def preprocessdataset(request,project,id):
