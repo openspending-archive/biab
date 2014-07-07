@@ -59,12 +59,11 @@ def os_load(csv_url,metadata_url):
         "csv_file": csv_url,
         "metadata": metadata_url
     }
-    r = requests.post(url, data=json.dumps(values), headers=headers)
-    return r
-#    data = urlencode(values)
-#    request = Request(url, data, header)
-#    response = urlopen(request)
-#    return response
+    r = requests.post(url, params=values, headers=headers)
+    if r.ok:
+        return json.loads(r.text)
+    else:
+        raise ValueError("Bad API call")
 
 def process_resource(resource_object):
     """
@@ -80,18 +79,13 @@ def process_resource(resource_object):
     """
     resource = resource_object["data"]
     metadata = resource_object["metadata"]
-    headers = resource.headers
 
     # get rid of that damn ID column!
-    if "id" in headers:
-        resource.rename_column("id","datasetId")
-
-    # set everything to lowercase, as OS evidently requires
-    for header in headers:
-        resource.rename_colum(header, header.lower())
+    if "id" in resource.headers:
+        resource.rename_column("id","datasetid")
 
     # split out COFOG column
-    if cofog_pred(headers):
+    if cofog_pred(resource.headers):
         resource.append_columns(
             ["cofog1code",
             "cofog2code",
@@ -102,7 +96,7 @@ def process_resource(resource_object):
             split_cofog)
 
     # split out GFSM exp column
-    if gfsm_expenditure_pred(headers):
+    if gfsm_expenditure_pred(resource.headers):
         resource.append_columns(
             ["gfsmExpenditure1",
              "gfsmExpenditure2",
@@ -112,7 +106,7 @@ def process_resource(resource_object):
              split_gfsm_expenditure)
 
     # split out GFSM rev column
-    if gfsm_revenue_pred(headers):
+    if gfsm_revenue_pred(resource.headers):
         resource.append_columns(
             ["gfsmRevenue1",
              "gfsmRevenue2",
@@ -122,8 +116,15 @@ def process_resource(resource_object):
 
     # does the dataset have a date column? no?
     # no problem! just use its fiscal year...
-    if "date" not in headers:
-        resource.append_columns(["date"],append_date(metadata["fiscalYear"]))
+    if "time" not in resource.headers:
+        if "date" in resource.headers:
+            resource.append_columns(["time"],lambda r:{"time":r["date"]})
+        else:
+            resource.append_columns(["time"],append_date(metadata["fiscalYear"].strftime("%Y")))
+
+    # set everything to lowercase, as OS evidently requires
+    for header in resource.headers:
+        resource.rename_column(header, header.lower())
 
     return True
 
@@ -137,7 +138,7 @@ def model(resource_object):
     mapping_fields = model_fields(resource)
     mapping = {}
     for field in mapping_fields:
-        mapping[field] = mapping_field(field)
+        mapping.update(mapping_field(field))
     dataset = dataset_attribute(metadata)
     model = {
         "mapping": mapping,
@@ -157,14 +158,14 @@ def mapping_field(field):
     if field in model_map.keys():
         return model_map[field]
     else:
-        return {
-            "default_value": "",
-            "description": field + " (user field)", 
-            "column": field,
-            "label": field.capitalize(),
-            "datatype": "string",
-            "type": "attribute"
-        }
+        return {field: {
+                        "default_value": "",
+                        "description": field + " (user field)", 
+                        "column": field,
+                        "label": field.capitalize(),
+                        "datatype": "string",
+                        "type": "attribute"
+                    }}
 
 def model_fields(resource):
     """
@@ -181,13 +182,27 @@ def dataset_attribute(metadata, territories=["CH"], languages=["EN"]):
     """
     Returns the `dataset` attribute that can be extracted from a resource's metadata.
     """
+    if metadata["type"] == "expenditure":
+        if metadata["granularity"] == "aggregated":
+            category = "budget"
+        if metadata["granularity"] == "transactional":
+            category = "spending"
+        else:
+            category = "other"
+    else:
+        category = "other"
     return {
             "name": metadata["name"],
             "currency": metadata["currency"],
             "languages": languages,
             "territories": territories,
             "category": categorize_dataset(metadata),
-            "label": metadata["name"]
+            "label": metadata["name"],
+            "default_time": metadata["fiscalYear"].strftime("%Y"),
+            "description": metadata.get("description","No description."),
+            "category": category,
+            "schema_version": "2011-12-07",
+            "temporal_granularity": "year"
         }
 
 def categorize_dataset(metadata):
@@ -220,7 +235,7 @@ def bundle(headers, to_bundle):
     for item in items_present:
         result.remove(item)
 
-    result.append(" + ".join(items_present))
+    result.append("-".join(items_present))
     return result
 
 def bundle_all(headers, bundles):
@@ -346,4 +361,4 @@ def append_date(date):
     Returns a parameterized row-modification function that appends a 
     constant year 
     """
-    return lambda _: {"date":date}
+    return lambda _: {"time":date}

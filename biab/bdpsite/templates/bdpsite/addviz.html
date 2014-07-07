@@ -40,7 +40,7 @@ $(document).ready(function() {
     var drilldowns = [];
     $("form").on("change", function() {
         $("#preview");
-        var dataset=this.dataset.options[this.dataset.value].text
+        var dataset=this.dataset.options[this.dataset.value].text;
         var drilldowns=this.drilldowns.value;
         var cuts=this.cuts.value;
         var cuts={}
@@ -54,11 +54,13 @@ $(document).ready(function() {
         });
     $("#id_dataset").on("change",function() {
         dataset =$("#id_dataset option[value='"+this.value+"']").text()
-        $.getJSON('https://openspending.org/'+dataset+'/dimensions.json?callback=?',
+        $.getJSON('http://openspending.org/'+dataset+'/dimensions.json?callback=?',
             function(d) {
                 console.log(d);
                 var el=$("select[name='drilldown']")
                 el.html();
+                var old_elements = $("option", el);
+                old_elements.remove();
                 for (i in d) {
                     console.log(d[i]);
                     el.append("<option value='"+d[i].name+

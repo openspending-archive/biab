@@ -95,8 +95,8 @@ class DatasetCSV(object):
             return False
         i = hs.index(column_name)
         self.headers = hs[:i] + [new_name] + hs[(i+1):]
-        self.headers_dict[new_name] = new_name
         self.headers_dict.pop(column_name)
+        self.headers_dict[new_name] = new_name
         for row in self.rows:
             row[new_name] = row.pop(column_name)
 

@@ -5,12 +5,12 @@
 {% if datapackages %}
 <ul>
 {% for dp in datapackages %}
-<li><a href="package/{{dp.name}}">{{dp.name}}</a></li>
+<li><a href="package/{{dp.slug}}">{{dp.name}} ({{dp.slug}})</a></li>
 {% endfor %}
 </ul>
 {% else %}
 <p>
-No datapackages found they might still be importing. Check back in a couple
+No datapackages found. They might still be importing. Check back in a couple
 of minutes...</p>
 {% endif %}
 <p>

@@ -3,7 +3,7 @@ import urllib2
 import json
 import dateutil.parser
 from django.shortcuts import render_to_response, get_object_or_404
-from django.http import HttpResponseRedirect, HttpResponseForbidden
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidden, HttpResponseNotFound
 from django.template.context import RequestContext 
 from django.core.context_processors import csrf
 from django.contrib import auth
@@ -87,7 +87,7 @@ def create(request):
             p = Project()
             # fill project with random name and slug
             p.title = generate_name()
-            p.slug = slugify(unicode(p.title))
+            #p.slug = slugify(unicode(p.title))
             p.creator = request.user
             p.save()
             # create new data package;
@@ -140,6 +140,32 @@ def editproject(request,project):
         context_instance = RequestContext(request))
 
 @login_required
+def package(request,project,package):
+    project = get_object_or_404(Project, slug = project)
+    package = get_object_or_404(DataPackage, slug = package)
+    if project.creator != request.user:
+        return HttpResponseForbidden()
+    datasets = Dataset.objects.filter(datapackage = package)
+    if request.method == 'POST':
+        form = DataPackageForm(request.POST, instance=package)
+        if form.is_valid():
+            form.save()
+            if form.cleaned_data['slug'] != package:
+                return HttpResponseRedirect("/%s/packages/package/%s"%(project.slug, package.slug))
+    else:
+        form = DataPackageForm(instance = package)
+    c = {
+        "form": form,
+        "project": project,
+        "package": package,
+        "datasets": datasets,
+        "page": "package"
+    }
+    c.update(csrf(request))
+    return render_to_response("bdpsite/package.html", c,
+        context_instance = RequestContext(request))
+
+@login_required
 def packages(request,project):
     project = get_object_or_404(Project, slug = project)
     if project.creator != request.user:
@@ -149,22 +175,6 @@ def packages(request,project):
        "datapackages": datapackages,
        "page": "packages"}
     return render_to_response("bdpsite/packages.html", c,
-        context_instance = RequestContext(request))
-
-@login_required
-def package(request,project,package):
-    project = get_object_or_404(Project, slug = project)
-    package = get_object_or_404(DataPackage, slug = package)
-    if project.creator != request.user:
-        return HttpResponseForbidden()
-    datasets = Dataset.objects.filter(datapackage = package)
-    c = {
-        "project": project,
-        "package": package,
-        "datasets": datasets,
-        "page": "package"
-    }
-    return render_to_response("bdpsite/package.html", c,
         context_instance = RequestContext(request))
 
 @login_required
@@ -212,6 +222,9 @@ def adddataset(request,project):
                 data = json.load(u)
                 d = Dataset()
                 d.name = data['name']
+#                d.path = u
+# The path needs to be the raw CSV...
+                d.openspending = u
                 d.type = data['category']
                 d.currency = data['currency']
                 d.dateLastUpdated = dateutil.parser.parse(
@@ -243,6 +256,30 @@ def deletedataset(request,project,id):
     return HttpResponseRedirect("../../")
 
 @login_required
+def preprocessdataset(request,project,id):
+    dataset = get_object_or_404(Dataset, id=id)
+    if dataset.project.creator != request.user or dataset.project.slug != project:
+        return HttpResponseForbidden()
+    result = preprocess_dataset.delay(id).get(propagate=False)
+    return HttpResponse(json.dumps(result), mimetype="application/json")
+
+@login_required
+def generatemodel(request,project,id):
+    dataset = get_object_or_404(Dataset, id=id)
+    if dataset.project.creator != request.user or dataset.project.slug != project:
+        return HttpResponseForbidden()
+    result = generate_model.delay(id).get(propagate=False)
+    return HttpResponse(json.dumps(result), mimetype="application/json")
+
+@login_required
+def osuploaddataset(request,project,id):
+    dataset = get_object_or_404(Dataset, id=id)
+    if dataset.project.creator != request.user or dataset.project.slug != project:
+        return HttpResponseForbidden()
+    result = osload.delay(id).get(propagate=False)
+    return HttpResponse(json.dumps(result), mimetype="application/json")
+
+@login_required
 def visualizations(request,project):    
     project = get_object_or_404(Project, slug = project)
     if project.creator != request.user:
@@ -269,7 +306,7 @@ def addviz(request,project):
             return HttpResponseRedirect("../")
     else:
         form = VisualizationForm()
-    form.fields['dataset'].queryset = Dataset.objects.filter(project = project)
+    form.fields['dataset'].queryset = Dataset.objects.filter(project = project).exclude(openspending__isnull=True).exclude(openspending__exact='')
     c = { "project": project,
         "form" : form,
         "page": "viz" }

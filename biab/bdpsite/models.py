@@ -1,12 +1,15 @@
 from django.db import models
 from django.contrib.auth.models import User
+from autoslug import AutoSlugField
 
 # Create your models here.
 
 class Project(models.Model):
     title = models.CharField(max_length=256)
-    slug = models.SlugField(unique=True)
-    description = models.TextField(null=True,blank=True)
+    slug = AutoSlugField(populate_from="title", 
+        unique=True, 
+        editable=True)
+    description = models.TextField(default="")
     creator = models.ForeignKey(User)
     
     def __unicode__(self):
@@ -14,8 +17,10 @@ class Project(models.Model):
 
 class DataPackage(models.Model):
     name = models.CharField(max_length=256)
-    slug = models.SlugField(unique=True)
     project = models.ForeignKey(Project)
+    slug = AutoSlugField(populate_from="name", 
+        unique_with="project__slug", 
+        editable=True)
     path = models.URLField(null=True)
 
     def __unicode__(self):
@@ -27,9 +32,9 @@ class Dataset(models.Model):
     project = models.ForeignKey(Project)
 
     # URLs linking to OS stuff
-    preprocessed = models.URLField(null=True)
-    datamodel = models.URLField(null=True)
-    openspending = models.URLField(null=True)
+    preprocessed = models.URLField(null=True,blank=True)
+    datamodel = models.URLField(null=True,blank=True)
+    openspending = models.URLField(null=True,blank=True)
 
     # stuff from BDP resource metadata
     path = models.CharField(max_length=256,null=True,blank=True)
@@ -44,11 +49,7 @@ class Dataset(models.Model):
     description = models.TextField(null=True,blank=True)
 
     def __unicode__(self):
-        if self.datapackage:
-            return self.name + " (in " + \
-                self.datapackage.name + ")"
-        else:
-            return self.name
+        return self.name
 
 class Visualization(models.Model):
     dataset = models.ForeignKey(Dataset)
