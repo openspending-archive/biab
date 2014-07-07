@@ -27,7 +27,7 @@
 {{project.description|markdown}}
 
 {% for viz in visualizations %}
-<div class="{{viz.type}}" data-dataset="{{viz.dataset}}"
+<div class="{{viz.type}}" data-dataset="{{viz.dataset.openspendingSlug}}"
     data-drilldowns="{{viz.drilldowns}}" data-cuts="{{viz.cuts}}" ></div>
 {{viz.description|markdown}}
 {% endfor %}
