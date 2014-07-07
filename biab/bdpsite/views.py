@@ -363,7 +363,7 @@ def userview_dataset_index(request,project):
 
 def userview_dataset(request,project,dataset):
     project = get_object_or_404(Project, slug = project)
-    dataset = get_object_or_404(Dataset, name = dataset)
+    dataset = get_object_or_404(Dataset, name = dataset, project = project)
     visualizations = Visualization.objects.filter(dataset__id = dataset.id)
     c={"project": project,
         "dataset": dataset,
