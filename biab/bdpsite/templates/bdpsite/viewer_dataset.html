@@ -44,25 +44,29 @@
       <!-- Example row of columns -->
       <div class="row">
         <div class="col-md-8">
-            <h2>Visualizations</h2>
-            <ul class="nav nav-tabs" role="tablist">
-              {% for viz in visualizations %}
-              <li {% if forloop.first %} class="active" {% endif %}>
-                <a href="#{{viz.id}}" role="tab" data-toggle="tab">
-                  {{viz.type}}
-                </a>
-              </li>
-              {% endfor %}
-            </ul>
-            <div class="tab-content">
-              {% for viz in visualizations %}
-              <div class="tab-pane {% if forloop.first %} active {% endif %}" id="{{viz.id}}">
-                <div class="{{viz.type}}" data-dataset="{{viz.dataset.openspendingSlug}}"
-                    data-drilldowns="{{viz.drilldowns}}" data-cuts="{{viz.cuts}}" ></div>
-                {{viz.description|markdown}}
+          <h2>Visualizations</h2>
+            {% if visualizations %}
+              <ul class="nav nav-tabs" role="tablist">
+                {% for viz in visualizations %}
+                <li {% if forloop.first %} class="active" {% endif %}>
+                  <a href="#{{viz.id}}" role="tab" data-toggle="tab">
+                    {{viz.type}}
+                  </a>
+                </li>
+                {% endfor %}
+              </ul>
+              <div class="tab-content">
+                {% for viz in visualizations %}
+                <div class="tab-pane {% if forloop.first %} active {% endif %}" id="{{viz.id}}">
+                  <div class="{{viz.type}}" data-dataset="{{viz.dataset.openspendingSlug}}"
+                      data-drilldowns="{{viz.drilldowns}}" data-cuts="{{viz.cuts}}" ></div>
+                  {{viz.description|markdown}}
+                </div>
+                {% endfor %}
               </div>
-              {% endfor %}
-            </div>
+            {% else %}
+            <i>No visualizations have been configured for this dataset.</i>
+            {% endif %}
         </div>
 
         <div class="col-md-4">
