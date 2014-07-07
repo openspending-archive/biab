@@ -4,8 +4,23 @@
 {% block "css" %}
 <style type="text/css">
     body {
-      padding-top: 50px;
+      padding-top: 25px;
       padding-bottom: 20px;
+    }
+    .enclosure {
+      margin-left: auto;
+      margin-right: auto;
+      display: block;
+    }
+    .enclosure.for-bubbletree {
+      margin-top: -25px;
+      width: 400px;
+    }
+    .enclosure.for-barchart {
+      width: 600px;
+    }
+    .openspending-bt .label2 span {
+      background: none;
     }
 </style>
 {% endblock %}
@@ -41,8 +56,19 @@
     <div class="jumbotron">
       <div class="container">
         <h1>{{ project.title }} </h1>
+        {% if project.featured_viz %}
+        <div class="enclosure for-{{project.featured_viz.type}}">
+          <div
+            class="{{project.featured_viz.type}}"
+            data-dataset="{{project.featured_viz.dataset.openspendingSlug}}"
+            data-drilldowns="{{project.featured_viz.drilldowns}}"
+            data-cuts="{{project.featured_viz.cuts}}">
+          </div>
+        </div>
+        {% else %}
         <p>{{ project.description }} </p>
         <p><i>This is where the featured visualization should go. The button below links to the dataset page for the visualization's dataset.</i></p>
+        {% endif %}
         <p><a class="btn btn-primary btn-lg" role="button">Learn more &raquo;</a></p>
       </div>
     </div>

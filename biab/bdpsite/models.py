@@ -12,6 +12,8 @@ class Project(models.Model):
         editable=True)
     description = models.TextField(default="")
     creator = models.ForeignKey(User)
+
+    featured_viz = models.ForeignKey("Visualization",null=True,blank=True)
     
     def __unicode__(self):
         return self.title

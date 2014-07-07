@@ -15,7 +15,12 @@ class DataPackageForm(ModelForm):
 class ProjectForm(ModelForm):   
     class Meta:
         model = Project
-        fields = ['title', 'slug', 'description']
+        fields = ['title', 'slug', 'description', 'featured_viz']
+    def __init__(self, *args, **kwargs):
+        project = kwargs.get("instance", None)
+        super(ProjectForm,self).__init__(*args,**kwargs)
+        if project:
+            self.fields["featured_viz"].queryset = Visualization.objects.filter(dataset__project__id = project.id)
 
 class CreateForm(forms.Form):
     url = forms.URLField()
