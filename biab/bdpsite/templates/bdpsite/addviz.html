@@ -53,8 +53,8 @@ $(document).ready(function() {
         $("#preview")[type](options);        
         });
     $("#id_dataset").on("change",function() {
-        dataset =$("#id_dataset option[value='"+this.value+"']").text()
-        $.getJSON('http://openspending.org/'+dataset+'/dimensions.json?callback=?',
+        dataset = this.value;
+        $.getJSON(dataset+'/dimensions.json?callback=?',
             function(d) {
                 console.log(d);
                 var el=$("select[name='drilldown']")

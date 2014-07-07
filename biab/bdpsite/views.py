@@ -309,13 +309,13 @@ def addviz(request,project):
     if project.creator != request.user:
         return HttpResponseForbidden()
     if request.method == 'POST':
-        form = VisualizationForm(request.POST)
+        form = VisualizationForm(request.POST, instance = project)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect("../")
     else:
-        form = VisualizationForm()
-    form.fields['dataset'].queryset = Dataset.objects.filter(project = project).exclude(openspending__isnull=True).exclude(openspending__exact='')
+        form = VisualizationForm(instance = project)
+#    form.fields['dataset'].queryset = Dataset.objects.filter(project = project).exclude(openspending__isnull=True).exclude(openspending__exact='')
     c = { "project": project,
         "form" : form,
         "page": "viz" }

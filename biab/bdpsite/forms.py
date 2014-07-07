@@ -32,5 +32,11 @@ class AddDatasetForm(forms.Form):
 class VisualizationForm(forms.ModelForm):
     class Meta:
         model = Visualization
-        fields= ['dataset', 'drilldowns', 'cuts', 'type',
-            'description']
+        fields= ['dataset', 'drilldowns', 'cuts', 'type', 'description']
+    def __init__(self, *args, **kwargs):
+        project = kwargs.get("instance", None)
+        super(VisualizationForm, self).__init__(*args, **kwargs)
+        if project:
+            self.fields["dataset"] = forms.ModelChoiceField(
+                queryset = Dataset.objects.filter(project = project).exclude(openspending__isnull=True).exclude(openspending__exact=''),
+                to_field_name = "openspending")
