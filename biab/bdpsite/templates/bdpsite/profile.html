@@ -11,7 +11,7 @@
 <h3>Projects</h3>
 <ul>
 {% for p in projects %}
-<li><a href="/{{p.slug}}">{{p.title}}</a></li>
+<li><a href="/project/{{p.slug}}">{{p.title}}</a></li>
 {% endfor %}
 </ul>
 {% if profileuser = user %}
