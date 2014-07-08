@@ -27,13 +27,20 @@ with open(os.path.join(settings.RESOURCES, "gfsm-expenditure.json")) as gfsme_ma
 # List of lists of field names that can be bundled
 # together as compound dimensions.
 bundleable = [
-    ["admin","adminID","adminOrgID"],
-    ["economic","economicID"],
-    ["functional","functionalID"],
-    ["fund","fundID"],
-    ["program","programID"],
-    ["project","projectID"],
-    ["purchaserID","purchaserOrgID"],
+    ["admin","adminid","adminorgid"],
+    ["economic","economicid"],
+    ["functional","functionalid"],
+    ["fund","fundid"],
+    ["program","programid"],
+    ["project","projectid"],
+    ["purchaserid","purchaserorgid"],
+    ["admin","adminid","adminorgid"],
+    ["economic","economicid"],
+    ["functional","functionalid"],
+    ["fund","fundid"],
+    ["program","programid"],
+    ["project","projectid"],
+    ["purchaserid","purchaserorgid"],
     ["cofog1code","cofog1label"],
     ["cofog2code","cofog2label"],
     ["cofog3code","cofog3label"]
