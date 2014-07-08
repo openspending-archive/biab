@@ -20,15 +20,15 @@
         <span data-id="{{d.id}}" data-status="csv" class="label label-warning">CSV not preprocessed</span>
         {% endif %}
         {% if d.datamodel %}
-        <span data-id="{{d.id}}" data-status="model" class="label label-success">OS upload model ready</span>
+        <span data-id="{{d.id}}" data-status="model" class="label label-success">OpenSpending upload model ready</span>
         {% else %}
-        <span data-id="{{d.id}}" data-status="model" class="label label-warning">OS uploade model not ready</span>
+        <span data-id="{{d.id}}" data-status="model" class="label label-warning">OpenSpending upload model not ready</span>
         {% endif %}
         {% endif %}
         {% if d.openspending %}
-        <span data-id="{{d.id}}" data-status="os" class="label label-success">Hosted on OS</span>
+        <span data-id="{{d.id}}" data-status="os" class="label label-success">Hosted on OpenSpending</span>
         {% else %}
-        <span data-id="{{d.id}}" data-status="os" class="label label-warning">Not hosted on OS</span>
+        <span data-id="{{d.id}}" data-status="os" class="label label-warning">Not hosted on OpenSpending</span>
         {% endif %}
         </li>
 {% endfor %}
@@ -52,6 +52,7 @@ $(document).ready(function () {
             } else {
                 $status.attr("class", "label label-danger")
                 .html("CSV preprocessing failed");
+                console.log(data);
             };
         });
     });
@@ -59,17 +60,18 @@ $(document).ready(function () {
         e.preventDefault();
         var id = $(this).attr("data-id");
         var $status = $("span[data-id='" + id + "'][data-status='model']");
-        $status.attr("class", "label label-info").html("OS upload model processing...");
+        $status.attr("class", "label label-info").html("OpenSpending upload model processing...");
         var result = $.get("model/" + id + "/", function (data) {
             console.log(data);
             if (data["model"].match(/^Success/)) {
                 $status.attr("class", "label label-success")
-                .html("OS upload model ready");
+                .html("OpenSpending upload model ready");
                 $("a[data-id='" + id + "'][data-action='osload']")
                 .removeClass("disabled");
             } else {
                 $status.attr("class", "label label-danger")
-                .html("OS upload model creation failed");
+                .html("OpenSpending upload model creation failed");
+                console.log(data);
             };
         });
     });
@@ -85,6 +87,7 @@ $(document).ready(function () {
             } else {
                 $status.attr("class", "label label-danger")
                 .html("OpenSpending upload failed");
+                console.log(data);
             };
         });
     });

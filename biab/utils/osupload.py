@@ -8,6 +8,7 @@ import requests
 import os
 import json
 import uuid
+import dateutil.parser
 
 # Helper dictionaries for looking up values needed to construct OS
 # models.
@@ -120,8 +121,14 @@ def process_resource(resource_object):
     if "time" not in resource.headers:
         if "date" in resource.headers:
             resource.append_columns(["time"],lambda r:{"time":r["date"]})
+        elif "year" in resource.headers:
+            resource.append_columns(["time"], lambda r:{"time":r["year"]})
         else:
-            resource.append_columns(["time"],append_date(metadata["fiscalYear"].strftime("%Y")))
+            if type(metadata["fiscalYear"] == type("")):
+                default_time = metadata["fiscalYear"]
+            elif type(metadata["fiscalYear"]) == type(dateutil.parser.parse("2012")):
+                default_time = metadata["fiscalYear"].strftime("%Y")
+            resource.append_columns(["time"],append_date(default_time))
 
     # set everything to lowercase, as OS evidently requires
     for header in resource.headers:
@@ -192,6 +199,11 @@ def dataset_attribute(metadata, territories=["CH"], languages=["EN"]):
             category = "other"
     else:
         category = "other"
+
+    if type(metadata["fiscalYear"] == type("")):
+        default_time = metadata["fiscalYear"]
+    elif type(metadata["fiscalYear"]) == type(dateutil.parser.parse("2012")):
+        default_time = metadata["fiscalYear"].strftime("%Y")
     return {
             "name": metadata["name"] + "-" + str(uuid.uuid4()),
             "currency": metadata["currency"],
@@ -199,7 +211,7 @@ def dataset_attribute(metadata, territories=["CH"], languages=["EN"]):
             "territories": territories,
             "category": categorize_dataset(metadata),
             "label": metadata["name"],
-            "default_time": metadata["fiscalYear"].strftime("%Y"),
+            "default_time": default_time,
             "description": metadata.get("description","No description."),
             "category": category,
             "schema_version": "2011-12-07",

@@ -9,6 +9,9 @@ from urlparse import urljoin
 
 from bdpsite.models import *
 
+import sys
+import traceback
+
 from utils.osupload import process_resource, model, os_load
 from utils.csv import DatasetCSV
 from utils.s3 import put_dataset, put_model
@@ -89,9 +92,9 @@ def reconstruct_resource(dataset, preprocessed=False):
             "name": dataset.name,
 
             "currency": dataset.currency,
-            "dateLastUpdated": dataset.dateLastUpdated,
-            "datePublished": dataset.datePublished,
-            "fiscalYear": dataset.fiscalYear,
+            "dateLastUpdated": str(dataset.dateLastUpdated),
+            "datePublished": str(dataset.datePublished),
+            "fiscalYear": str(dataset.fiscalYear)[:4],
             "granularity": dataset.granularity,
             "status": dataset.status,
             "type": dataset.type
@@ -109,7 +112,7 @@ def preprocess_dataset(status, id, *args, **kwargs):
         status.update({"preprocess": "Successfully preprocessed dataset " + dataset.name})
         return status
     except:
-        status.update({"preprocess": "Failed to preprocess dataset: " + str(sys.exc_info()[0])})
+        status.update({"preprocess": "Failed to preprocess dataset: " + str(traceback.format_exc())})
         return status
 
 @shared_task
@@ -127,7 +130,7 @@ def generate_model(status, id, *args, **kwargs):
         status.update({"model": "Successfully generated model for dataset " + dataset.name})
         return status
     except:
-        status.update({"model": "Failed to preprocess dataset: " + str(sys.exc_info()[0])})
+        status.update({"model": "Failed to preprocess dataset: " + str(traceback.format_exc())})
         return status
 
 @shared_task
@@ -142,7 +145,7 @@ def osload(status, id, *args, **kwargs):
         status.update({"openspending": "Successfully uploaded dataset " + dataset.name})
         return status
     except:
-        status.update({"openspending": "Failed to send dataset to Openspending: " + str(sys.exc_info()[0])})
+        status.update({"openspending": "Failed to send dataset to Openspending: " + str(traceback.format_exc())})
         return status
 
 @shared_task
