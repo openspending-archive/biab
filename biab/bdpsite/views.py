@@ -310,13 +310,16 @@ def addviz(request,project):
     if project.creator != request.user:
         return HttpResponseForbidden()
     if request.method == 'POST':
-        form = VisualizationForm(request.POST, instance = project)
+        form = VisualizationForm(request.POST)
         if form.is_valid():
             form.save()
+#            return HttpResponse(json.dumps(str(form.cleaned_data)))
             return HttpResponseRedirect("../")
+        else:
+            return HttpResponse(json.dumps("Form didn't validate."))
     else:
-        form = VisualizationForm(instance = project)
-#    form.fields['dataset'].queryset = Dataset.objects.filter(project = project).exclude(openspending__isnull=True).exclude(openspending__exact='')
+        form = VisualizationForm()
+    form.fields['dataset'].queryset = Dataset.objects.filter(project = project).exclude(openspending__isnull=True).exclude(openspending__exact='')
     c = { "project": project,
         "form" : form,
         "page": "viz" }
@@ -382,3 +385,10 @@ def userview_dataset(request,project,dataset):
         "page": "dataset"}
     return render_to_response("bdpsite/viewer_dataset.html", c,
         context_instance = RequestContext(request))
+
+def get_openspending(request,id):
+    dataset = get_object_or_404(Dataset, id = id)
+    if dataset.openspending:
+        return HttpResponse(json.dumps(dataset.openspending))
+    else:
+        return HttpResponse("None")

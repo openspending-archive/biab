@@ -53,21 +53,24 @@ $(document).ready(function() {
         $("#preview")[type](options);        
         });
     $("#id_dataset").on("change",function() {
-        dataset = this.value;
-        $.getJSON(dataset+'/dimensions.json?callback=?',
-            function(d) {
-                console.log(d);
-                var el=$("select[name='drilldown']")
-                el.html();
-                var old_elements = $("option", el);
-                old_elements.remove();
-                for (i in d) {
-                    console.log(d[i]);
-                    el.append("<option value='"+d[i].name+
-                        "'>"+d[i].label+"</option>")
-                    }
+        dataset_id = this.value;
+        $.getJSON("/openspending/" + dataset_id + "/",
+            function (os) {
+                $.getJSON(os+'/dimensions.json?callback=?',
+                    function(d) {
+                        console.log(d);
+                        var el=$("select[name='drilldown']")
+                        el.html();
+                        var old_elements = $("option", el);
+                        old_elements.remove();
+                        for (i in d) {
+                            console.log(d[i]);
+                            el.append("<option value='"+d[i].name+
+                                "'>"+d[i].label+"</option>")
+                            }
+                        });
                 });
-        });
+            });
     $("#add-drilldown").on("click",function() {
         dimension = $("select[name='drilldown']").val();
         drilldowns.push(dimension);

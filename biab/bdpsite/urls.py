@@ -54,6 +54,9 @@ urlpatterns = patterns('',
     url(r'^project/(?P<project>[-\w]+)/visualize/delete/(?P<id>\d+)/$',
         'bdpsite.views.deleteviz'),
     
+    url(r'^openspending/(?P<id>\d+)/$',
+        'bdpsite.views.get_openspending'),
+
     url(r'^(?P<project>[-\w]+)/$',
         'bdpsite.views.userview_project'),
     url(r'^(?P<project>[-\w]+)/datasets/$',
