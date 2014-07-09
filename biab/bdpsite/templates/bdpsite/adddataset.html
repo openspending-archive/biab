@@ -1,14 +1,17 @@
 {% extends "bdpsite/projectmanager.html" %}
+{% load bootstrap3 %}
 
 {% block "content" %}
+
 <h2>Add a dataset to {{project.title}}</h2>
-<p>Enter the slug from the openspending website below. If you can see your
-dataset as <code>https://openspending.org/my-dataset/</code> you would
-enter <code>my-dataset</code></p>
-<form method='POST' action=''>
-{% csrf_token %}
-{{form.as_p}}
-<input type="Submit" value="Submit" name="Submit" class="btn btn-primary"
-/>
-</form>
+    <p>Enter the slug from the OpenSpending website below. If you can see your
+    dataset as <code>https://openspending.org/my-dataset/</code>, you would
+    enter <code>my-dataset</code>.</p>
+    
+    <form method='POST' action=''>
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        <input type="Submit" value="Submit" name="Submit" class="btn btn-primary"
+        />
+    </form>
 {% endblock %}
