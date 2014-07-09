@@ -10,7 +10,6 @@ dj-database-url==0.3.0
 django-autoslug==1.7.2
 django-celery==3.1.10
 django-recaptcha==1.0
-genname==0.1
 gunicorn==19.0.0
 kombu==3.0.20
 python-dateutil==2.2

@@ -11,12 +11,62 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.utils.text import slugify
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from genname.generate import generate_name
+#from genname.generate import generate_name
 from django.forms.util import ErrorList
 
 from bdpsite.forms import *
 from bdpsite.models import *
 from bdpsite.tasks import *
+
+# replacement for generate_name
+from random import choice
+def generate_name(hex=False):
+    # modified by @dentearl https://gist.github.com/3442096
+    # who forked from @hasenj https://gist.github.com/3205543
+    # who forked from: @afriggeri https://gist.github.com/1266756
+    # example output:
+    # 'golden-horizon-2076'
+    adjs = ['afternoon', 'aged', 'ancient', 'autumn', 'billowing',
+            'bitter', 'black', 'blue', 'bold', 'broken',
+            'calm', 'caring', 'cold', 'cool', 'crimson',
+            'damp', 'dark', 'dawn', 'delicate', 'divine',
+            'dry', 'empty', 'ephemeral', 'evening', 'falling',
+            'fathomless', 'floral', 'fragrant', 'frosty', 'golden',
+            'green', 'hidden', 'holy', 'icy', 'imperfect',
+            'impermanent', 'late', 'lingering', 'little', 'lively',
+            'long', 'majestic', 'mindful', 'misty', 'morning',
+            'muddy', 'nameless', 'noble', 'old', 'patient',
+            'polished', 'proud', 'purple', 'quiet', 'red',
+            'restless', 'rough', 'shy', 'silent', 'silvery',
+            'slender', 'small', 'smooth', 'snowy', 'solitary',
+            'sparkling', 'spring', 'stately', 'still', 'strong',
+            'summer', 'timeless', 'twilight', 'unknowable', 'unmovable',
+            'upright', 'wandering', 'weathered', 'white', 'wild',
+            'winter', 'wispy', 'withered', 'young',
+            ]
+    nouns = ['bird', 'breeze', 'brook', 'brook', 'bush',
+             'butterfly', 'chamber', 'chasm', 'cherry', 'cliff',
+             'cloud', 'darkness', 'dawn', 'dew', 'dream',
+             'dust', 'eye', 'feather', 'field', 'fire',
+             'firefly', 'flower', 'foam', 'fog', 'forest',
+             'frog', 'frost', 'glade', 'glitter', 'grass',
+             'hand', 'haze', 'hill', 'horizon', 'lake',
+             'leaf', 'lily', 'meadow', 'mist', 'moon',
+             'morning', 'mountain', 'night', 'paper', 'pebble',
+             'pine', 'planet', 'plateau', 'pond', 'rain',
+             'resonance', 'ridge', 'ring', 'river', 'sea',
+             'shadow', 'shape', 'silence', 'sky', 'smoke',
+             'snow', 'snowflake', 'sound', 'star', 'stream',
+             'sun', 'sun', 'sunset', 'surf', 'thunder',
+             'tome', 'tree', 'violet', 'voice', 'water',
+             'waterfall', 'wave', 'wave', 'wildflower', 'wind',
+             'wood',
+             ]
+    if hex:
+        suffix = '0123456789abcdef'
+    else:
+        suffix = '0123456789'
+    return ('-'.join([choice(adjs), choice(nouns), ''.join(choice(suffix) for x in xrange(4))]))
 
 # Create your views here.
 
@@ -94,7 +144,7 @@ def create(request):
             # create new data package;
             # use Celery to do this asynchronously...
             create_bdp.delay(p, form.cleaned_data["url"])
-            return HttpResponseRedirect("/%s/edit/"%p.slug)
+            return HttpResponseRedirect("/project/%s/"%p.slug)
     else:
         form = CreateForm()
     c={"form": form}
@@ -110,7 +160,7 @@ def createbare(request):
             project = form.save(commit=False)
             project.creator = request.user
             project.save()
-            return HttpResponseRedirect("/%s/datasets/"%project.slug)
+            return HttpResponseRedirect("/project/%s/datasets/"%project.slug)
     else:
         form = ProjectForm()
 
@@ -129,7 +179,7 @@ def editproject(request,project):
         if form.is_valid():
             form.save()
             if form.cleaned_data['slug'] != project:
-                return HttpResponseRedirect("/%s/edit/"%form.cleaned_data['slug'])
+                return HttpResponseRedirect("/project/%s/"%form.cleaned_data['slug'])
     else:
         form = ProjectForm(instance = project)
 
@@ -152,7 +202,7 @@ def package(request,project,package):
         if form.is_valid():
             form.save()
             if form.cleaned_data['slug'] != package:
-                return HttpResponseRedirect("/%s/packages/package/%s"%(project.slug, package.slug))
+                return HttpResponseRedirect("/project/%s/packages/package/%s"%(project.slug, package.slug))
     else:
         form = DataPackageForm(instance = package)
     c = {
