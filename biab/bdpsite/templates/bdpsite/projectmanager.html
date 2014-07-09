@@ -4,12 +4,8 @@
 
 <h1>{{ project.title }}</h1>
 <ul class="nav nav-tabs">
-    <li>
-        <a href="/project/{{project.slug}}/"><i class="glyphicon
-        glyphicon-home"></i>View</a>
-    </li>
     <li {% if page = "edit" %}class="active"{% endif %}>
-        <a href="/project/{{project.slug}}/edit/">Edit Project</a>
+        <a href="/project/{{project.slug}}/">Edit Project</a>
     </li>
     <li {% if page = "packages" %}class="active"{% endif %}>
         <a href="/project/{{project.slug}}/packages/">Data Packages</a>
@@ -19,6 +15,10 @@
     </li>
     <li {% if page = "viz" %}class="active"{% endif %}>
         <a href="/project/{{project.slug}}/visualize/">Visualize</a>
+    </li>
+    <li>
+        <a href="/{{project.slug}}/"><i class="glyphicon
+        glyphicon-home"></i>View</a>
     </li>
 </ul>
 {% block "content" %}

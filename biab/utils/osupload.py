@@ -9,6 +9,7 @@ import os
 import json
 import uuid
 import dateutil.parser
+import re
 
 # Helper dictionaries for looking up values needed to construct OS
 # models.
@@ -27,13 +28,6 @@ with open(os.path.join(settings.RESOURCES, "gfsm-expenditure.json")) as gfsme_ma
 # List of lists of field names that can be bundled
 # together as compound dimensions.
 bundleable = [
-    ["admin","adminid","adminorgid"],
-    ["economic","economicid"],
-    ["functional","functionalid"],
-    ["fund","fundid"],
-    ["program","programid"],
-    ["project","projectid"],
-    ["purchaserid","purchaserorgid"],
     ["admin","adminid","adminorgid"],
     ["economic","economicid"],
     ["functional","functionalid"],
@@ -161,6 +155,15 @@ def model(resource_object):
     }
     return json.dumps(model)
 
+def purify(field):
+    """
+    OpenSpending is finicky about the names of mapping dimensions.
+    You must preprocess column names to get them ready.
+    """
+    field = field.lower()
+    field = re.sub("_","",field)
+    return field
+
 def mapping_field(field):
     """
     Returns a mapping object for the field name.
@@ -173,11 +176,11 @@ def mapping_field(field):
     if field in model_map.keys():
         return model_map[field]
     else:
-        return {field: {
+        return {purify(field): {
                         "default_value": "",
                         "description": field + " (user field)", 
                         "column": field,
-                        "label": field.capitalize(),
+                        "label": purify(field).capitalize(),
                         "datatype": "string",
                         "type": "attribute"
                     }}

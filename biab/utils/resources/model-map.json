@@ -204,7 +204,7 @@
                "default_value":""
             },
             "name":{
-               "datatype":"string",
+               "datatype":"id",
                "column":"economicid",
                "default_value":""
             }
@@ -253,7 +253,7 @@
                "default_value":""
             },
             "name":{
-               "datatype":"string",
+               "datatype":"id",
                "column":"functionalid",
                "default_value":""
             }
@@ -292,7 +292,7 @@
                "default_value":""
             },
             "name":{
-               "datatype":"string",
+               "datatype":"id",
                "column":"fundid",
                "default_value":""
             }
@@ -381,7 +381,7 @@
                "default_value":""
             },
             "name":{
-               "datatype":"string",
+               "datatype":"id",
                "column":"programid",
                "default_value":""
             }
@@ -420,7 +420,7 @@
                "default_value":""
             },
             "name":{
-               "datatype":"string",
+               "datatype":"id",
                "column":"projectid",
                "default_value":""
             }
@@ -443,9 +443,9 @@
    "programid":{
       "program":{
          "default_value":"",
-         "description":"Project id",
+         "description":"Program id",
          "column":"programid",
-         "label":"Projectid",
+         "label":"Programid",
          "datatype":"string",
          "type":"attribute"
       }
@@ -555,6 +555,16 @@
          "description":"Date",
          "column":"time",
          "label":"Date",
+         "datatype":"date",
+         "type":"date"
+      }
+   },
+   "year":{
+      "year":{
+         "default_value":"",
+         "description":"Year",
+         "column":"year",
+         "label":"Year",
          "datatype":"date",
          "type":"date"
       }

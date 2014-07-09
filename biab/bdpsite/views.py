@@ -10,6 +10,7 @@ from django.contrib import auth
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.utils.text import slugify
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from genname.generate import generate_name
 from django.forms.util import ErrorList
 
@@ -351,9 +352,22 @@ def userview_project(request,project):
 
 def userview_dataset_index(request,project):
     project = get_object_or_404(Project, slug = project)
-    datasets = Dataset.objects.filter(project = project)
+    all_datasets = Dataset.objects.filter(project = project)
+    p = Paginator(all_datasets,5)
+    page = request.GET.get("page")
+    try:
+        datasets = p.page(page)
+        currentpage = page
+    except PageNotAnInteger:
+        datasets = p.page(1)
+        currentpage = 1
+    except EmptyPage:
+        datasets = p.page(p.num_pages)
+        currentpage = p.num_pages
     c={"project": project,
        "datasets": datasets,
+       "pagenums": range(1,p.num_pages+1),
+       "pagenum": int(currentpage),
        "page": "datasets" }
     return render_to_response("bdpsite/viewer_dataset_index.html", c,
         context_instance = RequestContext(request))

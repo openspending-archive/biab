@@ -42,6 +42,18 @@ Datasets : {{ project.title }}
       <div class="row">
         <div class="col-md-8">
             <h2>Datasets</h2>
+
+            <div class="pagination-area">
+              <ul class="pagination">
+                    <li {% if not datasets.has_previous %}class="disabled"{% endif %}>
+                      <a href="{% if datasets.has_previous %}?page={{ datasets.previous_page_number }}{% else %}#{% endif %}">&laquo;</a></li>
+                    {% for i in pagenums %}
+                      <li {% if pagenum == i %}class="active"{% endif %}><a href="?page={{ i }}">{{ i }}</a></li>
+                    {% endfor %}
+                    <li {% if not datasets.has_next %}class="disabled"{% endif %}><a href="{% if datasets.has_next %}?page={{ datasets.next_page_number }}{% else %}#{% endif %}">&raquo;</a></li>
+              </ul>
+            </div>
+
             <ul>
                 {% for d in datasets %}
                 <li>
@@ -54,6 +66,7 @@ Datasets : {{ project.title }}
                 </li>
                 {% endfor %}
             </ul>
+
         </div>
         <div class="col-md-4">
             <h2>Collection information</h2>
