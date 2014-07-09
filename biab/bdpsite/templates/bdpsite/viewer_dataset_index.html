@@ -58,7 +58,7 @@ Datasets : {{ project.title }}
                 {% for d in datasets %}
                 <li>
                     <h4><a href="../{{ d.name }}/">{{ d.name }}</a></h4>
-                    <div>Fiscal year: {{ d.fiscalYear }}</div>
+                    <div>Fiscal year: {{ d.fiscalYear | date:"Y" }}</div>
                     {% if d.status %}<div>Status: {{ d.status }}</div>{% endif %}
                     <div>Type: {{ d.type }}</div>
                     {% if d.granularity %}<div>Granularity: {{ d.granularity }}</div>{% endif %}
