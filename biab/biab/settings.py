@@ -51,7 +51,8 @@ INSTALLED_APPS = (
     'captcha',
     'bdpsite',
     'djcelery',
-    'kombu.transport.django'
+    'kombu.transport.django',
+    'bootstrap3',
 )
 
 MIDDLEWARE_CLASSES = (

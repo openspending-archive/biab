@@ -1,10 +1,11 @@
 {% extends "bdpsite/projectmanager.html" %}
 
+{% load bootstrap3 %}
 {% block "content" %}
 <h1>Edit Project</h1>
-<form method="POST" action="">
+<form method="POST" action="" style="width:450px">
 {% csrf_token %}
-{{form.as_p}}
+{% bootstrap_form form %}
 <input type="Submit" name="Submit" value="Save" class="btn btn-primary">
 </form>
 {% endblock %}
