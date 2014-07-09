@@ -400,7 +400,7 @@ def userview_project(request,project):
 
 def userview_dataset_index(request,project):
     project = get_object_or_404(Project, slug = project)
-    all_datasets = Dataset.objects.filter(project = project)
+    all_datasets = Dataset.objects.filter(project = project).order_by("fiscalYear","name")
     p = Paginator(all_datasets,5)
     page = request.GET.get("page")
     try:
