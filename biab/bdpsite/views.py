@@ -187,9 +187,9 @@ def editproject(request,project):
         context_instance = RequestContext(request))
 
 @login_required
-def package(request,project,package):
-    project = get_object_or_404(Project, slug = project)
-    package = get_object_or_404(DataPackage, slug = package)
+def package(request,project,id):
+    project = get_object_or_404(Project, slug=project)
+    package = get_object_or_404(DataPackage, id=id)
     if project.creator != request.user:
         return HttpResponseForbidden()
     datasets = Dataset.objects.filter(datapackage = package)

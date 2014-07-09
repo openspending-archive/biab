@@ -1,20 +1,19 @@
 {% extends "bdpsite/projectmanager.html" %}
+{% load bootstrap3 %}
 
 {% block "content" %}
 <h1>{{package.name}}</h1>
 
 <form method="POST" action="">
 {% csrf_token %}
-{{form.as_p}}
+{% bootstrap_form form %}
 <input type="Submit" name="Submit" value="Save" class="btn btn-primary">
 </form>
 
 <h2>Datasets from package "{{package.name}}"</h2>
 <ul>
 {% for d in datasets %}
-    <li><h3>{{d.name}} 
-        <a href="delete/{{d.id}}/" class="btn btn-danger btn-xs"><i class="glyphicon
-        glyphicon-minus-sign"></i></a></h3>
+    <li><h4>{{d.name}}</h4>
         <p>{{d.description}}</p>
         </li>
 {% endfor %}
