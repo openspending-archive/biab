@@ -344,10 +344,9 @@ def visualizations(request,project):
     project = get_object_or_404(Project, slug = project)
     if project.creator != request.user:
         return HttpResponseForbidden()
-    visualizations = Visualization.objects.raw("""
-        select id from bdpsite_visualization where dataset_id in (
-            select id from bdpsite_dataset where project_id=
-            %s) order by order"""%project.id)
+    visualizations = Visualization.objects.filter(
+        dataset__project__id = project.id
+        )
     c={"project":project,
         "visualizations": visualizations,
         "page":"viz"}
