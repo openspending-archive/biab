@@ -347,7 +347,7 @@ def visualizations(request,project):
     visualizations = Visualization.objects.raw("""
         select id from bdpsite_visualization where dataset_id in (
             select id from bdpsite_dataset where project_id=
-            %s) order by 'order'"""%project.id)
+            %s) order by order"""%project.id)
     c={"project":project,
         "visualizations": visualizations,
         "page":"viz"}
