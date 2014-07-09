@@ -187,9 +187,9 @@ def editproject(request,project):
         context_instance = RequestContext(request))
 
 @login_required
-def package(request,project,id):
+def package(request,project,package):
     project = get_object_or_404(Project, slug=project)
-    package = get_object_or_404(DataPackage, id=id)
+    package = get_object_or_404(DataPackage, slug=package, project=project)
     if project.creator != request.user:
         return HttpResponseForbidden()
     datasets = Dataset.objects.filter(datapackage = package)
@@ -198,7 +198,7 @@ def package(request,project,id):
         if form.is_valid():
             form.save()
             if form.cleaned_data['slug'] != package:
-                return HttpResponseRedirect("/project/%s/packages/package/%s"%(project.slug, package.slug))
+                return HttpResponseRedirect("/project/%s/packages/edit/%s/"%(project.slug, package.slug))
     else:
         form = DataPackageForm(instance = package)
     c = {

@@ -5,7 +5,7 @@
 {% if datapackages %}
 <ul>
 {% for dp in datapackages %}
-<li><a href="package/{{dp.id}}">{{dp.name}} ({{dp.slug}})</a> <a href="delete/{{dp.id}}/" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-minus-sign"></i></a></li>
+<li><a href="edit/{{dp.slug}}">{{dp.name}} ({{dp.slug}})</a> <a href="delete/{{dp.id}}/" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-minus-sign"></i></a></li>
 {% endfor %}
 </ul>
 {% else %}
