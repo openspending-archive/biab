@@ -1,17 +1,17 @@
 {% extends "bdpsite/projectmanager.html" %}
 
 {% block "content" %}
-<h2>Datasets of {{project.title}}</h2>
+<h2>Datasets ({{project.title}})</h2>
 <ul>
 {% for d in datasets %}
-    <li><h3>{{d.name}}
+    <li><h4>{{d.name}}
         {% if d.datapackage %}<span class="badge">{{d.datapackage}}</span>{% endif %}
         <a href="delete/{{d.id}}/" class="btn btn-danger btn-xs{% if d.datapackage %} disabled{% endif %}"><i class="glyphicon
         glyphicon-minus-sign"></i></a>
         <a data-id="{{d.id}}" data-action="preprocess" href="#" class="btn btn-xs {% if not d.path %} disabled {% endif %}"><i class="glyphicon glyphicon-sort-by-attributes"></i></a>
         <a data-id="{{d.id}}" data-action="model" href="#" class="btn btn-xs{% if not d.preprocessed %} disabled {% endif %}"><i class="glyphicon glyphicon-list-alt"></i></a>
         <a data-id="{{d.id}}" data-action="osload" href="#" class="btn btn-xs{% if not d.preprocessed or not d.datamodel or d.openspending %} disabled {% endif %}"><i class="glyphicon glyphicon-upload"></i></a>
-        </h3>
+        </h4>
         <p>{{d.description}}</p>
         {% if d.datapackage %}
         {% if d.preprocessed %}

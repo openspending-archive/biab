@@ -14,7 +14,7 @@
                 <div class="form-group">
                     <label for="id_drilldowns" class="control-label">Drilldowns</label>
                     <div class="input-group">
-                        <input type="hidden" class="form-control" id="id_drilldowns" name="drilldowns" />
+                        <input type="hidden" id="id_drilldowns" name="drilldowns" />
                         <select class="form-control" name="drilldown">
                             <option value="null" id="drilldown_select_placeholder"><i>Select a dataset</i></option>
                         </select>
@@ -64,13 +64,11 @@ $(document).ready(function() {
                     function(d) {
                         $("#drilldown_select_placeholder").remove();
                         $("#add-drilldown").removeClass("disabled");
-                        console.log(d);
                         var el=$("select[name='drilldown']")
                         el.html();
                         var old_elements = $("option", el);
                         old_elements.remove();
                         for (i in d) {
-                            console.log(d[i]);
                             el.append("<option value='"+d[i].name+
                                 "'>"+d[i].label+"</option>")
                             }
@@ -82,7 +80,32 @@ $(document).ready(function() {
         $("#drilldown_placeholder").remove();
         dimension = $("select[name='drilldown']").val();
         drilldowns.push(dimension);
-        $("ul.drilldownlist").append("<li>"+dimension+"</li>");
+
+
+        var $ul = $("ul.drilldownlist");
+        var $item = $("<li>", {"text": dimension});
+        $item.appendTo($ul);
+
+        var $a = $("<a>", {
+            "href": "#",
+            "class": "btn btn-danger btn-xs"
+        });
+        $a.appendTo($item);
+
+        var $i = $("<i>", {"class": "glyphicon glyphicon-minus-sign"});
+        $i.appendTo($a);
+
+        $a.on("click", function(e) {
+            e.preventDefault();
+            drilldowns.splice(drilldowns.indexOf(dimension),1);
+            $("input[name='drilldowns']").val(drilldowns.join(","));
+            $item.remove();
+            if (drilldowns.length === 0) {
+                $ul.append("<li id=\"drilldown_placeholder\"><i>None selected</i></li>");
+            }
+        })
+
+        //.append("<li>"+dimension+"<a href=\"#\" data-remove=\"" + dimension + "\" class=\"remove-drilldown btn btn-danger btn-xs\"><i class=\"glyphicon glyphicon-minus-sign\"></i></a></li>");
         $("input[name='drilldowns']").val(drilldowns.join(","));
         })
     })

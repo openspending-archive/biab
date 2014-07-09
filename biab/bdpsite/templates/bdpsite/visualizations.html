@@ -4,9 +4,10 @@
 <h2>Visualizations of {{project.title}}</h2>
 <ul>
 {% for v in visualizations %}
-    <li><h3>{{v.type}} of {{v.dataset.name}}
+    <li><h3>{{v.type}} ({{v.dataset.name}})
         <a href="delete/{{v.id}}/" class="btn btn-danger btn-xs"><i class="glyphicon
         glyphicon-minus-sign"></i></a></h3>
+        <p>{{v.description}}</p>
         </li>
 {% endfor %}
 </ul>
