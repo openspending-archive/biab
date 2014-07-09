@@ -102,7 +102,7 @@ def login(request):
             return HttpResponseRedirect("/user/%s/"%user.username)
         else:
             c={"username": username,
-               "error": _("no such user:password combination")}
+               "error": "No such user:password combination."}
     else:
         c={}
     c.update(csrf(request))
