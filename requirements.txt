@@ -1,2 +1,4 @@
+--allow-all-external
+--allow-unverified genname
 psycopg2
 -r requirements.base.txt
