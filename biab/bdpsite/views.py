@@ -62,11 +62,7 @@ def generate_name(hex=False):
              'waterfall', 'wave', 'wave', 'wildflower', 'wind',
              'wood',
              ]
-    if hex:
-        suffix = '0123456789abcdef'
-    else:
-        suffix = '0123456789'
-    return ('-'.join([choice(adjs), choice(nouns), ''.join(choice(suffix) for x in xrange(4))]))
+    return ('-'.join([choice(adjs), choice(nouns)]))
 
 # Create your views here.
 
