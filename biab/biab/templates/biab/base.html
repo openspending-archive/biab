@@ -5,24 +5,14 @@
     <title>{% block "title" %}Budget in a box!{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
     <link rel="stylesheet" href="{% static 'openspendingjs/0.4.0/openspending.min.css' %}" />
-    <style>
-      /* Customize container */
-      @media (min-width: 768px) {
-        .container {
-          max-width: 730px;
-        }
-      }
-      .jumbotron {
-        text-align: center;
-      }
-    </style>
+    <link rel="stylesheet" href="{% static 'css/biab.css' %}" />
   </head>
   <body>
     <div class="container-fluid container">
         <nav class="navbar navbar-default" role="navigation">
             <div class="container-fluid">
            <div class="navbar-header">
-            <a class="navbar-brand">Budget in a Box</a>
+            <a class="navbar-brand" href="/">Budget in a Box</a>
            </div>
            <ul class="nav navbar-nav navbar-right">
                 {% if user.is_authenticated %}
