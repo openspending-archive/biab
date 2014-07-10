@@ -7,23 +7,8 @@
       padding-top: 25px;
       padding-bottom: 20px;
     }
-    .enclosure {
-      margin-left: auto;
-      margin-right: auto;
-      display: block;
-    }
-    .enclosure.for-bubbletree {
-      margin-top: -25px;
-      width: 400px;
-      position: absolute;
-      right: 0;
-      top: 50px;
-    }
-    .enclosure.for-barchart {
-      width: 600px;
-    }
-    .openspending-bt .label2 span {
-      background: #eee;
+    .bubbletree {
+      margin-top: -50px;
     }
 </style>
 {% endblock %}
@@ -56,22 +41,20 @@
     </div>
 
     <!-- Main jumbotron for a primary marketing message or call to action -->
-    <div class="jumbotron"
-    {% if project.featured_viz.type = "bubbletree" %}
-    style="height: 400px"
-    {% endif %}
-    >
-      <div class="container">
+    <div class="jumbotron" {% if project.featured_viz.type = "bubbletree"%}style="height:425px"{% endif %}>
+    <div class="row">
+      <div class="col-md-5">
+        <div
+          class="{{project.featured_viz.type}}"
+          data-dataset="{{project.featured_viz.dataset.openspendingSlug}}"
+          data-drilldowns="{{project.featured_viz.drilldowns}}"
+          data-cuts="{{project.featured_viz.cuts}}"
+          data-width="400">
+        </div>
+      </div>
+      <div class="col-md-7">
         <h1>{{ project.title }} </h1>
         {% if project.featured_viz %}
-        <div class="enclosure for-{{project.featured_viz.type}}">
-          <div
-            class="{{project.featured_viz.type}}"
-            data-dataset="{{project.featured_viz.dataset.openspendingSlug}}"
-            data-drilldowns="{{project.featured_viz.drilldowns}}"
-            data-cuts="{{project.featured_viz.cuts}}">
-          </div>
-        </div>
         <p>{{ project.description }}</p>
         <p><a class="btn btn-primary btn-lg" role="button" href="{{featured_dataset}}/">Learn more &raquo;</a></p>
         {% else %}
@@ -79,6 +62,7 @@
         <p><i>This is where the featured visualization should go. The button below links to the dataset page for the visualization's dataset.</i></p>
         {% endif %}
       </div>
+    </div>
     </div>
 
     <div class="container">
