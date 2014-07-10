@@ -98,6 +98,13 @@ def process_resource(resource_object):
             "cofog3label"],
             split_cofog)
 
+    if "cofog1code" in resource.headers:
+        resource.update_column("cofog1code", pad_cofog)
+    if "cofog2code" in resource.headers:
+        resource.update_column("cofog2code", pad_cofog)
+    if "cofog2code" in resource.headers:
+        resource.update_column("cofog3code", pad_cofog)
+
     # split out GFSM exp column
     if gfsm_expenditure_pred(resource.headers):
         resource.append_columns(
@@ -303,15 +310,22 @@ def gfsm_revenue_pred(headers):
         or "gfsmRevenue3" in headers
         or "gfsmRevenue4" in headers)
 
+def pad_cofog(cofog_str):
+    """
+    Pads the first member of a cofog string of whatever level.
+    """
+    split = cofog_str.split(".")
+    if len(split[0]) < 2:
+        split[0] = "0" + split[0]
+    return ".".join(split)
+
 def floor_cofog(cofog_str):
     """
     Fixes the value of COFOG strings that do not have a proper third level.
     The coding of these is inconsistent.
     """
+    cofog_str = pad_cofog(cofog_str)
     split = cofog_str.split(".")
-    # pad if necessary
-    if len(split[0]) < 2:
-        split[0] = "0" + split[0]
     cohead = ".".join(split[:2])
     if cohead in cofog["floored"]:
         return cohead + "." + "0"
@@ -333,9 +347,6 @@ def split_cofog(row):
     if length < 3:
         for _ in range(3 - length):
             cofog_list.append("")
-    # pad the initial value, if necessary
-    if len(cofog_list[0]) < 2:
-        cofog_list[0] = "0" + cofog_list[0]
     # create the result dictionary
     cofog1 = cofog_list[0]
     cofog2 = ".".join([cofog1,cofog_list[1]])

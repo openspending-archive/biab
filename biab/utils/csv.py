@@ -83,6 +83,14 @@ class DatasetCSV(object):
         for row in self.rows:
             row.update(row_function(row))
 
+    def update_column(self, column_name, fn):
+        """
+        Applies a function to every value in column_name,
+        and sets the value to the result.
+        """
+        for row in self.rows:
+            row[column_name] = fn(row[column_name])
+
     def rename_column(self, column_name, new_name):
         """
         Renames a column.
