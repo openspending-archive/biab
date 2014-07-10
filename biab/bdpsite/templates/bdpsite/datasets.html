@@ -12,9 +12,6 @@
                 <div class="panel-heading clearfix">
                     <h3 class="panel-title pull-left">
                         {{d.name}}
-                        {% if d.datapackage %}
-                            <span class="badge">{{d.datapackage}}</span>
-                        {% endif %}
                     </h3>
                     <div class="btn-group pull-right">
                         <a href="delete/{{d.id}}/" class="btn btn-danger btn-xs{% if d.datapackage %} disabled{% endif %}"><i class="glyphicon glyphicon-minus-sign"></i></a>
@@ -54,7 +51,10 @@
                             </a>
                         {% endif %}
                     </div>
-                </div>
+                </div> 
+                {% if d.datapackage %}
+                    <div class="panel-footer">Package: {{d.datapackage}}</div>
+                {% endif %}
             </div>
             {% endfor %}
         </div>
