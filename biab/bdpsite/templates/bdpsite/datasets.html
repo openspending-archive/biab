@@ -89,7 +89,8 @@ $(document).ready(function () {
                 $status.attr("class", "list-group-item list-group-item-success")
                 .html("CSV preprocessed for upload");
                 $("a[data-id='" + id + "'][data-action='model']")
-                .removeClass("disabled");
+                .removeClass("disabled")
+                .html("Click to generate OpenSpending upload model");
             } else {
                 $status.attr("class", "list-group-item list-group-item-danger")
                 .html("CSV preprocessing failed");
@@ -108,7 +109,8 @@ $(document).ready(function () {
                 $status.attr("class", "list-group-item list-group-item-success")
                 .html("Upload model ready");
                 $("a[data-id='" + id + "'][data-action='osload']")
-                .removeClass("disabled");
+                .removeClass("disabled")
+                .html("Click to upload to OpenSpending");
             } else {
                 $status.attr("class", "list-group-item list-group-item-danger")
                 .html("Upload model creation failed");
