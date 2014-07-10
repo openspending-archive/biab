@@ -215,7 +215,7 @@ def dataset_attribute(metadata, territories=["CH"], languages=["EN"]):
     elif type(metadata["fiscalYear"]) == type(dateutil.parser.parse("2012")):
         default_time = metadata["fiscalYear"].strftime("%Y")
     return {
-            "name": metadata["name"] + "-" + str(uuid.uuid4()),
+            "name": uuid.uuid4().hex,
             "currency": metadata["currency"],
             "languages": languages,
             "territories": territories,
