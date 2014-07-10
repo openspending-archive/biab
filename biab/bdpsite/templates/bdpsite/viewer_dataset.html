@@ -70,10 +70,57 @@
         </div>
 
         <div class="col-md-4">
-            <h2>Dataset information</h2>
-            <p>
-                Summary information about the dataset.
-            </p>
+          <div class="panel panel-default" style="margin-top:2em">
+            <div class="panel-heading">
+              <h3 class="panel-title">Dataset information</h3>
+            </div>
+            <div class="panel-body">
+              <ul>
+                <li>
+                  <b>Fiscal year: </b> {{ dataset.fiscalYear | date:"Y" }}
+                </li>
+                <li>
+                  <b>Date published: </b> {{dataset.datePublished | date:"M Y"}}
+                </li>
+                <li>
+                  <b>Date last updated: </b> {{ dataset.dateLastUpdated | date:"M Y"}}
+                </li>
+                <li>
+                  <b>Currency: </b> {{ dataset.currency }}
+                </li>
+                {% if dataset.granularity %}
+                <li>
+                  <b>Category: </b>{% if dataset.type == "expenditure" %}{% if dataset.granularity == "aggregated" %}budget{% else %}spending{% endif %}{% else %}other{% endif %}
+                </li>
+                {% endif %}
+                {% if dataset.status %}
+                <li>
+                  <b>Status: </b> {{ dataset.status }}
+                </li>
+                {% endif %}
+              </ul>
+            </div>
+          </div>
+
+          <div class="panel panel-default" style="margin-top:2em">
+            <div class="panel-heading">
+              <h3 class="panel-title">Links</h3>
+            </div>
+            <div class="panel-body">
+              <ul>
+                {% if dataset.url %}
+                <li>
+                  <a href="{{url}}">Raw data</a>
+                </li>
+                {% endif %}
+                {% if dataset.openspending %}
+                <li>
+                  <a href="http://openspending.org/{{dataset.openspending}}">OpenSpending dataset</a>
+                </li>
+                {% endif %}
+              </ul>
+            </div>
+          </div>
         </div>
 
       </div>

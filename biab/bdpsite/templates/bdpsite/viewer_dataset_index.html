@@ -58,10 +58,9 @@ Datasets : {{ project.title }}
                 {% for d in datasets %}
                 <li>
                     <h4><a href="../{{ d.name }}/">{{ d.name }}</a></h4>
-                    <div>Fiscal year: {{ d.fiscalYear | date:"Y" }}</div>
-                    {% if d.status %}<div>Status: {{ d.status }}</div>{% endif %}
-                    <div>Type: {{ d.type }}</div>
-                    {% if d.granularity %}<div>Granularity: {{ d.granularity }}</div>{% endif %}
+                    <div><b>Fiscal year: </b>{{ d.fiscalYear | date:"Y" }}</div>
+                    <div><b>Category: </b>{% if d.type == "expenditure" %}{% if d.granularity == "aggregated" %}budget{% else %}spending{% endif %}{% else %}other{% endif %}</div>
+                    {% if d.status %}<div><b>Status: </b>{{ d.status }}</div>{% endif %}
                     <hr>
                 </li>
                 {% endfor %}
@@ -69,10 +68,24 @@ Datasets : {{ project.title }}
 
         </div>
         <div class="col-md-4">
-            <h2>Collection information</h2>
-            <p>
-                Something about the collection of datasets. Maybe some summary stats?
-            </p>
+          <div class="panel panel-default" style="margin-top:2em">
+            <div class="panel-heading">
+              <h3 class="panel-title">Collection information</h3>
+            </div>
+            <div class="panel-body">
+              <ul>
+                <li>
+                  <b>Number of datasets: </b> {{ count }}
+                </li>
+                <li>
+                  <b>Number of data packages: </b> {{ package_count}}
+                </li>
+                <li>
+                  <b>Date range: </b> {{earliest | date:"Y"}}{% if earliest != latest %}– {{ latest | date:"Y"}}{% endif %}
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
 
       </div>

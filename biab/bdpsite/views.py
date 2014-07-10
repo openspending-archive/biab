@@ -13,6 +13,7 @@ from django.utils.text import slugify
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 #from genname.generate import generate_name
 from django.forms.util import ErrorList
+from urlparse import urljoin
 
 from bdpsite.forms import *
 from bdpsite.models import *
@@ -406,7 +407,7 @@ def userview_project(request,project):
 
 def userview_dataset_index(request,project):
     project = get_object_or_404(Project, slug = project)
-    all_datasets = Dataset.objects.filter(project = project).order_by("fiscalYear","name")
+    all_datasets = Dataset.objects.filter(project = project).exclude(fiscalYear__isnull=True).order_by("fiscalYear","name")
     p = Paginator(all_datasets,5)
     page = request.GET.get("page")
     try:
@@ -422,7 +423,11 @@ def userview_dataset_index(request,project):
        "datasets": datasets,
        "pagenums": range(1,p.num_pages+1),
        "pagenum": int(currentpage),
-       "page": "datasets" }
+       "page": "datasets",
+       "count": all_datasets.count(),
+       "package_count": DataPackage.objects.filter(project=project).count(),
+       "earliest": all_datasets[0].fiscalYear,
+       "latest": all_datasets.reverse()[0].fiscalYear }
     return render_to_response("bdpsite/viewer_dataset_index.html", c,
         context_instance = RequestContext(request))
 
@@ -430,10 +435,15 @@ def userview_dataset(request,project,dataset):
     project = get_object_or_404(Project, slug = project)
     dataset = get_object_or_404(Dataset, name = dataset, project = project)
     visualizations = Visualization.objects.filter(dataset__id = dataset.id)
+    if dataset.datapackage != None:
+        url = urljoin(dataset.datapackage.path, dataset.path)
+    else:
+        url = None
     c={"project": project,
         "dataset": dataset,
         "visualizations": visualizations,
-        "page": "dataset"}
+        "page": "dataset",
+        "url": url}
     return render_to_response("bdpsite/viewer_dataset.html", c,
         context_instance = RequestContext(request))
 
