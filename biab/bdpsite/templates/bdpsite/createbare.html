@@ -1,10 +1,11 @@
 {% extends "biab/base.html" %}
+{% load bootstrap3 %}
 
 {% block "main" %}
 <h1>Create a new project</h1>
 <form method='POST' action=''>
 {% csrf_token %}
-{{form.as_p}}
+{% bootstrap_form form %}
 <input type="Submit" name="Submit" value="Create" class="btn btn-primary"/>
 </form>
 {% endblock %}

@@ -1,7 +1,29 @@
 {% extends "biab/base.html" %}
 
 {% block "main" %}
-<h1>Welcome to Budget in a Box</h1>
 
-Magic happens here!
+<div class="jumbotron">
+    <h1>Budget in a Box</h1>
+
+    <p>Got a <a href="https://github.com/openspending/budget-data-package/">Budget Data Package</a> (or several)? Want to create a user-friendly budget site? <b>Budget in a Box</b> makes it simple.</p>
+</div>
+
+<div class="row marketing">
+    <div class="col-md-4">
+        <h4>Upload</h4>
+        <p>You don't have to painstakingly process your dataset to get it ready for visualizations. Budget in a Box preprocesses and uploads your datasets for you.</p>
+        <p><a class="btn btn-success" href="/help/#upload" role="button">Learn how</a></p>
+    </div>
+    <div class="col-md-4">
+        <h4>Explore</h4>
+        <p>Give your citizens a window into their budget, not just a raw data dump. Budget in a Box makes this easy.</p>
+        <p><a class="btn btn-success" href="/help/#explore" role="button">Learn how</a></p>
+    </div>
+    <div class="col-md-4">
+        <h4>Visualize</h4>
+        <p>Built-in visualizations like the <a href="#">bubbletree</a> and <a href="#">bar chart</a> take advantage of the <a href="">COFOG</a> classification system to highlight your data's meaning.</p>
+        <p><a class="btn btn-success" href="/help/#visualize" role="button">Learn how</a></p>
+    </div>
+</div>
+
 {% endblock %}

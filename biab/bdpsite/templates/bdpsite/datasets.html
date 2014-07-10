@@ -32,10 +32,11 @@
         {% endif %}
         </li>
 {% endfor %}
-{% endblock %}
-{% block "js" %}
 </ul>
 <p><a href="add/" class="btn btn-success">Add a Dataset</a>
+
+{% endblock %}
+{% block "js" %}
 <script>
 $(document).ready(function () {
     $("a[data-action='preprocess']").click(function (e) {

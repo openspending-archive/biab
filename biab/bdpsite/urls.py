@@ -13,6 +13,9 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
 
     url(r'^$', 'bdpsite.views.welcome'),
+    url(r'^help/$',
+        'bdpsite.views.help'),
+
     url(r'^user/new/$', 'bdpsite.views.createuser'),
     url(r'^user/login/$', 'bdpsite.views.login'),
     url(r'^user/logout/$', 'bdpsite.views.logout'),

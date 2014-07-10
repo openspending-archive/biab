@@ -1,0 +1,77 @@
+{% extends "biab/base.html" %}
+
+{% block "main" %}
+
+<h1>FAQ</h1>
+
+<h2>How do I …</h2>
+<ul>
+    <li>Create a budget site</li>
+    <li>Create a project</li>
+    <li>Upload a data package</li>
+    <li>Prepare a dataset for visualization</li>
+    <li>Create a visualization</li>
+    <li>Put a visualization on a project's front page</li>
+</ul>
+
+<hr>
+
+<a name="create"></a>
+<h2>Create a budget site</h2>
+
+<p>To create a budget (or spending) site using BIAB, create a new <i>project</i>. A project is a site created with BIAB.</p>
+
+<p>To fill in a project with content, add <i>data packages</i> which contain <i>datasets</i>. Then add <i>visualizations</i> for those datasets.</p>
+
+<p>BIAB's visualization features are powered by <a href="http://openspending.org">OpenSpending</a>. When you add a dataset to a BIAB project, BIAB preprocesses it and uploads it to OpenSpending behind the scenes. <i>You can only create visualizations for datasets that have successfully uploaded to OpenSpending.</i></p>
+
+<a name="create_project"></a>
+<h2>Create a project</h2>
+
+<p>Make sure you're logged in, then click on your <b>username</b> in the upper right-hand corner of the screen. This will take you to your dashboard.</p>
+
+<p>To create a new project from an existing data package, click on <b>New Project</b>. On the next screen, fill in the URL of your data package's metadata file. If you want BIAB to automatically preprocess and upload the package's datasets, leave <b>Automatically upload datasets?</b> checked. (If not, you can preprocess and upload the datasets yourself later.)</p>
+
+<p>You can also create a new project from scratch by clicking <b>New bare Project</b>, in which case you will be asked to fill in some basic information about the project.</p>
+
+<a name="upload"></a>
+<h2>Upload a data package</h2>
+
+<p>New data packages can be added to any existing project. Just go to the <b>Data Packages</b> tab on the project's dashboard, click <b>Add a new package</b>, and supply the URL of your data package's metadata file.</p>
+
+<a name="explore"></a>
+<h2>Prepare a dataset for visualization</h2>
+
+<p>Did you skip the auto-uploading feature when you added your data package? No problem. You can ask BIAB to preprocess and upload your data at any time.</p>
+
+<p>Go to the <b>Datasets</b> tab for your project and find the dataset you wish to preprocess and upload. You will see a row of alerts telling you about three important properties of the dataset:</p>
+
+<ul>
+    <li>whether the CSV has been preprocessed</li>
+    <li>whether the upload metadata has been generated</li>
+    <li>whether it has been uploaded to OpenSpending</li>
+</ul>
+
+<p>The three blue icons to the right of the dataset's name allow you to carry out these three steps. Simply click on them to watch the step take place right before your eyes.</p>
+
+
+<a name="visualize"></a>
+<h2>Create a visualization</h2>
+
+<p>If your dataset has been uploaded to OpenSpending, you can create a visualization for it.</p>
+
+<p>Go to your project's <b>Visualize</b> tab and click <b>Add a Visualization</b>. Choose the dataset for the visualization and the type of visualization to use.</p>
+
+<p>BIAB's visualizations work by using "drilldowns" to focus on relevant columns in your data. You must choose at least one column as a drilldown, but you can choose as many as you like—each new drilldown will let the viewer of the visualization refine her view of the data by clicking on the graphic.</p>
+
+<p>To add a drilldown, choose a column from the dropdown list, then hit the "plus" button to the right.</p>
+
+<p>After you're satisfied with the selection of drilldowns, enter a description of your visualization in the "Description" box, and then hit <b>Save</b>.</p>
+
+<h2>Put a visualization on a project's front page</h2>
+
+<p>Each project can have a "featured visualization" that will be displayed on its front page.</p>
+
+<p>Once you've created a visualization you want to feature, go to the <b>Edit Project</b> tab on your project's dashboard and select a <b>Featured viz</b> from the dropdown list.</p>
+
+{% endblock %}

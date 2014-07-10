@@ -6,13 +6,19 @@
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
     <link rel="stylesheet" href="{% static 'openspendingjs/0.4.0/openspending.min.css' %}" />
     <style>
-      form {
-        width: 450px;
+      /* Customize container */
+      @media (min-width: 768px) {
+        .container {
+          max-width: 730px;
+        }
+      }
+      .jumbotron {
+        text-align: center;
       }
     </style>
   </head>
   <body>
-    <div class="container-fluid">
+    <div class="container-fluid container">
         <nav class="navbar navbar-default" role="navigation">
             <div class="container-fluid">
            <div class="navbar-header">

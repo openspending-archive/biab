@@ -71,6 +71,11 @@ def welcome(request):
         {},
         context_instance=RequestContext(request))
 
+def help(request):
+    return render_to_response("bdpsite/help.html",
+        {},
+        context_instance=RequestContext(request))
+
 def createuser(request):
     if request.method == 'POST':
         form = CaptchaUserCreationForm(request.POST)
@@ -139,7 +144,7 @@ def create(request):
             p.save()
             # create new data package;
             # use Celery to do this asynchronously...
-            create_bdp.delay(p, form.cleaned_data["url"])
+            create_bdp.delay(p, form.cleaned_data["url"], form.cleaned_data["auto_upload"])
             return HttpResponseRedirect("/project/%s/"%p.slug)
     else:
         form = CreateForm()
@@ -160,6 +165,7 @@ def createbare(request):
     else:
         form = ProjectForm()
 
+    form.fields["featured_viz"].widget = forms.HiddenInput()
     c = {"form": form}
     c.update(csrf(request))
     return render_to_response("bdpsite/createbare.html", c,
