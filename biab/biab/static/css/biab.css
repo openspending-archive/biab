@@ -1,8 +1,18 @@
 @media (min-width: 768px) {
-.container {
-  max-width: 730px;
+    .container {
+      max-width: 730px;
+    }
 }
-}
+
 .jumbotron {
-text-align: center;
+    text-align: center;
+}
+
+.openspending-bt .label2 .span {
+    background: #eee;
+}
+
+.affix {
+    right:0;
+    bottom:0;
 }

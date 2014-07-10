@@ -118,6 +118,7 @@ S3_BUCKET = os.environ.get('BIAB_S3_BUCKET', None)
 S3_HTTP_URL = os.environ.get('BIAB_S3_HTTP', None)
 S3_CSV_PREFIX = os.environ.get('BIAB_S3_CSV_PREFIX', 'csv/')
 S3_MODEL_PREFIX = os.environ.get('BIAB_S3_MODEL_PREFIX', 'bdp/')
+S3_IMG_PREFIX = os.environ.get('BIAB_S3_IMG_PREFIX', 'img/')
 
 # API key for OpenSpending uploading
 OPENSPENDING_API_KEY = os.environ.get('OPENSPENDING_API_KEY', None)

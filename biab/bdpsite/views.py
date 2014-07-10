@@ -255,9 +255,22 @@ def datasets(request,project):
     project = get_object_or_404(Project, slug = project)
     if project.creator != request.user:
         return HttpResponseForbidden()
-    datasets = Dataset.objects.filter(project = project)
+    all_datasets = Dataset.objects.filter(project = project)
+    p = Paginator(all_datasets, 5)
+    page = request.GET.get("page")
+    try:
+        datasets = p.page(page)
+        currentpage = page
+    except PageNotAnInteger:
+        datasets = p.page(1)
+        currentpage = 1
+    except EmptyPage:
+        datasets = p.page(p.num_pages)
+        currentpage = p.num_pages
     c={"project": project,
        "datasets": datasets,
+       "pagenums": range(1,p.num_pages+1),
+       "pagenum": int(currentpage),
        "page": "datasets" }
     return render_to_response("bdpsite/datasets.html", c,
         context_instance = RequestContext(request))
