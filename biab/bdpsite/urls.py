@@ -71,3 +71,10 @@ urlpatterns = patterns('',
     url(r'^(?P<project>[-\w]+)/(?P<dataset>[-\w]+)/$',
         'bdpsite.views.userview_dataset'),
 )
+
+if not settings.DEBUG:
+    urlpatterns += patterns('',
+        (r'^static/(?P<path>.*)$',
+            'django.views.static.serve',
+            {'document_root': settings.STATIC_ROOT}),
+    )
