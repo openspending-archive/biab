@@ -11,10 +11,12 @@ from bdpsite.models import *
 
 import sys
 import traceback
+import uuid
 
 from utils.osupload import process_resource, model, os_load
 from utils.csv import DatasetCSV
 from utils.s3 import put_dataset, put_model
+from mimetypes import guess_type
 
 @shared_task
 def add(x, y):
@@ -34,6 +36,17 @@ def upload_bdp(metadata_url):
         model_url = s3.put_model(model, name)
         # Call the OS loading API on the result
         osu.os_load(data_url, model_url)
+
+@shared_task
+def upload_logo(project_id, logo):
+    url = s3.put_content(
+        s3.generate_key(uuid.uuid4().hex + logo.name),
+        logo.file.read(),
+        guess_type(logo.name)
+        )
+    project = Project.objects.get(id=project_id)
+    project.logo_url = url
+    project.save()
 
 @shared_task
 def create_bdp(project, metadata_url, auto_upload=True):

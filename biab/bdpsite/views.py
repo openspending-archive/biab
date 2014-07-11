@@ -178,9 +178,12 @@ def editproject(request,project):
     if project.creator != request.user:
         return HttpResponseForbidden()
     if request.method == 'POST':
-        form = ProjectForm(request.POST, instance = project)
+        form = ProjectForm(request.POST, request.FILES, instance = project)
         if form.is_valid():
             form.save()
+            # do something with request.FILES["file"]
+            if request.FILES.get("logo"):
+                upload_logo.delay(project.id, request.FILES["logo"])
             if form.cleaned_data['slug'] != project:
                 return HttpResponseRedirect("/project/%s/"%form.cleaned_data['slug'])
     else:
@@ -412,7 +415,8 @@ def project(request,project):
 
 def userview_project(request,project):
     project = get_object_or_404(Project, slug = project)
-    c = {"project": project}
+    c = {"project": project,
+        "page": "project"}
     if project.featured_viz:
         c.update({"featured_dataset": project.featured_viz.dataset.name})
     return render_to_response("bdpsite/viewer_project.html", c,

@@ -12,13 +12,15 @@ class DataPackageForm(ModelForm):
         model = DataPackage
         fields = ['name', 'slug']
 
-class ProjectForm(ModelForm):   
+class ProjectForm(ModelForm):
+    logo = forms.ImageField(required=False)
     class Meta:
         model = Project
-        fields = ['title', 'slug', 'description', 'featured_viz']
+        fields = ['title', 'slug', 'description', 'featured_viz', 'logo_url']
     def __init__(self, *args, **kwargs):
         project = kwargs.get("instance", None)
         super(ProjectForm,self).__init__(*args,**kwargs)
+#        self.fields["logo_url"].widget.attrs["readonly"] = "readonly"
         if project:
             self.fields["featured_viz"].queryset = Visualization.objects.filter(dataset__project__id = project.id)
 

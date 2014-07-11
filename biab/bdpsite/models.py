@@ -14,7 +14,8 @@ class Project(models.Model):
     creator = models.ForeignKey(User)
 
     featured_viz = models.ForeignKey("Visualization",null=True,blank=True)
-    
+    logo_url = models.URLField(null=True,blank=True)
+
     def __unicode__(self):
         return self.title
 

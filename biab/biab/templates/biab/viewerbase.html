@@ -9,6 +9,33 @@
     {% endblock %}
   </head>
   <body>
+
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../">
+            {% if project.logo_url %}
+            <img style="max-width: 48px; margin-top:-7px" src="{{ project.logo_url }}">
+            {% endif %}
+            {{ project.title }}
+          </a>
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav">
+            <li {% if page = project %}class="active"{% endif %}><a href="{% if page = dataset %}.{% endif %}./">Home</a></li>
+            <li {% if page = datasets %}class="active"{% endif %}><a href="{% if page = dataset %}.{% endif %}./datasets/">Datasets</a></li>
+            </ul>
+        </div>
+      </div>
+    </div>
+
         {% block "main" %}
         {% endblock %}
     <script src="{% static 'js/jquery-1.11.1.min.js'%}"></script>
