@@ -34,11 +34,11 @@
       <div class="col-md-7">
         <h1>{{ project.title }} </h1>
         {% if project.featured_viz %}
-        <p>{{ project.description }}</p>
-        <p><a class="btn btn-primary btn-lg" role="button" href="{{featured_dataset}}/">Learn more &raquo;</a></p>
+        <h2>{{ featured.name }}</h2>
+        <p>{{ featured.description }}</p>
+        <p><a class="btn btn-primary btn-lg" role="button" href="{{featured.slug}}/">Learn more &raquo;</a></p>
         {% else %}
         <p>{{ project.description }} </p>
-        <p><i>This is where the featured visualization should go. The button below links to the dataset page for the visualization's dataset.</i></p>
         {% endif %}
       </div>
     </div>

@@ -279,6 +279,30 @@ def datasets(request,project):
         context_instance = RequestContext(request))
 
 @login_required
+def dataset(request,project,id):
+    project = get_object_or_404(Project, slug = project)
+    if project.creator != request.user:
+        return HttpResponseForbidden()
+    dataset = Dataset.objects.get(id=id)
+    if request.method == 'POST':
+        form = DatasetForm(request.POST, instance=dataset)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect("../")
+    else:
+        form = DatasetForm(instance = dataset)
+    c = {
+        "form": form,
+        "project": project,
+        "dataset": dataset,
+        "page": "dataset"
+    }
+    c.update(csrf(request))
+    return render_to_response("bdpsite/dataset.html", c,
+        context_instance = RequestContext(request))
+
+
+@login_required
 def adddataset(request,project):
     project = get_object_or_404(Project, slug = project)
     if project.creator != request.user:
@@ -418,7 +442,7 @@ def userview_project(request,project):
     c = {"project": project,
         "page": "project"}
     if project.featured_viz:
-        c.update({"featured_dataset": project.featured_viz.dataset.name})
+        c.update({"featured": project.featured_viz.dataset})
     return render_to_response("bdpsite/viewer_project.html", c,
         context_instance = RequestContext(request))
 

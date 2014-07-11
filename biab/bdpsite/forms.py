@@ -7,6 +7,17 @@ from django import forms
 class CaptchaUserCreationForm(UserCreationForm):
    recaptcha = ReCaptchaField()
 
+class DatasetForm(ModelForm):
+    granularity = forms.ChoiceField(choices=[("aggregated","aggregated"),("transactional","transactional")])
+    type = forms.ChoiceField(choices=[("expenditure","expenditure"),("revenue","revenue")])
+    status = forms.ChoiceField(choices=[("proposed","proposed"),("approved","approved"),
+                                        ("adjusted","adjusted"),("executed","executed")])
+    class Meta:
+        model = Dataset
+        fields = ['name', 'description',
+                  'currency','dateLastUpdated','datePublished',
+                  'fiscalYear','granularity', 'type', 'status']
+
 class DataPackageForm(ModelForm):   
     class Meta:
         model = DataPackage
