@@ -1,0 +1,16 @@
+{% extends "biab/base.html" %}
+
+{% block "main" %}
+
+<h1>Hosted sites</h1>
+
+<ul>
+{% for project in projects %}
+    <li>
+        <h4><a href="../{{project.slug}}/">{{project.title}}</a></h4>
+        <p>{{project.description}}</p>
+    </li>
+{% endfor %}
+</ul>
+
+{% endblock %}

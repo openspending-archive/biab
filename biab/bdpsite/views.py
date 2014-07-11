@@ -77,6 +77,12 @@ def help(request):
         {},
         context_instance=RequestContext(request))
 
+def projects(request):
+    projects = Project.objects.all()
+    return render_to_response("bdpsite/projects.html",
+        {"projects": projects},
+        context_instance=RequestContext(request))
+
 def createuser(request):
     if request.method == 'POST':
         form = CaptchaUserCreationForm(request.POST)

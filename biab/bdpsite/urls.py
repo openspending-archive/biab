@@ -15,6 +15,8 @@ urlpatterns = patterns('',
     url(r'^$', 'bdpsite.views.welcome'),
     url(r'^help/$',
         'bdpsite.views.help'),
+    url(r'^projects/$',
+        'bdpsite.views.projects'),
 
     url(r'^user/new/$', 'bdpsite.views.createuser'),
     url(r'^user/login/$', 'bdpsite.views.login'),
