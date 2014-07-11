@@ -445,7 +445,9 @@ def project(request,project):
 
 def userview_project(request,project):
     project = get_object_or_404(Project, slug = project)
+    datasets = Dataset.objects.filter(project=project).order_by("created","name")
     c = {"project": project,
+         "datasets": datasets[:4],
         "page": "project"}
     if project.featured_viz:
         c.update({"featured": project.featured_viz.dataset})

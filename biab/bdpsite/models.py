@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from autoslug import AutoSlugField
 import re
+import datetime
 
 # Create your models here.
 
@@ -34,6 +35,9 @@ class Dataset(models.Model):
     # the BDP that contains the dataset
     datapackage = models.ForeignKey(DataPackage,null=True,blank=True)
     project = models.ForeignKey(Project)
+
+    # the creation date of the dataset
+    created = models.DateTimeField(auto_now_add=True, default=datetime.datetime.today())
 
     # URLs linking to OS stuff
     preprocessed = models.URLField(null=True,blank=True)

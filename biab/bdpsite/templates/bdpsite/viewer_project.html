@@ -48,10 +48,18 @@
       <!-- Example row of columns -->
       <div class="row">
         <div class="col-md-8">
-            <h2>Recent updates</h2>
-            <p>
-                Here is a list of recently added things (packages, datasets, visualizations, whatever).
-            </p>
+            <h2>New datasets</h2>
+            <ul>
+              {% for d in datasets %}
+              <li>
+                <h3><a href="{{d.name}}/">{{ d.name }}</a></h3>
+                <div><b>Fiscal year: </b>{{ d.fiscalYear | date:"Y" }}</div>
+                <div><b>Category: </b>{% if d.type == "expenditure" %}{% if d.granularity == "aggregated" %}budget{% else %}spending{% endif %}{% else %}other{% endif %}</div>
+                {% if d.status %}<div><b>Status: </b>{{ d.status }}</div>{% endif %}
+              </li>
+              {% endfor %}
+            </ul>
+            <p><a class="btn btn-success" role="button" href="datasets/">More datasets &raquo;</a></p>
         </div>
         <div class="col-md-4">
             <h2>Site information</h2>
