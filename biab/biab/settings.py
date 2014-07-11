@@ -100,6 +100,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
+# Static files setup for production
 STATIC_ROOT= 'staticfiles'
 STATIC_URL = '/static/'
 
@@ -135,12 +136,3 @@ RESOURCES = os.path.join(BASE_DIR, 'utils', 'resources')
 CELERY_RESULT_BACKEND = 'djcelery.backends.database:DatabaseBackend'
 CELERY_EAGER_PROPAGATES_EXCEPTIONS = True
 BROKER_URL = 'django://'
-
-# Static files setup for production
-PROJECT_PATH = os.path.dirname(os.path.abspath(__file__))
-STATIC_ROOT = 'staticfiles'
-STATIC_URL = '/static/'
-
-STATICFILES_DIRS = (
-    os.path.join(PROJECT_PATH, 'static'),
-)
