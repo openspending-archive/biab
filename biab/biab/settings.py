@@ -21,7 +21,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY',
     'd=d5#m7j+l+h5eg5@c&!nz&dpil7$*(peou%h^vj*f+o6vtxqv')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-#DEBUG = True
+DEBUG = True
 
 TEMPLATE_DEBUG = True
 
@@ -37,8 +37,9 @@ TEMPLATE_LOADERS = (
 
 ALLOWED_HOSTS = [
     ".herokuapp.com",
+    ".herokuapp.com.",
     "127.0.0.1",
-    "localhost"
+    "localhost",
 ]
 
 
@@ -134,3 +135,12 @@ RESOURCES = os.path.join(BASE_DIR, 'utils', 'resources')
 CELERY_RESULT_BACKEND = 'djcelery.backends.database:DatabaseBackend'
 CELERY_EAGER_PROPAGATES_EXCEPTIONS = True
 BROKER_URL = 'django://'
+
+# Static files setup for production
+PROJECT_PATH = os.path.dirname(os.path.abspath(__file__))
+STATIC_ROOT = 'staticfiles'
+STATIC_URL = '/static/'
+
+STATICFILES_DIRS = (
+    os.path.join(PROJECT_PATH, 'static'),
+)

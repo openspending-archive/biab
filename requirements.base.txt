@@ -8,6 +8,7 @@ billiard==3.3.0.18
 boto==2.29.1
 celery==3.1.12
 dj-database-url==0.3.0
+dj-static==0.0.6
 django-autoslug==1.7.2
 django-bootstrap3==4.7.1
 django-celery==3.1.10
@@ -19,5 +20,6 @@ python-dateutil==2.2
 pytz==2014.4
 requests==2.3.0
 six==1.7.2
+static3==0.5.1
 unicodecsv==0.9.4
 wsgiref==0.1.2
