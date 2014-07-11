@@ -87,14 +87,14 @@
             </div>
             <div class="panel-body">
               <ul>
-                {% if dataset.url %}
+                {% if url %}
                 <li>
                   <a href="{{url}}">Raw data</a>
                 </li>
                 {% endif %}
                 {% if dataset.openspending %}
                 <li>
-                  <a href="http://openspending.org/{{dataset.openspending}}">OpenSpending dataset</a>
+                  <a href="{{dataset.openspending}}">OpenSpending dataset</a>
                 </li>
                 {% endif %}
               </ul>
